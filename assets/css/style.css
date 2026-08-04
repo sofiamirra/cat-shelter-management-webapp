@@ -1,11 +1,12 @@
-/* Configurazione palette colori e reset globale */
+/* Palette Colori basata sullo screenshot */
 :root {
-    --colore-sfondo: #F8F6F0;
-    --colore-testo: #1D1B26;
-    --colore-primario: #4E5399;
+    --colore-sfondo-scuro: #0B251C; /* Verde scurissimo (Sfondo Hero) */
+    --colore-sfondo-chiaro: #F5F5F0; /* Panna/Beige (Sfondo pagina principale) */
+    --colore-testo-chiaro: #FFFFFF;
+    --colore-testo-scuro: #1A1A1A;
+    --colore-accento: #8AD9A5; /* Verde chiaro per i dettagli */
     --colore-secondario: #D4C5B9;
     --colore-errore: #d32f2f;
-    --colore-bianco: #ffffff;
 }
 
 * {
@@ -14,209 +15,720 @@
     padding: 0;
 }
 
-/* Struttura di base della pagina con flexbox per bloccare il footer in basso */
 body {
-    font-family: Arial, sans-serif;
-    background-color: var(--colore-sfondo);
-    color: var(--colore-testo);
+    /* Applicazione del font Poppins */
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--colore-sfondo-chiaro);
+    color: var(--colore-testo-scuro);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-/* Stile dell'intestazione e della barra di navigazione */
-header {
-    background-color: var(--colore-primario);
-    color: var(--colore-bianco);
-    padding: 1rem 2rem;
+/* Header a singola linea con gradiente verde scuro (Stile Verdora) */
+.site-header {
+    background: linear-gradient(135deg, #1A3629 0%, #2A4D3E 100%);
+    padding: 1.5rem 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-header a {
-    color: var(--colore-bianco);
-    text-decoration: none;
-    font-weight: bold;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-}
-
-header a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Contenitore principale dei contenuti */
-main {
-    flex: 1;
-    padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 2rem;
     width: 100%;
 }
 
-/* Stile della sezione di presentazione */
-.presentazione {
-    background-color: var(--colore-bianco);
-    padding: 2rem;
-    border-radius: 8px;
-    border: 1px solid var(--colore-secondario);
+.logo a {
+    color: var(--colore-testo-chiaro);
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.main-nav ul {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+}
+
+.main-nav a {
+    color: #C2D5CD; 
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.main-nav a:hover {
+    color: var(--colore-testo-chiaro);
+}
+
+.link-admin {
+    color: var(--colore-accento) !important;
+}
+
+/* Bottone a pillola (Outline) per Header */
+.btn-outline {
+    color: var(--colore-testo-chiaro);
+    text-decoration: none;
+    padding: 0.6rem 1.5rem;
+    border: 1.5px solid var(--colore-testo-chiaro);
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    background-color: var(--colore-testo-chiaro);
+    color: #1A3629;
+}
+
+/* ==========================================
+   SEZIONE HERO (Split Layout in Beige)
+   ========================================== */
+.hero {
+    background-color: var(--colore-sfondo-chiaro); /* Beige chiaro */
+    padding: 4rem 2rem 6rem 2rem;
+    overflow: hidden;
+}
+
+.hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+/* Colonna Testo */
+.hero-text {
+    flex: 1;
+}
+
+.hero-text h1 {
+    font-size: 3.2rem;
+    color: var(--colore-testo-scuro);
+    line-height: 1.15;
     margin-bottom: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -1px;
 }
 
-.presentazione h2 {
-    margin-bottom: 1rem;
-    color: var(--colore-primario);
+.hero-text p {
+    font-size: 1.1rem;
+    color: #4A4A4A;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    max-width: 90%;
 }
 
-/* Stile del form di login e registrazione */
-.form-container {
+/* Bottone Scuro (Solid) per la Hero */
+.btn-solid-dark {
+    display: inline-block;
+    background-color: #1A3629;
+    color: var(--colore-testo-chiaro);
+    text-decoration: none;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.btn-solid-dark:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(26, 54, 41, 0.2);
+}
+
+/* Colonna Immagine con Maschera di Sfumatura (CSS avanzato) */
+.hero-image {
+    flex: 1;
+    text-align: right;
+    position: relative;
+}
+
+.hero-image img {
+    max-width: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+    /* Questa regola crea la sfumatura morbida verso sinistra senza Photoshop! */
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%);
+    mask-image: linear-gradient(to right, transparent 0%, black 30%);
+}
+
+/* ==========================================
+   BOX BIANCO: STEP DI ADOZIONE
+   ========================================== */
+.adoption-steps-wrapper {
+    background-color: var(--colore-sfondo-chiaro);
+    padding: 0 2rem 4rem 2rem;
+}
+
+.adoption-steps {
+    max-width: 1000px;
+    /* Margine negativo per far sormontare leggermente il box alla Hero */
+    margin: -3rem auto 0 auto; 
     background-color: var(--colore-bianco);
-    padding: 2rem;
-    border-radius: 8px;
-    border: 1px solid var(--colore-secondario);
-    max-width: 500px;
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    position: relative;
+    z-index: 10;
+}
+
+.step {
+    flex: 1;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.step-icon {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F0EDE6; /* Cerchietto beige dietro l'icona */
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
+.step h3 {
+    font-size: 1.2rem;
+    color: var(--colore-testo-scuro);
+    margin-bottom: 0.5rem;
+}
+
+.step p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+.btn-solid:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* Reset per togliere il padding di main in modo che la sezione hero tocchi l'header */
+main {
+    flex: 1;
+    width: 100%;
+}
+
+/* ==========================================
+   SEZIONE NUOVI OSPITI (Separatore & Card Premium)
+   ========================================== */
+
+   .nuovi-arrivi {
+    padding: 2rem 2rem 5rem 2rem;
+    background-color: var(--colore-sfondo-chiaro); 
+}
+
+/* Intestazione e Separatore Zampetta */
+.section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+
+.section-header h2 {
+    font-size: 2.2rem;
+    color: var(--colore-testo-scuro);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.paw-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    max-width: 300px;
     margin: 0 auto;
 }
 
-.form-container h2 {
-    color: var(--colore-primario);
-    margin-bottom: 1.5rem;
-    text-align: center;
+.paw-divider .line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: var(--colore-secondario);
 }
 
-.form-group {
-    margin-bottom: 1.5rem;
+.paw-divider .paw {
+    color: var(--colore-primario);
+    font-size: 1.2rem;
+}
+
+/* Griglia per contenere le card */
+.gatti-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 350px));
+    justify-content: center;
+    gap: 2.5rem;
+    max-width: 780px; 
+    margin: 0 auto;
+}
+
+/* Struttura Card Premium */
+.card-gatto-premium {
+    background: var(--colore-bianco);
+    border-radius: 16px;
+    overflow: hidden;
+    /* Ombra più morbida e diffusa per un effetto "sollevato" */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    border: 1px solid #E8E5E1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
 }
 
-.form-group label {
-    font-weight: bold;
+.card-gatto-premium:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+/* Contenitore Immagine */
+.card-img-wrapper {
+    position: relative; /* FONDAMENTALE per tenere badge e icona al loro posto */
+    height: 220px;
+    width: 100%;
+}
+
+.card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Badge in alto a sinistra */
+.badge-nuovo {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: var(--colore-bianco);
+    color: var(--colore-primario);
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 2;
+}
+
+/* Cerchietto con icona sovrapposto (Spostato a DESTRA per non coprire il testo) */
+.icon-circle {
+    position: absolute;
+    bottom: -20px;
+    right: 25px; 
+    width: 45px;
+    height: 45px;
+    background-color: var(--colore-accento);
+    border: 3px solid var(--colore-bianco);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 2;
+}
+
+/* Corpo della Card (Testi) */
+.card-body {
+    padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: var(--colore-bianco);
+}
+
+.card-body h3 {
+    font-size: 1.5rem;
+    color: var(--colore-primario);
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+}
+
+.card-desc {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+/* Link di azione */
+.card-link {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--colore-primario);
+    text-decoration: none;
+    display: inline-block;
+    align-self: flex-start;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-link:hover {
+    color: var(--colore-secondario);
+    border-bottom: 2px solid var(--colore-secondario);
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+   .site-footer {
+    background-color: #152E22; /* Verdone molto scuro, quasi nero */
+    color: #E8E5E1; /* Testo chiaro, non bianco puro per non affaticare la vista */
+    padding-top: 4rem;
+    margin-top: 4rem; /* Distanza dal contenuto precedente */
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.footer-col h3 {
+    color: var(--colore-bianco);
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--colore-secondario);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.footer-col p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #A3B5AE;
+    margin-bottom: 1.5rem;
+}
+
+/* Liste contatti e link */
+.footer-contact, .footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-contact li {
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+    color: #A3B5AE;
+}
+
+.footer-links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links a {
+    color: #A3B5AE;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s, padding-left 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--colore-bianco);
+    padding-left: 5px; /* Piccolo effetto di scorrimento al passaggio del mouse */
+}
+
+.footer-container .footer-col:nth-child(2) {
+    margin: 0 auto;
+}
+
+/* Barra inferiore (Copyright e Crediti) */
+.footer-bottom {
+    background-color: #0B1A12; /* Colore ancora più scuro per staccare */
+    padding: 1.5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-bottom-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Per evitare problemi su schermi stretti */
+    gap: 1rem;
+}
+
+.footer-bottom-content p {
+    font-size: 0.85rem;
+    color: #889C94;
+    margin: 0;
+}
+
+.academic-credit {
+    font-style: italic;
+}
+
+.academic-credit strong {
+    color: var(--colore-secondario);
+}
+
+/* ==========================================
+   PAGINE DI AUTENTICAZIONE (Login / Registrazione)
+   ========================================== */
+
+   .auth-wrapper {
+    background-color: var(--colore-sfondo-chiaro); /* Sfondo beige del sito */
+    min-height: 70vh; /* Occupa buona parte dello schermo per centrare il box */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+}
+
+.auth-card {
+    background-color: var(--colore-bianco);
+    width: 100%;
+    max-width: 450px; /* Larghezza ideale per un modulo di login */
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border: 1px solid #E8E5E1;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.auth-header h2 {
+    color: var(--colore-primario);
+    font-size: 2rem;
+    font-weight: 700;
     margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Stili per i campi di input */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--colore-testo-scuro);
 }
 
 .form-group input[type="text"],
 .form-group input[type="password"] {
-    padding: 0.8rem;
-    border: 1px solid var(--colore-secondario);
-    border-radius: 4px;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 2px solid #EAE6DF;
+    border-radius: 8px;
+    font-family: inherit;
     font-size: 1rem;
+    transition: border-color 0.3s;
 }
 
-/* Stile della checkbox ricordami */
-.checkbox-group {
-    flex-direction: row;
+.form-group input:focus {
+    outline: none;
+    border-color: var(--colore-secondario);
+}
+
+.form-group input.input-error {
+    border-color: var(--colore-errore);
+}
+
+/* Errori JS testuali */
+.errore-js {
+    display: block;
+    color: var(--colore-errore);
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+    font-weight: 600;
+}
+
+/* Checkbox Ricordami */
+.form-group-checkbox {
+    display: flex;
     align-items: center;
     gap: 0.5rem;
+    margin-bottom: 2rem;
 }
 
-.checkbox-group label {
-    margin-bottom: 0;
-    font-weight: normal;
-}
-
-/* Bottoni di invio form */
-.btn-primario {
-    background-color: var(--colore-primario);
-    color: var(--colore-bianco);
-    padding: 0.8rem;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-weight: bold;
+.form-group-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--colore-primario); /* Colora la spunta di verde */
     cursor: pointer;
-    width: 100%;
 }
 
-.btn-primario:hover {
-    background-color: #3d417a;
+.form-group-checkbox label {
+    font-size: 0.9rem;
+    color: #555;
+    cursor: pointer;
 }
 
-/* Messaggi di errore JS e PHP */
-.errore-js, .errore-php {
+/* Alert per errori PHP */
+.auth-alert {
+    background-color: #FDE8E8;
     color: var(--colore-errore);
-    font-size: 0.85rem;
-    margin-top: 0.3rem;
-    font-weight: bold;
-}
-
-/* Stile del piè di pagina */
-footer {
-    background-color: var(--colore-testo);
-    color: var(--colore-bianco);
-    text-align: center;
-    padding: 1.5rem;
-    margin-top: auto;
-}
-
-.successo-php {
-    color: #2e7d32; /* Verde successo */
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
-/* VETRINA GATTI (GRIGLIA E CARD) */
-
-/* Layout a griglia flessibile e responsiva */
-.gatti-grid {
-    display: grid;
-    /* Crea colonne che si adattano automaticamente allo spazio, larghezza minima 280px */
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 1rem;
-}
-
-/* Stile della singola scheda del felino */
-.gatto-card {
-    background-color: var(--colore-bianco);
-    border: 1px solid var(--colore-secondario);
+    padding: 1rem;
     border-radius: 8px;
-    overflow: hidden; /* Taglia gli angoli dell'immagine se esce dal bordo */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    border: 1px solid #F8B4B4;
 }
 
-/* Effetto di sollevamento al passaggio del mouse */
-.gatto-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Stile dell'immagine placeholder */
-.gatto-img {
+/* Modificatore per far occupare al bottone il 100% della larghezza */
+.w-100 {
     width: 100%;
-    height: 200px;
-    object-fit: cover; /* Mantiene le proporzioni dell'immagine riempiendo il box */
-    background-color: #e0e0e0; /* Sfondo grigio in attesa del caricamento */
-    border-bottom: 3px solid var(--colore-primario);
+    text-align: center;
 }
 
-/* Contenitore dei testi dentro la card */
-.gatto-info {
-    padding: 1.5rem;
-}
-
-.gatto-info h3 {
-    color: var(--colore-primario);
-    margin-bottom: 1rem;
-    font-size: 1.4rem;
-    border-bottom: 1px dashed var(--colore-secondario);
-    padding-bottom: 0.5rem;
-}
-
-.gatto-info p {
-    margin-bottom: 0.5rem;
-    color: var(--colore-testo);
-    font-size: 0.95rem;
-}
-
-/* Enfatizzazione della data di arrivo */
-.gatto-info .data-arrivo {
-    margin-top: 1rem;
-    font-size: 0.85rem;
+.auth-footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.9rem;
     color: #666;
-    font-style: italic;
+    border-top: 1px solid #EAE6DF;
+    padding-top: 1.5rem;
+}
+
+.auth-footer a {
+    color: var(--colore-primario);
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.auth-footer a:hover {
+    color: var(--colore-secondario);
+}
+
+/* Stile raffinato per lo stato utente nell'header */
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem; /* Spaziatura pulita tra il testo e il bottone */
+}
+
+.status-testo {
+    color: #C2D5CD; /* Un verde chiaro leggibile sullo sfondo scuro */
+    font-size: 0.95rem;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+}
+
+/* ==========================================
+   CORREZIONE E ABBELLIMENTO FORM (LOGIN & REGISTRAZIONE)
+   ========================================== */
+
+   .auth-wrapper {
+    background-color: var(--colore-sfondo-chiaro);
+    min-height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 2rem;
+}
+
+.auth-card {
+    background-color: var(--colore-bianco);
+    width: 100%;
+    max-width: 500px;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    border: 1px solid #E8E5E1;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+    color: var(--colore-primario);
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+/* Regola universale per far sì che TUTTI gli input dentro le card siano bellissimi */
+.auth-card input[type="text"],
+.auth-card input[type="password"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-top: 0.4rem;
+    margin-bottom: 1rem;
+    border: 2px solid #EAE6DF;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+    background-color: #FAFAFA;
+}
+
+.auth-card input[type="text"]:focus,
+.auth-card input[type="password"]:focus {
+    outline: none;
+    border-color: var(--colore-secondario);
+    background-color: var(--colore-bianco);
+}
+
+.auth-card label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--colore-testo-scuro);
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    border-top: 1px solid #EAE6DF;
+    padding-top: 1.2rem;
+}
+
+/* Fix spaziatura header per evitare che "Non loggato" si attacchi */
+.header-container {
+    gap: 1.5rem;
+}
+
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    white-space: nowrap;
+}
+
+.status-testo {
+    color: #C2D5CD;
+    font-size: 0.9rem;
 }

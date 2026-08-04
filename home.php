@@ -10,71 +10,118 @@ require 'includes/header.php';
 require 'includes/db_config.php';
 ?>
 
-<!-- Sezione di presentazione della struttura -->
-<section class="presentazione">
-    <h2>Benvenuti al Gattile PoliTo</h2>
-    <p>Ogni anno, centinaia di gatti vengono abbandonati o nascono in strada, necessitando di cure e di una famiglia. Allo stesso tempo, molte persone desiderano accogliere un felino o dedicare il proprio tempo come volontari. Questo sito nasce per facilitare le adozioni e organizzare il supporto attivo alla struttura ospitante.</p>
+<!-- Sezione Hero: Layout diviso a metà -->
+<section class="hero" id="chi-siamo">
+    <div class="hero-container">
+        
+        <!-- Colonna di Sinistra: Testo -->
+        <div class="hero-text">
+            <h1>Un Rifugio d’Amore<br>per Gatti Bisognosi</h1>
+            <p>Il Parco delle Fusa di Torino accoglie e si prende cura dei gatti in difficoltà, offrendo loro protezione, assistenza e nuove opportunità di adozione.</p>
+            <div class="hero-buttons">
+                <a href="#ospiti" class="btn-solid-dark">Esplora i Nostri Ospiti</a>
+            </div>
+        </div>
+
+        <!-- Colonna di Destra: Immagine sfumata -->
+        <div class="hero-image">
+            <!-- Sostituisci il src con il percorso della tua foto -->
+            <img src="assets/img/gatto_hero.jpg" alt="Un dolce gatto in cerca di casa">
+        </div>
+
+    </div>
 </section>
 
-<!-- Vetrina dei gatti in cerca di adozione -->
-<section class="nuovi-arrivi">
-    <h2 style="color: var(--colore-primario); margin-bottom: 1.5rem; text-align: center;">I Nostri Nuovi Arrivi</h2>
+<!-- Sezione Step Adozione (Il box bianco arrotondato) -->
+<section class="adoption-steps-wrapper">
+    <div class="adoption-steps">
+        
+        <div class="step">
+            <div class="step-icon">🐾</div>
+            <h3>1. Innamorati</h3>
+            <p>Scopri i gatti ospitati nella nostra struttura.</p>
+        </div>
+        
+        <div class="step">
+            <div class="step-icon">📝</div>
+            <h3>2. Compila il Modulo</h3>
+            <p>Inizia il percorso di adozione responsabile.</p>
+        </div>
+        
+        <div class="step">
+            <div class="step-icon">🏡</div>
+            <h3>3. Portalo a Casa</h3>
+            <p>Regalagli una famiglia per sempre.</p>
+        </div>
+
+    </div>
+</section>
+
+<!-- Sezione Ultimi Accolti (Estrazione limitata a 2 record come da specifiche) -->
+<section class="nuovi-arrivi" id="ospiti">
     
-    <div class="gatti-grid">
+    <!-- Intestazione con Separatore "Zampetta" -->
+    <div class="section-header">
+        <h2>I Nostri Nuovi Ospiti</h2>
+        <div class="paw-divider">
+            <span class="line"></span>
+            <span class="paw">🐾</span>
+            <span class="line"></span>
+        </div>
+    </div>
+    
+    <div class="gatti-grid-2">
         <?php
-        // Connessione al DB con privilegi di sola lettura (lecture)
+        // Connessione al DB in sola lettura (lecture)
         $con = get_db_connection('lecture');
         
-        // Seleziono i gatti ordinandoli per data di arrivo (dal più recente)
-        $query = "SELECT nome, sesso, eta, razza, colore_mantello, data_arrivo FROM gatti ORDER BY data_arrivo DESC LIMIT 6";
+        // QUERY BLINDATA: Estraiamo ESATTAMENTE gli ultimi 2 inseriti per data
+        $query = "SELECT nome, sesso, eta, razza, colore_mantello, data_arrivo, descrizione FROM gatti ORDER BY data_arrivo DESC LIMIT 2";
         
-        // Utilizzo il prepared statement per mantenere lo standard di sicurezza richiesto
         if ($stmt = mysqli_prepare($con, $query)) {
             mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $nome, $sesso, $eta, $razza, $colore, $data, $desc);
             
-            // Associazione delle colonne estratte a variabili PHP
-            mysqli_stmt_bind_result($stmt, $nome_db, $sesso_db, $eta_db, $razza_db, $colore_db, $data_db);
-            
-            // Variabile di controllo per verificare se ci sono gatti
             $gatti_trovati = false;
 
-            // Ciclo iterativo per scorrere i risultati e generare le card HTML
             while (mysqli_stmt_fetch($stmt)) {
                 $gatti_trovati = true;
                 
-                // Formattazione della data in formato italiano (GG/MM/AAAA)
-                $data_formattata = date("d/m/Y", strtotime($data_db));
+                // Formattazione per la visualizzazione
+                $razza_mostrata = !empty($razza) ? htmlspecialchars($razza) : "Meticcio";
                 
-                // Gestione dei campi opzionali (se vuoti mostro "Non specificata")
-                $razza_mostrata = !empty($razza_db) ? htmlspecialchars($razza_db) : "Meticcio";
-                $eta_mostrata = !empty($eta_db) ? $eta_db . " anni" : "Cucciolo/Sconosciuta";
-
                 // Generazione della Card
                 echo "
-                <div class='gatto-card'>
-                    <!-- Il placeholder viene assegnato staticamente lato frontend -->
-                    <img src='assets/img/placeholder_gatto.png' alt='Foto di $nome_db' class='gatto-img'>
-                    <div class='gatto-info'>
-                        <h3>" . htmlspecialchars($nome_db) . "</h3>
-                        <p><strong>Sesso:</strong> " . htmlspecialchars($sesso_db) . "</p>
-                        <p><strong>Età:</strong> $eta_mostrata</p>
-                        <p><strong>Razza:</strong> $razza_mostrata</p>
-                        <p><strong>Manto:</strong> " . htmlspecialchars($colore_db) . "</p>
-                        <p class='data-arrivo'>In struttura dal: $data_formattata</p>
+                <div class='card-gatto-premium'>
+                    <div class='card-img-wrapper'>
+                        <!-- Badge aggiornato con un testo più empatico -->
+                        <span class='badge-nuovo'>Appena Accolto</span>
+                        <img src='assets/img/placeholder_gatto.png' alt='Foto di $nome'>
+                        
+                        <!-- Cerchietto con icona sovrapposto -->
+                        <div class='icon-circle'>
+                            " . ($sesso == 'M' ? '♂️' : '♀️') . "
+                        </div>
+                    </div>
+                    
+                    <div class='card-body'>
+                        <h3>" . htmlspecialchars($nome) . "</h3>
+                        <p class='card-desc'>
+                            Razza: $razza_mostrata <br>
+                            Manto: " . htmlspecialchars($colore) . "<br>
+                            Età: $eta anni
+                        </p>
+                        <a href='#' class='card-link'>SCOPRI DI PIÙ &rarr;</a>
                     </div>
                 </div>";
             }
 
             if (!$gatti_trovati) {
-                echo "<p style='text-align: center; grid-column: 1 / -1;'>Al momento non ci sono gatti registrati nel sistema.</p>";
+                echo "<p class='no-cats'>Al momento non ci sono nuovi ospiti registrati.</p>";
             }
 
             mysqli_stmt_close($stmt);
-        } else {
-            echo "<p style='color: red; text-align: center; grid-column: 1 / -1;'>Errore nel caricamento del database.</p>";
         }
-        
-        // Rilascio delle risorse
         mysqli_close($con);
         ?>
     </div>

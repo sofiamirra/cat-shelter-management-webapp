@@ -93,60 +93,71 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 require 'includes/header.php';
 ?>
 
-<div class="form-container">
-    <h2>Crea un nuovo account</h2>
-    
-    <?php
-    // Blocco per la visualizzazione di eventuali messaggi di errore gestiti dal server
-    if (!empty($errore_php)) {
-        echo "<p class='errore-php'>$errore_php</p>";
-    }
-    ?>
-
-    <form action="registrazione.php" method="POST" id="form-registrazione">
+<!-- Struttura Card Centrata (Coerente con la pagina di Login) -->
+<div class="auth-wrapper">
+    <div class="auth-card" style="max-width: 500px;">
         
-        <!-- Nuovi campi anagrafici richiesti dal DB -->
-        <div class="form-group">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome">
-            <span class="errore-js" id="err-nome"></span>
+        <div class="auth-header">
+            <h2>Crea un nuovo account</h2>
+            <p>Unisciti al Parco delle Fusa.</p>
         </div>
+        
+        <?php
+        // Blocco per la visualizzazione di eventuali messaggi di errore gestiti dal server
+        if (!empty($errore_php)) {
+            echo "<div class='auth-alert'>$errore_php</div>";
+        }
+        ?>
 
-        <div class="form-group">
-            <label for="cognome">Cognome:</label>
-            <input type="text" id="cognome" name="cognome">
-            <span class="errore-js" id="err-cognome"></span>
-        </div>
+        <form action="registrazione.php" method="POST" id="form-registrazione">
+            
+            <!-- Nuovi campi anagrafici richiesti dal DB -->
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome">
+                <span class="errore-js" id="err-nome"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="indirizzo">Indirizzo:</label>
-            <input type="text" id="indirizzo" name="indirizzo">
-            <span class="errore-js" id="err-indirizzo"></span>
-        </div>
+            <div class="form-group">
+                <label for="cognome">Cognome:</label>
+                <input type="text" id="cognome" name="cognome">
+                <span class="errore-js" id="err-cognome"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username">
-            <span class="errore-js" id="err-username"></span>
-        </div>
+            <div class="form-group">
+                <label for="indirizzo">Indirizzo:</label>
+                <input type="text" id="indirizzo" name="indirizzo">
+                <span class="errore-js" id="err-indirizzo"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password">
-            <span class="errore-js" id="err-password"></span>
-            <small style="color: #666; margin-top: 5px;">
-                La password deve avere tra 8 e 16 caratteri, contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale.
-            </small>
-        </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username">
+                <span class="errore-js" id="err-username"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="conferma_password">Conferma Password:</label>
-            <input type="password" id="conferma_password" name="conferma_password">
-            <span class="errore-js" id="err-conferma"></span>
-        </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password">
+                <span class="errore-js" id="err-password"></span>
+                <small style="display: block; color: #666; margin-top: 5px; font-size: 0.75rem; line-height: 1.4;">
+                    La password deve avere tra 8 e 16 caratteri, contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale.
+                </small>
+            </div>
 
-        <button type="submit" class="btn-primario">Registrati</button>
-    </form>
+            <div class="form-group">
+                <label for="conferma_password">Conferma Password:</label>
+                <input type="password" id="conferma_password" name="conferma_password">
+                <span class="errore-js" id="err-conferma"></span>
+            </div>
+
+            <button type="submit" class="btn-solid-dark w-100" style="margin-top: 1rem;">Registrati</button>
+            
+            <div class="auth-footer">
+                <p>Hai già un account? <a href="login.php">Accedi qui</a></p>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script>
