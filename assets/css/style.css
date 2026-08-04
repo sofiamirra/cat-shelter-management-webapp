@@ -150,3 +150,73 @@ footer {
     padding: 1.5rem;
     margin-top: auto;
 }
+
+.successo-php {
+    color: #2e7d32; /* Verde successo */
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* VETRINA GATTI (GRIGLIA E CARD) */
+
+/* Layout a griglia flessibile e responsiva */
+.gatti-grid {
+    display: grid;
+    /* Crea colonne che si adattano automaticamente allo spazio, larghezza minima 280px */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+/* Stile della singola scheda del felino */
+.gatto-card {
+    background-color: var(--colore-bianco);
+    border: 1px solid var(--colore-secondario);
+    border-radius: 8px;
+    overflow: hidden; /* Taglia gli angoli dell'immagine se esce dal bordo */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Effetto di sollevamento al passaggio del mouse */
+.gatto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Stile dell'immagine placeholder */
+.gatto-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* Mantiene le proporzioni dell'immagine riempiendo il box */
+    background-color: #e0e0e0; /* Sfondo grigio in attesa del caricamento */
+    border-bottom: 3px solid var(--colore-primario);
+}
+
+/* Contenitore dei testi dentro la card */
+.gatto-info {
+    padding: 1.5rem;
+}
+
+.gatto-info h3 {
+    color: var(--colore-primario);
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    border-bottom: 1px dashed var(--colore-secondario);
+    padding-bottom: 0.5rem;
+}
+
+.gatto-info p {
+    margin-bottom: 0.5rem;
+    color: var(--colore-testo);
+    font-size: 0.95rem;
+}
+
+/* Enfatizzazione della data di arrivo */
+.gatto-info .data-arrivo {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+}

@@ -5,7 +5,7 @@
  * dinamica dello stato di autenticazione nella barra di navigazione.
  */
 
-// Avvio sicuro della sessione PHP per gestire lo stato utente
+// Avvio della sessione per la gestione dello stato utente
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
@@ -20,26 +20,35 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <!-- Intestazione visiva della pagina -->
     <header>
         <div class="logo">
             <h1>Gattile PoliTo</h1>
         </div>
-        <!-- Barra di navigazione per lo stato utente (loggato / non loggato) -->
+        <!-- Menu di navigazione con indicatore di stato login -->
         <nav class="user-status">
             <?php
-            // Controllo se l'utente ha una sessione attiva
+            // Link alla Home visibile a tutti
+            echo "<a href='index.php'>Home</a> | ";
+
+            // Verifica se l'utente è autenticato in sessione
             if (isset($_SESSION['username'])) {
-                // Se loggato, mostra username e link di logout
+                
+                // Controllo dei privilegi: mostra il link di inserimento solo se l'utente è admin
+                if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1) {
+                    // Uso di uno stile in linea leggermente diverso per evidenziare il pannello admin
+                    echo "<a href='inserimento_gatto.php' style='color: #ffe082; font-weight: bold;'>+ Inserisci Felino</a> | ";
+                }
+                
+                // Utente loggato: mostra nome e link di logout
                 echo "<span>Utente: <strong>" . htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8') . "</strong></span>";
                 echo " | <a href='logout.php'>Logout</a>";
             } else {
-                // Se anonimo, mostra i link per accedere o registrarsi
+                // Utente anonimo: mostra stato e link di accesso/registrazione
                 echo "<span>Non loggato</span>";
                 echo " | <a href='login.php'>Login</a> o <a href='registrazione.php'>Registrati</a>";
             }
             ?>
         </nav>
     </header>
-    <!-- Apertura del blocco principale del contenuto -->
+    <!-- Inizio del contenuto principale -->
     <main>
