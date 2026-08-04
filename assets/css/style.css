@@ -1,4 +1,13 @@
-/* Reset globale e configurazione del box-sizing */
+/* Configurazione palette colori e reset globale */
+:root {
+    --colore-sfondo: #F8F6F0;
+    --colore-testo: #1D1B26;
+    --colore-primario: #4E5399;
+    --colore-secondario: #D4C5B9;
+    --colore-errore: #d32f2f;
+    --colore-bianco: #ffffff;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -8,8 +17,8 @@
 /* Struttura di base della pagina con flexbox per bloccare il footer in basso */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
+    background-color: var(--colore-sfondo);
+    color: var(--colore-testo);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -17,22 +26,25 @@ body {
 
 /* Stile dell'intestazione e della barra di navigazione */
 header {
-    background-color: #ff9800;
-    color: white;
+    background-color: var(--colore-primario);
+    color: var(--colore-bianco);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 header a {
-    color: white;
+    color: var(--colore-bianco);
     text-decoration: none;
     font-weight: bold;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
 }
 
 header a:hover {
-    text-decoration: underline;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Contenitore principale dei contenuti */
@@ -46,28 +58,95 @@ main {
 
 /* Stile della sezione di presentazione */
 .presentazione {
-    background-color: white;
+    background-color: var(--colore-bianco);
     padding: 2rem;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    border: 1px solid var(--colore-secondario);
     margin-bottom: 1.5rem;
 }
 
 .presentazione h2 {
     margin-bottom: 1rem;
-    color: #e65100;
+    color: var(--colore-primario);
 }
 
-.presentazione p {
-    line-height: 1.6;
-    color: #555;
+/* Stile del form di login e registrazione */
+.form-container {
+    background-color: var(--colore-bianco);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid var(--colore-secondario);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-container h2 {
+    color: var(--colore-primario);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+    padding: 0.8rem;
+    border: 1px solid var(--colore-secondario);
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Stile della checkbox ricordami */
+.checkbox-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-group label {
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+/* Bottoni di invio form */
+.btn-primario {
+    background-color: var(--colore-primario);
+    color: var(--colore-bianco);
+    padding: 0.8rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-primario:hover {
+    background-color: #3d417a;
+}
+
+/* Messaggi di errore JS e PHP */
+.errore-js, .errore-php {
+    color: var(--colore-errore);
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    font-weight: bold;
 }
 
 /* Stile del piè di pagina */
 footer {
-    background-color: #333;
-    color: white;
+    background-color: var(--colore-testo);
+    color: var(--colore-bianco);
     text-align: center;
-    padding: 1rem;
+    padding: 1.5rem;
     margin-top: auto;
 }
