@@ -37,7 +37,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
                 <ul>
                     <li><a href="home.php#chi-siamo">Il Gattile</a></li>
                     <li><a href="ospiti.php">I Nostri Ospiti</a></li>
-                    <li><a href="home.php#sostienici">Sostienici</a></li>
+                    <li><a href="volontariato.php">Diventa Volontario</a></li>
                     <?php
                     // Link admin visibile solo agli amministratori
                     if (isset($_SESSION['username']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1) {
