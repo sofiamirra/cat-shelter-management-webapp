@@ -1,17 +1,16 @@
 <?php
 /**
- * Pagina di Registrazione.
- * Gestisce la creazione di un nuovo account utente includendo i campi anagrafici.
- * Implementa la validazione dei requisiti di sicurezza per la password,
- * l'hashing crittografico e l'uso differenziato dei privilegi del database.
+ * Pagina di Registrazione
+ * Gestisce la creazione di un nuovo utente standard.
+ * Utilizza l'utente DB "registrator" per rispettare il principio del privilegio minimo.
  */
 
-// Avvio della sessione per verificare lo stato di autenticazione corrente
+// Avvio della sessione (se non è già attiva)
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
-// Reindirizzamento alla home se l'utente risulta già autenticato
+// Se l'utente è già loggato, non ha senso che si registri: lo rimandiamo alla home
 if (isset($_SESSION['username'])) {
     header("Location: home.php");
     exit;
@@ -19,11 +18,13 @@ if (isset($_SESSION['username'])) {
 
 require 'includes/db_config.php';
 
+// Variabili per gestire i messaggi di feedback all'utente
 $errore_php = "";
+$successo_php = "";
 
-// Elaborazione della richiesta di registrazione
+// Gestione del form al momento del Submit
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Sanificazione di base per tutti i campi ricevuti
+    // 1. Pulizia e recupero dei dati in ingresso
     $nome = trim($_POST['nome']);
     $cognome = trim($_POST['cognome']);
     $indirizzo = trim($_POST['indirizzo']);
@@ -31,209 +32,200 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = $_POST['password'];
     $conferma_password = $_POST['conferma_password'];
 
-    // Validazione iniziale della presenza dei dati (Backend)
-    if (empty($nome) || empty($cognome) || empty($indirizzo) || empty($username) || empty($password) || empty($conferma_password)) {
-        $errore_php = "Per favore, compila tutti i campi obbligatori.";
+    // 2. Validazione lato server (fondamentale per la sicurezza, anche se c'è JS)
+    if (empty($nome) || empty($cognome) || empty($indirizzo) || empty($username) || empty($password)) {
+        $errore_php = "Tutti i campi sono obbligatori.";
     } elseif ($password !== $conferma_password) {
         $errore_php = "Le password non coincidono.";
+    } elseif (!preg_match('/^[a-zA-Z]/', $username)) {
+        $errore_php = "L'username deve iniziare con una lettera.";
+    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/', $password)) {
+        $errore_php = "La password non rispetta i requisiti minimi di sicurezza.";
     } else {
-        
-        // Fase 1: Verifica disponibilità username
-        // Connessione con privilegi di sola lettura per ispezionare la tabella utenti
-        $con_lettura = get_db_connection('lecture');
-        $utente_esiste = false;
+        // 3. Connessione al DB con l'utente "registrator" (solo permessi di INSERT su tabella utenti)
+        $con = get_db_connection('registrator');
 
-        $query_check = "SELECT username FROM utenti WHERE username = ?";
-        if ($stmt_check = mysqli_prepare($con_lettura, $query_check)) {
-            mysqli_stmt_bind_param($stmt_check, "s", $username);
-            mysqli_stmt_execute($stmt_check);
-            mysqli_stmt_store_result($stmt_check);
+        // 4. Controllo che l'username non sia già in uso (Prepared Statement)
+        $check_query = "SELECT id FROM utenti WHERE username = ?";
+        if ($check_stmt = mysqli_prepare($con, $check_query)) {
+            mysqli_stmt_bind_param($check_stmt, "s", $username);
+            mysqli_stmt_execute($check_stmt);
+            mysqli_stmt_store_result($check_stmt);
 
-            // Se la query restituisce almeno una riga, lo username è già impegnato
-            if (mysqli_stmt_num_rows($stmt_check) > 0) {
-                $utente_esiste = true;
+            if (mysqli_stmt_num_rows($check_stmt) > 0) {
                 $errore_php = "Questo username è già in uso. Scegline un altro.";
-            }
-            mysqli_stmt_close($stmt_check);
-        }
-        // Chiusura esplicita della connessione di lettura
-        mysqli_close($con_lettura);
-
-        // Fase 2: Registrazione
-        // Procedura di inserimento subordinata alla disponibilità dello username
-        if (!$utente_esiste) {
-            // Connessione con privilegi di scrittura dedicati alla tabella utenti
-            $con_scrittura = get_db_connection('registrator');
-            
-            // Cifratura irreversibile della password secondo gli standard di sicurezza attuali
-            $hash_password = password_hash($password, PASSWORD_DEFAULT);
-            $is_admin = 0; // Impostazione predefinita per i nuovi iscritti (utente base)
-
-            // Query aggiornata per includere nome, cognome e indirizzo
-            $query_insert = "INSERT INTO utenti (nome, cognome, indirizzo, username, password, is_admin) VALUES (?, ?, ?, ?, ?, ?)";
-            if ($stmt_insert = mysqli_prepare($con_scrittura, $query_insert)) {
-                // Binding dei parametri: sssssi -> 5 stringhe, 1 intero
-                mysqli_stmt_bind_param($stmt_insert, "sssssi", $nome, $cognome, $indirizzo, $username, $hash_password, $is_admin);
+            } else {
+                // 5. Hash sicuro della password prima del salvataggio
+                $password_hash = password_hash($password, PASSWORD_DEFAULT);
                 
-                if (mysqli_stmt_execute($stmt_insert)) {
-                    // Completamento della registrazione e reindirizzamento al form di login
-                    header("Location: login.php");
-                    exit;
-                } else {
-                    $errore_php = "Errore di sistema durante la registrazione.";
+                // Impostiamo l'utente come standard (is_admin = 0)
+                $is_admin = 0; 
+
+                // 6. Inserimento del nuovo utente (Prepared Statement)
+                $insert_query = "INSERT INTO utenti (nome, cognome, indirizzo, username, password, is_admin) VALUES (?, ?, ?, ?, ?, ?)";
+                if ($insert_stmt = mysqli_prepare($con, $insert_query)) {
+                    mysqli_stmt_bind_param($insert_stmt, "sssssi", $nome, $cognome, $indirizzo, $username, $password_hash, $is_admin);
+                    
+                    if (mysqli_stmt_execute($insert_stmt)) {
+                        $successo_php = "Registrazione completata con successo! Ora puoi accedere.";
+                    } else {
+                        $errore_php = "Errore durante la registrazione. Riprova più tardi.";
+                    }
+                    mysqli_stmt_close($insert_stmt);
                 }
-                mysqli_stmt_close($stmt_insert);
             }
-            // Chiusura esplicita della connessione di scrittura
-            mysqli_close($con_scrittura);
+            mysqli_stmt_close($check_stmt);
         }
+        mysqli_close($con);
     }
 }
 
+// Inclusione dell'header visivo
 require 'includes/header.php';
 ?>
 
-<!-- Struttura Card Centrata (Coerente con la pagina di Login) -->
+<!-- Contenitore Principale: Sfrutta le classi CSS standardizzate -->
 <div class="auth-wrapper">
-    <div class="auth-card" style="max-width: 500px;">
+    <div class="auth-card auth-card-large"> 
         
         <div class="auth-header">
-            <h2>Crea un nuovo account</h2>
-            <p>Unisciti al Parco delle Fusa.</p>
+            <h2>Crea un Account</h2>
+            <p>Unisciti al Parco delle Fusa per adottare o fare volontariato.</p>
         </div>
-        
+
         <?php
-        // Blocco per la visualizzazione di eventuali messaggi di errore gestiti dal server
+        // Stampa dei messaggi di feedback dal server
         if (!empty($errore_php)) {
             echo "<div class='auth-alert'>$errore_php</div>";
         }
+        if (!empty($successo_php)) {
+            echo "<div class='auth-alert-success'>$successo_php <br><br> <a href='login.php'>Vai al Login</a></div>";
+        }
         ?>
 
+        <!-- 
+            Form Validato in Vanilla JavaScript.
+            Nessun CSS inline presente: tutto viene gestito tramite l'aggiunta/rimozione
+            di classi CSS (come .input-error e .testo-errore) via DOM Manipulation.
+        -->
         <form action="registrazione.php" method="POST" id="form-registrazione">
             
-            <!-- Nuovi campi anagrafici richiesti dal DB -->
-            <div class="form-group">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome">
-                <span class="errore-js" id="err-nome"></span>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome">
+                    <span class="errore-js" id="err-nome"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cognome">Cognome</label>
+                    <input type="text" id="cognome" name="cognome">
+                    <span class="errore-js" id="err-cognome"></span>
+                </div>
             </div>
 
             <div class="form-group">
-                <label for="cognome">Cognome:</label>
-                <input type="text" id="cognome" name="cognome">
-                <span class="errore-js" id="err-cognome"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="indirizzo">Indirizzo:</label>
+                <label for="indirizzo">Indirizzo Completo</label>
                 <input type="text" id="indirizzo" name="indirizzo">
                 <span class="errore-js" id="err-indirizzo"></span>
             </div>
 
             <div class="form-group">
-                <label for="username">Username:</label>
+                <label for="username">Username</label>
                 <input type="text" id="username" name="username">
-                <span class="errore-js" id="err-username"></span>
+                <!-- Mostra la regola di default con stile attenuato -->
+                <span class="errore-js errore-js-info" id="err-username">Deve iniziare con una lettera.</span>
             </div>
 
             <div class="form-group">
-                <label for="password">Password:</label>
+                <label for="password">Password</label>
                 <input type="password" id="password" name="password">
-                <span class="errore-js" id="err-password"></span>
-                <small style="display: block; color: #666; margin-top: 5px; font-size: 0.75rem; line-height: 1.4;">
-                    La password deve avere tra 8 e 16 caratteri, contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale.
-                </small>
+                <!-- Mostra la regola di default con stile attenuato -->
+                <span class="errore-js errore-js-info" id="err-password">8-16 caratteri. Almeno una maiuscola, minuscola, un numero e un carattere speciale.</span>
             </div>
 
             <div class="form-group">
-                <label for="conferma_password">Conferma Password:</label>
+                <label for="conferma_password">Conferma Password</label>
                 <input type="password" id="conferma_password" name="conferma_password">
                 <span class="errore-js" id="err-conferma"></span>
             </div>
 
-            <button type="submit" class="btn-solid-dark w-100" style="margin-top: 1rem;">Registrati</button>
+            <button type="submit" class="btn-solid-dark w-100 mt-1">Registrati</button>
             
             <div class="auth-footer">
-                <p>Hai già un account? <a href="login.php">Accedi qui</a></p>
+                <p>Hai già un account? <a href="login.php" class="btn-outline btn-outline-dark">Accedi qui</a></p>
             </div>
         </form>
     </div>
 </div>
 
+<!-- ==========================================
+     VALIDAZIONE VANILLA JAVASCRIPT
+     ========================================== -->
 <script>
-// Validazione asincrona lato client per bloccare invii non conformi ed evitare ricaricamenti inutili
 document.getElementById('form-registrazione').addEventListener('submit', function(event) {
     let formValido = true;
-
-    // Acquisizione riferimenti agli elementi del DOM
-    const inputNome = document.getElementById('nome');
-    const inputCognome = document.getElementById('cognome');
-    const inputIndirizzo = document.getElementById('indirizzo');
-    const inputUsername = document.getElementById('username');
-    const inputPassword = document.getElementById('password');
-    const inputConferma = document.getElementById('conferma_password');
     
-    const errNome = document.getElementById('err-nome');
-    const errCognome = document.getElementById('err-cognome');
-    const errIndirizzo = document.getElementById('err-indirizzo');
-    const errUsername = document.getElementById('err-username');
-    const errPassword = document.getElementById('err-password');
-    const errConferma = document.getElementById('err-conferma');
-
-    // Reset dello stato visivo degli errori
-    errNome.textContent = "";
-    errCognome.textContent = "";
-    errIndirizzo.textContent = "";
-    errUsername.textContent = "";
-    errPassword.textContent = "";
-    errConferma.textContent = "";
-
-    // Controllo compilazione campi anagrafici
-    if (inputNome.value.trim() === "") {
-        errNome.textContent = "Il nome è obbligatorio.";
-        formValido = false;
-    }
-    if (inputCognome.value.trim() === "") {
-        errCognome.textContent = "Il cognome è obbligatorio.";
-        formValido = false;
-    }
-    if (inputIndirizzo.value.trim() === "") {
-        errIndirizzo.textContent = "L'indirizzo è obbligatorio.";
-        formValido = false;
-    }
-    if (inputUsername.value.trim() === "") {
-        errUsername.textContent = "Lo username è obbligatorio.";
-        formValido = false;
-    }
-
-    /**
-     * Validazione robustezza password tramite espressione regolare (RegExp).
-     * Requisiti imposti:
-     * - Almeno una lettera minuscola: (?=.*[a-z])
-     * - Almeno una lettera maiuscola: (?=.*[A-Z])
-     * - Almeno una cifra numerica: (?=.*\d)
-     * - Almeno un carattere non alfanumerico (speciale): (?=.*[\W_])
-     * - Lunghezza stringa vincolata: .{8,16}
-     */
-    const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/;
+    // 1. Reset degli stati di errore visivi
+    const campi = ['nome', 'cognome', 'indirizzo', 'username', 'password', 'conferma_password'];
     
-    if (!regexPassword.test(inputPassword.value)) {
-        errPassword.textContent = "La password non rispetta i requisiti di sicurezza richiesti.";
+    campi.forEach(id => {
+        const inputEl = document.getElementById(id);
+        const errEl = document.getElementById('err-' + id);
+        
+        // Rimuove il bordo rosso
+        inputEl.classList.remove('input-error');
+        
+        // Se non sono username o password (che hanno testi descrittivi), svuota l'errore
+        if(id !== 'username' && id !== 'password') {
+            errEl.textContent = "";
+        } else {
+            // Per username e password, rimuove solo il colore rosso acceso, tornando al grigio info
+            errEl.classList.remove('testo-errore');
+        }
+    });
+
+    // 2. Controllo campi base obbligatori
+    ['nome', 'cognome', 'indirizzo'].forEach(id => {
+        const elemento = document.getElementById(id);
+        if (elemento.value.trim() === "") {
+            document.getElementById('err-' + id).textContent = "Campo obbligatorio.";
+            elemento.classList.add('input-error');
+            formValido = false;
+        }
+    });
+
+    // 3. Validazione Username (Deve iniziare con lettera alfabetica)
+    const username = document.getElementById('username');
+    const regexUsername = /^[a-zA-Z]/;
+    if (!regexUsername.test(username.value)) {
+        document.getElementById('err-username').textContent = "L'username deve iniziare con una lettera.";
+        document.getElementById('err-username').classList.add('testo-errore'); // Evidenzia l'errore
+        username.classList.add('input-error');
         formValido = false;
     }
 
-    // Verifica coincidenza delle password inserite nei due campi
-    if (inputConferma.value === "") {
-        errConferma.textContent = "Conferma la tua password.";
-        formValido = false;
-    } else if (inputPassword.value !== inputConferma.value) {
-        errConferma.textContent = "Le password non coincidono.";
+    // 4. Validazione Password di sicurezza (8-16 char, mix di casi, numeri e speciali)
+    const password = document.getElementById('password');
+    const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+    if (!regexPassword.test(password.value)) {
+        document.getElementById('err-password').textContent = "La password non rispetta i requisiti di sicurezza.";
+        document.getElementById('err-password').classList.add('testo-errore'); // Evidenzia l'errore
+        password.classList.add('input-error');
         formValido = false;
     }
 
-    // Interruzione dell'azione predefinita di submit in presenza di errori di validazione
+    // 5. Conferma Password (Verifica coincidenza)
+    const conferma = document.getElementById('conferma_password');
+    if (password.value !== conferma.value || conferma.value === "") {
+        document.getElementById('err-conferma').textContent = "Le password non coincidono.";
+        conferma.classList.add('input-error');
+        formValido = false;
+    }
+
+    // 6. Blocco sottomissione se c'è un errore
     if (!formValido) {
-        event.preventDefault();
+        event.preventDefault(); // Intercetta l'evento e blocca il form come da specifiche
     }
 });
 </script>

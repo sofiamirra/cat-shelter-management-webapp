@@ -26,7 +26,8 @@ require 'includes/db_config.php';
         <!-- Colonna di Destra: Immagine sfumata -->
         <div class="hero-image">
             <!-- Sostituisci il src con il percorso della tua foto -->
-            <img src="assets/img/gatto_hero.jpg" alt="Un dolce gatto in cerca di casa">
+            <!-- Correggi l'estensione in .png nel tuo HTML -->
+            <img src="assets/img/gatto_hero.png" alt="Un dolce gatto in cerca di casa">
         </div>
 
     </div>

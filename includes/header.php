@@ -17,22 +17,26 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- Foglio di stile principale -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <!-- Header scuro con layout a linea singola -->
     <header class="site-header">
         <div class="header-container">
             
-            <div class="logo">
-                <a href="home.php">Il Parco delle Fusa</a>
-            </div>
+        <div class="logo">
+            <a href="home.php">
+                <!-- Nuova icona trasparente -->
+                <img src="assets/img/logo_icona.png" alt="Logo Il Parco delle Fusa" class="logo-icona">
+                <span class="logo-testo">Il Parco delle Fusa</span>
+            </a>
+        </div>
             
             <!-- Menu di navigazione centrale -->
             <nav class="main-nav">
                 <ul>
                     <li><a href="home.php#chi-siamo">Il Gattile</a></li>
-                    <li><a href="home.php#ospiti">I Nostri Ospiti</a></li>
+                    <li><a href="ospiti.php">I Nostri Ospiti</a></li>
                     <li><a href="home.php#sostienici">Sostienici</a></li>
                     <?php
                     // Link admin visibile solo agli amministratori

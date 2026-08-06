@@ -21,7 +21,7 @@
                 <ul class="footer-links">
                     <li><a href="home.php">Home</a></li>
                     <li><a href="home.php#chi-siamo">Il Gattile</a></li>
-                    <li><a href="home.php#ospiti">I Nostri Ospiti</a></li>
+                    <li><a href="ospiti.php">I Nostri Ospiti</a></li>
                     <li><a href="home.php#sostienici">Sostienici</a></li>
                     <li><a href="login.php">Area Volontari</a></li>
                 </ul>

@@ -106,7 +106,7 @@ require 'includes/header.php';
             
             <!-- SEZIONE DI REGISTRAZIONE -->
             <div class="auth-footer">
-                <p>Non hai ancora un account? <br><br> <a href="registrazione.php" class="btn-outline" style="color: #1A3629; border-color: #1A3629;">Registrati ora</a></p>
+                <p>Non hai ancora un account? <br><br> <a href="registrazione.php" class="btn-outline btn-outline-dark">Registrati ora</a></p>
             </div>
         </form>
 
