@@ -33,7 +33,7 @@ require 'includes/db_config.php';
     <div class="adoption-steps">
         
         <header class="section-header w-100">
-            <h2>Scopri come adottare</h2>
+            <h2>Scopri Come Adottare</h2>
             <div class="paw-divider">
                 <span class="line"></span>
                 <span class="paw">🐾</span>
@@ -80,7 +80,7 @@ require 'includes/db_config.php';
             <span class="paw">🐾</span>
             <span class="line"></span>
         </div>
-        <p class="header-subtitle">Loro sono entrati da poco in rifugio e cercano già una casa.</p>
+        <p class="header-subtitle">I nuovi opsiti del rifugio sono pronti a trovare una casa.</p>
     </header>
     
     <div class="gatti-grid-2">
@@ -148,22 +148,24 @@ require 'includes/db_config.php';
                 <img src="assets/img/icona_cuore.png" alt="Icona Cuore" class="icon-png-large">
                 <h3>Adozioni del Cuore</h3>
                 <p>Sostieni cure e terapie per gatti con disabilità o patologie, aiutandoli a ricevere l'assistenza necessaria.</p>
-                <a href="contatti.php" class="scopri-link">Scopri di più <span class="freccia">&rarr;</span></a>
             </article>
             
             <article class="ruolo-card">
                 <img src="assets/img/icona_distanza.png" alt="Icona Lettera" class="icon-png-large">
                 <h3>Adozioni a Distanza</h3>
                 <p>Contribuisci a cibo, cure e assistenza di un gatto, seguendone la crescita attraverso aggiornamenti dedicati.</p>
-                <a href="contatti.php" class="scopri-link">Scopri di più <span class="freccia">&rarr;</span></a>
             </article>
             
             <article class="ruolo-card">
                 <img src="assets/img/icona_dono.png" alt="Icona Regalo" class="icon-png-large">
                 <h3>Sostienici</h3>
                 <p>Aiutaci donando cibo, coperte, farmaci o un piccolo contributo. Ogni singolo gesto fa un'enorme differenza per il rifugio.</p>
-                <a href="contatti.php" class="scopri-link">Scopri di più <span class="freccia">&rarr;</span></a>
             </article>
+        </div>
+
+        <!-- Link testuale unico centrato sotto la griglia -->
+        <div class="text-center mt-2">
+            <a href="contatti.php" class="scopri-link">Sostieni il gattile <span class="freccia">&rarr;</span></a>
         </div>
     </div>
 </section>
@@ -173,7 +175,7 @@ require 'includes/db_config.php';
     <div class="emergency-container">
         
         <article class="emergency-text">
-            <h2>Hai soccorso un animale?</h2>
+            <h2>Animale in Difficoltà?</h2>
             
             <div class="emergency-item">
                 <img src="assets/img/icona_ambulanza.png" alt="Icona 112" class="icon-png-small">

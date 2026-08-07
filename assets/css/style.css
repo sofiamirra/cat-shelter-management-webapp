@@ -19,6 +19,11 @@
     padding: 0;
 }
 
+/* Abilita lo scorrimento fluido per i link interni (àncore) */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--colore-sfondo-chiaro);
@@ -31,6 +36,11 @@ body {
 main {
     flex: 1;
     width: 100%;
+}
+
+/* Forza l'ereditarietà del font per tutti gli elementi dei form */
+button, input, select, textarea {
+    font-family: inherit;
 }
 
 /* ==========================================
@@ -108,6 +118,16 @@ main {
     transform: translateY(-3px);
     box-shadow: 0 8px 15px rgba(26, 54, 41, 0.2);
 }
+
+/* Stile per il bottone disabilitato (quando nessun gatto è selezionato) */
+.btn-solid-dark:disabled {
+    background-color: #A3B5AE;
+    color: #F5F5F0;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
 .btn-outline {
     display: inline-block;
     color: var(--colore-testo-chiaro);
@@ -163,6 +183,41 @@ main {
     transform: translateX(5px);
 }
 
+/* Link per gli alert (invito al login) */
+.auth-alert-link {
+    color: var(--colore-primario);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.3s ease;
+}
+.auth-alert-link:hover {
+    color: #9c8a7b; /* Beige di "Scopri di più" */
+}
+
+/* Modificatori per Alert chiudibili (Zero stili inline) */
+.alert-dismissible {
+    position: relative;
+    padding-right: 3rem; 
+}
+.btn-close-alert {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: inherit;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    font-family: inherit;
+}
+.btn-close-alert:hover {
+    opacity: 1;
+}
+
 /* Alert per form e JS */
 .auth-alert-danger {
     background-color: #FDE8E8;
@@ -184,6 +239,10 @@ main {
     font-size: 0.9rem;
     text-align: center;
     margin-bottom: 2rem;
+}
+.alert-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 /* ==========================================
@@ -306,7 +365,7 @@ main {
     align-items: center;
     justify-content: space-between;
     gap: 4rem;
-    padding: 6rem 2rem; /* Padding aumentato per spingere giù la sezione adozione */
+    padding: 6rem 2rem; 
     max-width: 1200px;
     margin: 0 auto;
     flex-wrap: wrap;
@@ -319,7 +378,7 @@ main {
     font-size: 3rem;
     color: var(--colore-testo-scuro);
     line-height: 1.18;
-    margin-bottom: 2.5rem; /* Aumentato lo spacing come richiesto */
+    margin-bottom: 2.5rem; 
     font-weight: 700;
 }
 .home-hero-text p {
@@ -343,13 +402,13 @@ main {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
-/* Step di adozione (Titolo integrato nel box e ristretto) */
+/* Step di adozione */
 .adoption-steps-wrapper {
     background-color: var(--colore-sfondo-chiaro);
-    padding: 0 2rem 5rem 2rem;
+    padding: 0 2rem 2rem 2rem; 
 }
 .adoption-steps {
-    max-width: 950px; /* Ristretto per evitare l'effetto dispersivo */
+    max-width: 950px; 
     margin: 0 auto;
     background-color: var(--colore-bianco);
     border-radius: 20px;
@@ -368,7 +427,6 @@ main {
     text-align: center;
     padding: 0 1rem;
 }
-/* Stile per racchiudere le icone di Canva nel cerchietto */
 .step-icon {
     width: 80px;
     height: 80px;
@@ -398,11 +456,7 @@ main {
 /* Ultimi Arrivati */
 .home-arrivals-section {
     background-color: var(--colore-sfondo-chiaro);
-}
-
-/* Adozioni Speciali */
-.home-special-section {
-    background-color: var(--colore-bianco);
+    padding: 3rem 2rem 5rem 2rem; 
 }
 .icon-png-large {
     width: 70px;
@@ -508,18 +562,18 @@ main {
 .card-img-wrapper {
     position: relative; 
     height: 240px; 
-    background-color: #F9F8F6; /* Colore personalizzato da te */
+    background-color: #F9F8F6; 
     border-bottom: 1px solid #EAE6DF;
     display: flex;
-    align-items: flex-end; /* Ancora l'immagine in basso */
+    align-items: flex-end; 
     justify-content: center;
 }
 .card-img-wrapper img {
     width: 100%;
-    height: 90%; /* Lascia respiro in alto per il badge */
+    height: 90%; 
     object-fit: contain; 
-    object-position: center bottom; /* Poggia l'immagine sulla linea inferiore */
-    padding: 0 1.5rem; /* Padding rimosso dal basso per evitare tagli */
+    object-position: center bottom; 
+    padding: 0 1.5rem; 
 }
 .badge-nuovo {
     position: absolute;
@@ -617,6 +671,34 @@ main {
     box-shadow: 0 10px 30px rgba(0,0,0,0.06);
     border: 1px solid #E8E5E1;
 }
+
+/* Nuova griglia spaziosa per Data e Ora (Form adozioni) */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+}
+.input-data-large {
+    padding: 0.9rem 1.2rem;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    border: 2px solid #EAE6DF;
+    width: 100%; 
+    max-width: 100%; 
+    background-color: var(--colore-bianco);
+    color: var(--colore-testo-scuro);
+    transition: border-color 0.3s;
+}
+.input-data-large:focus {
+    outline: none;
+    border-color: var(--colore-secondario);
+}
+/* Modificatore per form a colonna singola (Volontariato) */
+.input-data-full-width {
+    display: block;
+    width: 100%;
+}
+
 .lista-selezionati {
     list-style: none;
     margin: 1rem 0 2rem 0;
@@ -633,6 +715,82 @@ main {
     display: flex;
     align-items: center;
 }
+.lista-selezionati .nessun-gatto-selezionato {
+    color: #666;
+    font-style: italic;
+    font-weight: normal;
+    border-bottom: none;
+}
+
+/* ==========================================
+   FORM FASCE ORARIE (Banner Selezionabili)
+   ========================================== */
+.form-label-title {
+    display: block;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.fasce-orarie-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* Stile base del banner (label) */
+.fascia-oraria-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem; 
+    border: 2px solid #EAE6DF;
+    border-radius: 8px;
+    background-color: var(--colore-bianco);
+    color: var(--colore-testo-scuro);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 140px;
+    position: relative; /* Necessario per nascondere l'input */
+}
+
+/* Nasconde il checkbox nativo, ma lo mantiene accessibile */
+.fascia-oraria-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Stile quando il checkbox è selezionato */
+.fascia-oraria-label input[type="checkbox"]:checked + span {
+    color: var(--colore-primario);
+}
+.fascia-oraria-label:has(input[type="checkbox"]:checked) {
+    border-color: var(--colore-primario);
+    background-color: #E8F0EC;
+    box-shadow: 0 4px 10px rgba(26, 54, 41, 0.1);
+}
+
+/* Stile disabilitato/Pieno */
+.fascia-oraria-label.pieno {
+    border-color: #f5c6c6;
+    background-color: #FDE8E8;
+    color: #a85454;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+.fascia-oraria-label.pieno::after {
+    content: "AL COMPLETO 🚫";
+    font-size: 0.85rem;
+    display: block;
+    margin-top: 0.4rem;
+    font-weight: 700;
+}
 
 /* Specifiche Pagina Volontariato */
 .volontariato-intro-wrapper { padding-top: 2rem; }
@@ -646,13 +804,14 @@ main {
 .volontariato-intro-content {
     display: flex;
     align-items: center;
-    gap: 3rem; 
-    margin: 0 auto 3rem auto;
-    max-width: 950px;
+    gap: 4rem; 
+    margin: 0 auto;
+    max-width: 1050px; /* Allargato per fare spazio a un'immagine più grande */
     flex-wrap: wrap;
+    padding-bottom: 1rem; /* Ridotto lo spacing inferiore */
 }
 .volontariato-intro-text {
-    flex: 1.2;
+    flex: 1; /* Bilanciato a 50/50 per dare più spazio alla foto */
     min-width: 300px;
     font-size: 1.1rem;
     color: var(--colore-testo-scuro);
@@ -665,14 +824,15 @@ main {
     margin-top: 1.5rem;
 }
 .volontariato-intro-image {
-    flex: 0.8;
-    min-width: 250px;
+    flex: 1; /* Bilanciato a 50/50 */
+    min-width: 300px;
     text-align: center;
 }
 .volontariato-intro-image img {
     width: 100%;
-    max-width: 400px;
-    border-radius: 12px;
+    max-width: 550px; /* Immagine più grande (prima era 400) */
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08); /* Aggiunta ombra stile Home Page */
 }
 .msg-indirizzo {
     display: block;
@@ -681,9 +841,18 @@ main {
     color: #1A3629;
 }
 
-/* Mansioni Volontariato & Adozioni Speciali */
+.volontariato-btn-wrapper {
+    margin-top: 3rem; /* Distanza perfetta dal testo corpo */
+    display: flex;
+    justify-content: center; /* Centratura assoluta e forzata */
+    width: 100%;
+}
+
+/* Mansioni Volontariato */
 .ruoli-volontariato {
     background-color: var(--colore-bianco);
+    padding-top: 2rem; /* Ridotto lo spacing superiore */
+    padding-bottom: 5rem;
 }
 .ruoli-container {
     max-width: 1200px;

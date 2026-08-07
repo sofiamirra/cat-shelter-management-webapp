@@ -19,10 +19,9 @@
             <h3>Esplora</h3>
             <ul class="footer-links">
                 <li><a href="home.php">Home</a></li>
-                <li><a href="ospiti.php">Il Gattile</a></li>
                 <li><a href="ospiti.php">I Nostri Ospiti</a></li>
                 <li><a href="volontariato.php">Diventa Volontario</a></li>
-                <li><a href="area_riservata.php">Area Volontari</a></li>
+                <li><a href="contatti.php">Sostienici</a></li> <!-- Aggiornato -->
             </ul>
         </div>
 
