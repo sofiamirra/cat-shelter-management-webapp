@@ -43,6 +43,10 @@ main {
     margin: 0 auto;
 }
 
+.section-padding {
+    padding: 5rem 2rem;
+}
+
 .text-center { text-align: center; }
 .mt-1 { margin-top: 1rem; }
 .mt-2 { margin-top: 2rem; }
@@ -106,18 +110,57 @@ main {
 }
 .btn-outline {
     display: inline-block;
+    color: var(--colore-testo-chiaro);
+    text-decoration: none;
+    padding: 0.8rem 2rem;
+    border: 1.5px solid var(--colore-testo-chiaro);
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.btn-outline:hover {
+    background-color: var(--colore-testo-chiaro);
+    color: var(--colore-primario);
+}
+
+/* Bottone Outline Scuro (Per la Hero e sfondi chiari) */
+.btn-outline-dark {
+    display: inline-block;
     color: var(--colore-primario);
     text-decoration: none;
-    padding: 0.9rem 2.3rem;
+    padding: 1rem 2.5rem; 
     border: 2px solid var(--colore-primario);
+    background-color: transparent;
     border-radius: 50px;
     font-size: 1.05rem;
     font-weight: 600;
     transition: all 0.3s ease;
 }
-.btn-outline:hover {
+.btn-outline-dark:hover {
     background-color: var(--colore-primario);
     color: var(--colore-testo-chiaro);
+}
+
+/* Link animato "Scopri di più" */
+.scopri-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #9c8a7b;
+    font-weight: 700;
+    text-decoration: none;
+    margin-top: 1rem;
+    transition: color 0.3s ease;
+}
+.scopri-link:hover {
+    color: var(--colore-primario);
+}
+.scopri-link .freccia {
+    transition: transform 0.3s ease;
+}
+.scopri-link:hover .freccia {
+    transform: translateX(5px);
 }
 
 /* Alert per form e JS */
@@ -258,12 +301,12 @@ main {
 /* ==========================================
    5. HOME PAGE (IL GATTILE)
    ========================================== */
-   .home-hero {
+.home-hero {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 4rem;
-    padding: 4rem 2rem;
+    padding: 6rem 2rem; /* Padding aumentato per spingere giù la sezione adozione */
     max-width: 1200px;
     margin: 0 auto;
     flex-wrap: wrap;
@@ -276,7 +319,7 @@ main {
     font-size: 3rem;
     color: var(--colore-testo-scuro);
     line-height: 1.18;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem; /* Aumentato lo spacing come richiesto */
     font-weight: 700;
 }
 .home-hero-text p {
@@ -300,60 +343,76 @@ main {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
-/* Step di adozione (Box bianco fluttuante su beige) */
+/* Step di adozione (Titolo integrato nel box e ristretto) */
 .adoption-steps-wrapper {
     background-color: var(--colore-sfondo-chiaro);
-    padding: 0 2rem 4rem 2rem;
+    padding: 0 2rem 5rem 2rem;
 }
 .adoption-steps {
-    max-width: 1000px;
+    max-width: 950px; /* Ristretto per evitare l'effetto dispersivo */
     margin: 0 auto;
     background-color: var(--colore-bianco);
     border-radius: 20px;
-    padding: 3rem 2rem;
+    padding: 4rem 3rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+.adoption-grid {
     display: flex;
     justify-content: space-between;
     gap: 2rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
     flex-wrap: wrap;
 }
 .step {
     flex: 1;
-    min-width: 250px;
+    min-width: 200px;
     text-align: center;
     padding: 0 1rem;
 }
+/* Stile per racchiudere le icone di Canva nel cerchietto */
 .step-icon {
-    font-size: 2.2rem;
-    margin-bottom: 1rem;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #F0EDE6;
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
+    background-color: #F0EDE6; 
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem auto;
+}
+.step-icon img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
 }
 .step h3 {
     font-size: 1.2rem;
     color: var(--colore-testo-scuro);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
 }
 .step p {
     font-size: 0.95rem;
     color: #666;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 /* Ultimi Arrivati */
 .home-arrivals-section {
-    padding: 5rem 2rem;
     background-color: var(--colore-sfondo-chiaro);
 }
 
-/* Sezione Emergenze (Sfondo beige coerente) */
+/* Adozioni Speciali */
+.home-special-section {
+    background-color: var(--colore-bianco);
+}
+.icon-png-large {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    margin-bottom: 1.5rem;
+}
+
+/* Sezione Emergenze */
 .home-emergency-section {
-    padding: 5rem 2rem;
     background-color: var(--colore-sfondo-chiaro); 
 }
 .emergency-container {
@@ -374,15 +433,18 @@ main {
 .emergency-text h2 {
     font-size: 2rem;
     color: var(--colore-primario);
-    margin-bottom: 2.5rem;
+    margin-bottom: 3rem;
 }
 .emergency-item {
     display: flex;
     gap: 1.5rem;
     margin-bottom: 2.5rem;
+    align-items: flex-start;
 }
-.emergency-item-icon {
-    font-size: 2.5rem;
+.icon-png-small {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
 }
 .emergency-item-content h4 {
     color: var(--colore-testo-scuro);
@@ -396,14 +458,15 @@ main {
 .emergency-link {
     color: var(--colore-primario);
     font-weight: 600;
-    text-decoration: none;
-    word-break: break-word;
+    text-decoration: underline;
+    text-decoration-color: var(--colore-secondario);
+    text-underline-offset: 4px;
     display: inline-block;
-    margin-top: 0.3rem;
+    margin-top: 0.4rem;
+    transition: color 0.3s;
 }
 .emergency-link:hover {
-    color: var(--colore-accento);
-    text-decoration: underline;
+    color: #9c8a7b; 
 }
 .emergency-image {
     flex: 1;
@@ -445,14 +508,18 @@ main {
 .card-img-wrapper {
     position: relative; 
     height: 240px; 
-    background-color: #F9F8F6; 
+    background-color: #F9F8F6; /* Colore personalizzato da te */
     border-bottom: 1px solid #EAE6DF;
+    display: flex;
+    align-items: flex-end; /* Ancora l'immagine in basso */
+    justify-content: center;
 }
 .card-img-wrapper img {
     width: 100%;
-    height: 100%;
+    height: 90%; /* Lascia respiro in alto per il badge */
     object-fit: contain; 
-    padding: 1.5rem; 
+    object-position: center bottom; /* Poggia l'immagine sulla linea inferiore */
+    padding: 0 1.5rem; /* Padding rimosso dal basso per evitare tagli */
 }
 .badge-nuovo {
     position: absolute;
@@ -614,13 +681,9 @@ main {
     color: #1A3629;
 }
 
-/* Mansioni Volontariato */
+/* Mansioni Volontariato & Adozioni Speciali */
 .ruoli-volontariato {
     background-color: var(--colore-bianco);
-    padding: 4rem 2rem;
-    border-top: 1px solid #EAE6DF;
-    border-bottom: 1px solid #EAE6DF;
-    margin-bottom: 4rem; 
 }
 .ruoli-container {
     max-width: 1200px;
@@ -633,95 +696,37 @@ main {
 }
 .ruolo-card {
     background-color: var(--colore-sfondo-chiaro);
-    padding: 2rem 1.5rem;
+    padding: 2.5rem 2rem;
     border-radius: 12px;
     text-align: center;
     border: 1px solid #EAE6DF;
     transition: transform 0.3s ease;
     flex: 1;
-    min-width: 200px;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .ruolo-card:hover { transform: translateY(-5px); }
-.ruolo-icona {
-    font-size: 2.5rem;
+.ruolo-card h3 {
+    font-size: 1.3rem;
+    color: var(--colore-testo-scuro);
     margin-bottom: 1rem;
-    display: block;
 }
-
-/* Form Fasce Orarie */
-.form-label-title {
-    display: block;
-    margin-bottom: 0.8rem;
-    font-size: 1.1rem;
-    font-weight: 700;
-}
-.input-data-large {
-    padding: 0.8rem 1rem;
-    font-size: 1.1rem;
-    border-radius: 8px;
-    border: 2px solid #EAE6DF;
-    font-family: inherit;
-    width: 100%;
-    max-width: 300px;
-}
-.fasce-orarie-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-.fascia-oraria-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 1rem 0.5rem; 
-    border: 2px solid #EAE6DF;
-    border-radius: 8px;
-    background-color: var(--colore-bianco);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    flex: 1;
-    min-width: 140px;
-    white-space: nowrap; 
-}
-.fascia-oraria-label input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-.fascia-oraria-label.selezionato {
-    border-color: var(--colore-primario);
-    background-color: #E8F0EC;
-    color: var(--colore-primario);
-}
-.fascia-oraria-label.pieno {
-    border-color: #f5c6c6;
-    background-color: #FDE8E8;
-    color: #a85454;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-.fascia-oraria-label.pieno::after {
-    content: "AL COMPLETO 🚫";
-    font-size: 0.85rem;
-    display: block;
-    margin-top: 0.4rem;
-    font-weight: 700;
-    white-space: normal;
+.ruolo-card p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
 }
 
 /* ==========================================
    8. FOOTER
    ========================================== */
-   .site-footer {
+.site-footer {
     background-color: #152E22; 
     color: #E8E5E1; 
     padding-top: 4rem;
-    margin-top: 4rem; 
 }
-
 .footer-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -731,7 +736,6 @@ main {
     gap: 3rem;
     margin-bottom: 3rem;
 }
-
 .footer-col h3 {
     color: var(--colore-bianco);
     font-size: 1.2rem;
@@ -742,28 +746,22 @@ main {
     padding-bottom: 0.5rem;
     display: inline-block;
 }
-
 .footer-col p {
     font-size: 0.95rem;
     line-height: 1.6;
     color: #A3B5AE;
     margin-bottom: 1.5rem;
 }
-
-/* Rimozione dei bullet points e ripristino elenchi */
 .footer-contact, .footer-links {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
-.footer-contact li,
-.footer-links li {
+.footer-contact li, .footer-links li {
     font-size: 0.95rem;
     margin-bottom: 0.8rem;
     color: #A3B5AE;
 }
-
 .footer-links a {
     color: #A3B5AE;
     text-decoration: none;
@@ -771,24 +769,18 @@ main {
     transition: color 0.3s, padding-left 0.3s;
     display: inline-block;
 }
-
 .footer-links a:hover {
     color: var(--colore-bianco);
     padding-left: 5px; 
 }
-
-/* Centratura specifica della colonna centrale "Esplora" */
 .footer-container .footer-col:nth-child(2) {
     margin: 0 auto;
 }
-
-/* Banner inferiore: scritte affiancate (fianco a fianco) */
 .footer-bottom {
     background-color: #0B1A12; 
     padding: 1.5rem 0;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
-
 .footer-bottom-content {
     max-width: 1200px;
     margin: 0 auto;
@@ -799,17 +791,14 @@ main {
     flex-wrap: wrap; 
     gap: 1rem;
 }
-
 .footer-bottom-content p {
     font-size: 0.85rem;
     color: #889C94;
     margin: 0;
 }
-
 .academic-credit {
     font-style: italic;
 }
-
 .academic-credit strong {
     color: var(--colore-secondario);
 }

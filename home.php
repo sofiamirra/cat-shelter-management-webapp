@@ -15,55 +15,66 @@ require 'includes/db_config.php';
     <article class="home-hero-text">
         <h1>Un Rifugio d’Amore<br>per Gatti Bisognosi</h1>
         <p>
-            Il Parco delle Fusa di Torino è un rifugio dedicato all'accoglienza, cura e riabilitazione dei gatti in difficoltà. La nostra missione è garantire loro un ambiente sicuro e amorevole, curando le ferite fisiche e rassicurando gli animi più spaventati. Lavoriamo ogni giorno per trasformare il loro passato difficile in un futuro sereno, cercando per ognuno di loro una famiglia definitiva. Scopri le nostre attività e unisciti a noi.
+            Il Parco delle Fusa è un rifugio dedicato all'accoglienza e alla riabilitazione dei felini in difficoltà sul territorio. La nostra missione è garantire loro cure mediche, un ambiente sicuro e tanto amore in attesa di un'adozione. Lavoriamo ogni giorno per trasformare un passato di abbandono in un futuro sereno presso una nuova famiglia definitiva.
         </p>
         <div class="home-hero-buttons">
             <a href="ospiti.php" class="btn-solid-dark">Esplora i Nostri Ospiti</a>
-            <a href="volontariato.php" class="btn-outline">Diventa Volontario</a>
+            <a href="volontariato.php" class="btn-outline-dark">Diventa Volontario</a>
         </div>
     </article>
     <figure class="home-hero-image">
-        <img src="assets/img/gatto_hero.png" alt="Un dolce gatto in cerca di casa">
+        <!-- Ricorda di salvare le immagini e sovrascrivere qui se necessario -->
+        <img src="assets/img/gatto_hero.png" alt="Un dolce gatto in cerca di casa nel nostro rifugio">
     </figure>
 </section>
 
-<!-- 2. PROCESSO DI ADOZIONE (Box su sfondo beige) -->
+<!-- 2. PROCESSO DI ADOZIONE -->
 <section class="adoption-steps-wrapper" aria-label="Step di Adozione">
-    
-    <header class="section-header">
-        <h2>Scopri come adottare</h2>
-        <div class="paw-divider">
-            <span class="line"></span>
-            <span class="paw">🐾</span>
-            <span class="line"></span>
-        </div>
-    </header>
-    
     <div class="adoption-steps">
-        <article class="step">
-            <div class="step-icon">🐾</div>
-            <h3>1. Innamorati</h3>
-            <p>Esplora la nostra galleria ospiti e trova il compagno di vita perfetto per le tue abitudini.</p>
-        </article>
         
-        <article class="step">
-            <div class="step-icon">📝</div>
-            <h3>2. Compila il Modulo</h3>
-            <p>Seleziona i mici che ti interessano e prenota un incontro conoscitivo in struttura.</p>
-        </article>
+        <header class="section-header w-100">
+            <h2>Scopri come adottare</h2>
+            <div class="paw-divider">
+                <span class="line"></span>
+                <span class="paw">🐾</span>
+                <span class="line"></span>
+            </div>
+        </header>
         
-        <article class="step">
-            <div class="step-icon">🏡</div>
-            <h3>3. Portalo a Casa</h3>
-            <p>Concludi l'iter di adozione responsabile e regala una famiglia per sempre al tuo nuovo amico.</p>
-        </article>
+        <div class="adoption-grid w-100">
+            <article class="step">
+                <!-- Il cerchietto beige è ricreato via CSS, salva l'immagine in PNG Trasparente! -->
+                <div class="step-icon">
+                    <img src="assets/img/icona_innamorati.png" alt="Icona Zampette">
+                </div>
+                <h3>1. Innamorati</h3>
+                <p>Esplora la nostra galleria ospiti e trova il compagno di vita perfetto per te.</p>
+            </article>
+            
+            <article class="step">
+                <div class="step-icon">
+                    <img src="assets/img/icona_incontralo.png" alt="Icona Incontro">
+                </div>
+                <h3>2. Incontralo</h3>
+                <p>Seleziona i mici che ti interessano e prenota un incontro conoscitivo.</p>
+            </article>
+            
+            <article class="step">
+                <div class="step-icon">
+                    <img src="assets/img/icona_casa.png" alt="Icona Casa">
+                </div>
+                <h3>3. Portalo a Casa</h3>
+                <p>Completa l'iter di adozione responsabile e regalagli una famiglia per sempre.</p>
+            </article>
+        </div>
+
     </div>
 </section>
 
-<!-- 3. GLI ULTIMI ARRIVATI (Requisito Docente: max 2) -->
-<section class="home-arrivals-section" aria-label="Ultimi gatti arrivati">
+<!-- 3. GLI ULTIMI ARRIVATI -->
+<section class="home-arrivals-section section-padding" aria-label="Ultimi gatti arrivati">
     <header class="section-header">
-        <h2>I Nostri Nuovi Ospiti</h2>
+        <h2>Gli Ultimi Arrivati</h2>
         <div class="paw-divider">
             <span class="line"></span>
             <span class="paw">🐾</span>
@@ -72,18 +83,14 @@ require 'includes/db_config.php';
         <p class="header-subtitle">Loro sono entrati da poco in rifugio e cercano già una casa.</p>
     </header>
     
-    <!-- Utilizziamo la grid a 2 colonne per i 2 record -->
     <div class="gatti-grid-2">
         <?php
         $con = get_db_connection('lecture');
-        
-        // Estraiamo esattamente gli ultimi 2 gatti come richiesto
         $query = "SELECT nome, sesso, eta, razza, colore_mantello FROM gatti ORDER BY data_arrivo DESC LIMIT 2";
         
         if ($stmt = mysqli_prepare($con, $query)) {
             mysqli_stmt_execute($stmt);
             mysqli_stmt_bind_result($stmt, $nome, $sesso, $eta, $razza, $colore);
-            
             $gatti_trovati = false;
 
             while (mysqli_stmt_fetch($stmt)) {
@@ -97,7 +104,6 @@ require 'includes/db_config.php';
                         <span class='badge-nuovo'>Appena Accolto</span>
                         <img src='assets/img/placeholder_gatto.png' alt='Foto di $nome'>
                     </figure>
-                    
                     <div class='card-body'>
                         <h3>" . htmlspecialchars($nome) . "</h3>
                         <p class='card-desc'>
@@ -124,68 +130,78 @@ require 'includes/db_config.php';
     </div>
 </section>
 
-<!-- 4. ADOZIONI SPECIALI E DONAZIONI (Riciclo classe .ruoli-volontariato per estetica identica) -->
-<section class="ruoli-volontariato" aria-label="Supporto al gattile">
+<!-- 4. ADOZIONI SPECIALI E DONAZIONI -->
+<section class="ruoli-volontariato home-special-section section-padding" aria-label="Supporto al gattile">
     <div class="ruoli-container">
-        <!-- Nessun titolo, solo la grid con card bianche -->
+        
+        <header class="section-header">
+            <h2>Un Aiuto a Distanza</h2>
+            <div class="paw-divider">
+                <span class="line"></span>
+                <span class="paw">🐾</span>
+                <span class="line"></span>
+            </div>
+        </header>
+
         <div class="ruoli-grid">
             <article class="ruolo-card">
-                <span class="ruolo-icona">❤️</span>
-                <h4>Adozioni del Cuore</h4>
-                <p>Un gesto d'amore verso mici con problemi di salute o disabilità. Richiedono cure speciali, ma sanno ricompensare con un affetto unico e profondo.</p>
+                <img src="assets/img/icona_cuore.png" alt="Icona Cuore" class="icon-png-large">
+                <h3>Adozioni del Cuore</h3>
+                <p>Sostieni cure e terapie per gatti con disabilità o patologie, aiutandoli a ricevere l'assistenza necessaria.</p>
+                <a href="contatti.php" class="scopri-link">Scopri di più <span class="freccia">&rarr;</span></a>
             </article>
             
             <article class="ruolo-card">
-                <span class="ruolo-icona">💌</span>
-                <h4>Adozioni a Distanza</h4>
-                <p>Solidarietà per gatti con difficoltà di adattamento. Sostieni le cure mediche e il cibo, restando aggiornato sui loro costanti progressi.</p>
+                <img src="assets/img/icona_distanza.png" alt="Icona Lettera" class="icon-png-large">
+                <h3>Adozioni a Distanza</h3>
+                <p>Contribuisci a cibo, cure e assistenza di un gatto, seguendone la crescita attraverso aggiornamenti dedicati.</p>
+                <a href="contatti.php" class="scopri-link">Scopri di più <span class="freccia">&rarr;</span></a>
             </article>
             
             <article class="ruolo-card">
-                <span class="ruolo-icona">🎁</span>
-                <h4>Sostienici</h4>
-                <p>Aiutaci donando cibo, coperte, farmaci o con un piccolo contributo economico. Ogni gesto, anche il più piccolo, fa un'enorme differenza.</p>
+                <img src="assets/img/icona_dono.png" alt="Icona Regalo" class="icon-png-large">
+                <h3>Sostienici</h3>
+                <p>Aiutaci donando cibo, coperte, farmaci o un piccolo contributo. Ogni singolo gesto fa un'enorme differenza per il rifugio.</p>
+                <a href="contatti.php" class="scopri-link">Scopri di più <span class="freccia">&rarr;</span></a>
             </article>
         </div>
     </div>
 </section>
 
-<!-- 5. EMERGENZE (Layout Affiancato e Spaziature Pulite) -->
-<section class="home-emergency-section" aria-label="Cosa fare in caso di emergenza">
+<!-- 5. EMERGENZE -->
+<section class="home-emergency-section section-padding" aria-label="Cosa fare in caso di emergenza">
     <div class="emergency-container">
         
         <article class="emergency-text">
-            <h2>Segnalazione animali in difficoltà</h2>
+            <h2>Hai soccorso un animale?</h2>
             
             <div class="emergency-item">
-                <div class="emergency-item-icon">🚑</div>
+                <img src="assets/img/icona_ambulanza.png" alt="Icona 112" class="icon-png-small">
                 <div class="emergency-item-content">
                     <h4>Contattare il 112</h4>
-                    <p>Saranno le forze dell'ordine a far intervenire gli enti di competenza territoriale per procedere al tempestivo soccorso.</p>
+                    <p>Attiva le forze dell'ordine per il tempestivo soccorso.</p>
                 </div>
             </div>
             
             <div class="emergency-item">
-                <div class="emergency-item-icon">🏢</div>
+                <img src="assets/img/icona_comune.png" alt="Icona Comune" class="icon-png-small">
                 <div class="emergency-item-content">
                     <h4>Ufficio Tutela Animali di Torino</h4>
-                    <p>Per le segnalazioni di animali in difficoltà sul territorio della città:<br>
-                    <a href="https://www.comune.torino.it/tutelaanimali/faq" class="emergency-link" target="_blank">www.comune.torino.it/tutelaanimali/faq</a></p>
+                    <a href="https://www.comune.torino.it/tutelaanimali/faq" class="emergency-link" target="_blank" aria-label="Vai alle direttive ufficiali del Comune di Torino">Consulta le direttive ufficiali per la città di Torino.</a>
                 </div>
             </div>
             
             <div class="emergency-item">
-                <div class="emergency-item-icon">🌲</div>
+                <img src="assets/img/icona_selvatici.png" alt="Icona Albero" class="icon-png-small">
                 <div class="emergency-item-content">
                     <h4>Ufficio Tutela Flora e Fauna</h4>
-                    <p>Per le segnalazioni di animali selvatici in difficoltà:<br>
-                    <a href="https://www.cittametropolitana.torino.it/cms/fauna-flora-parchi/fauna-e-flora" class="emergency-link" target="_blank">www.cittametropolitana.torino.it/cms/...</a></p>
+                    <a href="https://www.cittametropolitana.torino.it/cms/fauna-flora-parchi/fauna-e-flora" class="emergency-link" target="_blank" aria-label="Vai alle direttive per la flora e la fauna">Per le segnalazioni di animali selvatici in difficoltà.</a>
                 </div>
             </div>
         </article>
         
         <figure class="emergency-image">
-            <img src="assets/img/gatto_strada.png" alt="Gattino in difficoltà per strada">
+            <img src="assets/img/gatto_strada.png" alt="Gattino in difficoltà sul ciglio di una strada">
         </figure>
 
     </div>
