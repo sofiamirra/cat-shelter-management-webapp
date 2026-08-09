@@ -1,68 +1,65 @@
-<?php
-// Avvio della sessione per la gestione dello stato utente
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
-?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Il Parco delle Fusa - Gattile PoliTo</title>
+    <title>Il Parco delle Fusa - Gattile</title>
     
-    <!-- Importazione del font Poppins (lo stesso stile dello screenshot) -->
+    <!-- Favicon: il trucco time() forza il caricamento bypassando qualsiasi cache! -->
+    <link rel="icon" type="image/png" href="assets/img/logo_gattile.png?v=<?php echo time(); ?>">
+    
+    <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <!-- Foglio di stile principale -->
-    <link rel="stylesheet" href="assets/css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <!-- Header scuro con layout a linea singola -->
-    <header class="site-header">
-        <div class="header-container">
-            
+
+<header class="site-header">
+    <div class="header-container">
+        
+        <!-- Logo (Funge da tasto Home pulito) -->
         <div class="logo">
-            <a href="home.php">
-                <!-- Nuova icona trasparente -->
-                <img src="assets/img/logo_icona.png" alt="Logo Il Parco delle Fusa" class="logo-icona">
-                <span class="logo-testo">Il Parco delle Fusa</span>
+            <a href="home.php" aria-label="Torna alla Home">
+                <img src="assets/img/logo_icona.png" alt="Logo Parco delle Fusa" class="logo-icona">
+                Il Parco delle Fusa
             </a>
         </div>
-            
-            <!-- Menu di navigazione centrale -->
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="home.php#chi-siamo">Il Gattile</a></li>
-                    <li><a href="ospiti.php">I Nostri Ospiti</a></li>
-                    <li><a href="volontariato.php">Diventa Volontario</a></li>
-                    <?php
-                    // Link admin visibile solo agli amministratori
-                    if (isset($_SESSION['username']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1) {
-                        echo "<li><a href='inserimento_gatto.php' class='link-admin'>+ Admin</a></li>";
-                    }
-                    ?>
-                </ul>
+
+        <!-- Navigazione Principale (Rimossa la voce Home/Gattile per UX) -->
+        <nav class="main-nav">
+            <ul>
+                <li><a href="ospiti.php">I Nostri Ospiti</a></li>
+                <li><a href="volontariato.php">Diventa Volontario</a></li>
+                <li><a href="sostienici.php">Sostienici</a></li>
+            </ul>
             </nav>
 
-            <!-- Area utente a destra (Stile bottone a pillola + Stato) -->
-            <div class="user-area">
-                <?php
-                if (isset($_SESSION['username'])) {
-                    // Requisito: indicazione dello username se autenticato
-                    echo "<span class='status-testo'>👤 " . htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8') . "</span>";
-                    echo "<a href='logout.php' class='btn-outline'>Logout</a>";
-                } else {
-                    // Requisito tassativo: scritta "non loggato" se non autenticato
-                    echo "<span class='status-testo'>Non loggato</span>";
-                    echo "<a href='login.php' class='btn-outline'>Area Riservata</a>";
-                }
-                ?>
-            </div>
+<!-- Area Utente (Tutto spinto a destra) -->
+<div class="user-area">
+    <?php if (isset($_SESSION['username'])): ?>
+        
+        <!-- Link Admin protetto (Ora è DENTRO user-area) -->
+        <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == true): ?>
+            <a href="admin.php" class="btn-admin">+ Admin</a>
+        <?php endif; ?>
 
+        <div class="status-testo">
+            <img src="assets/img/icona_utente.png" alt="Utente" class="icon-utente-canva">
+            <?php echo htmlspecialchars($_SESSION['username']); ?>
         </div>
-    </header>
-    
-    <main>
+        <a href="logout.php" class="btn-outline">Logout</a>
+        
+    <?php else: ?>
+        <span class="status-testo">Non loggato</span>
+        <a href="login.php" class="btn-outline">Area Riservata</a>
+    <?php endif; ?>
+</div>
+
+</div>
+</header>
+
+<main>

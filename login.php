@@ -97,16 +97,17 @@ require 'includes/header.php';
                 <span class="errore-js" id="err-password"></span>
             </div>
 
-            <div class="form-group-checkbox">
+            <!-- Checkbox pulito senza inline CSS -->
+            <div class="form-group checkbox-group">
                 <input type="checkbox" id="ricordami" name="ricordami" <?php if(!empty($username_precompilato)) echo 'checked'; ?>>
-                <label for="ricordami">Ricordami per 72 ore</label>
+                <label for="ricordami" class="checkbox-label">Ricordami per 72 ore</label>
             </div>
 
-            <button type="submit" class="btn-solid-dark w-100">Accedi</button>
-            
-            <!-- SEZIONE DI REGISTRAZIONE -->
-            <div class="auth-footer">
-                <p>Non hai ancora un account? <br><br> <a href="registrazione.php" class="btn-outline btn-outline-dark">Registrati ora</a></p>
+            <!-- Bottoni centrati -->
+            <div class="text-center mt-2">
+                <button type="submit" class="btn-solid-dark w-100">Accedi</button>
+                <p class="form-switch-text">Non hai ancora un account?</p>
+                <a href="registrazione.php" class="btn-outline-dark">Registrati ora</a>
             </div>
         </form>
 

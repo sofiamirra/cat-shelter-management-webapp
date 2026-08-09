@@ -125,7 +125,7 @@ require 'includes/header.php';
             </div>
 
             <div class="form-group">
-                <label for="indirizzo">Indirizzo Completo</label>
+                <label for="indirizzo">Indirizzo Email</label>
                 <input type="text" id="indirizzo" name="indirizzo">
                 <span class="errore-js" id="err-indirizzo"></span>
             </div>
@@ -150,10 +150,11 @@ require 'includes/header.php';
                 <span class="errore-js" id="err-conferma"></span>
             </div>
 
-            <button type="submit" class="btn-solid-dark w-100 mt-1">Registrati</button>
-            
-            <div class="auth-footer">
-                <p>Hai già un account? <a href="login.php" class="btn-outline btn-outline-dark">Accedi qui</a></p>
+            <!-- Bottoni centrati (Sostituito il vecchio codice con le nuove classi pulite) -->
+            <div class="text-center mt-2">
+                <button type="submit" class="btn-solid-dark w-100">Registrati</button>
+                <p class="form-switch-text">Hai già un account?</p>
+                <a href="login.php" class="btn-outline-dark">Accedi qui</a>
             </div>
         </form>
     </div>

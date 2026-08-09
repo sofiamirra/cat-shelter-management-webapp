@@ -148,24 +148,22 @@ require 'includes/db_config.php';
                 <img src="assets/img/icona_cuore.png" alt="Icona Cuore" class="icon-png-large">
                 <h3>Adozioni del Cuore</h3>
                 <p>Sostieni cure e terapie per gatti con disabilità o patologie, aiutandoli a ricevere l'assistenza necessaria.</p>
+                <a href="sostienici.php#adozioni-cuore" class="scopri-link">Scopri di più <span class="freccia">&rarr;</span></a>
             </article>
             
             <article class="ruolo-card">
                 <img src="assets/img/icona_distanza.png" alt="Icona Lettera" class="icon-png-large">
                 <h3>Adozioni a Distanza</h3>
                 <p>Contribuisci a cibo, cure e assistenza di un gatto, seguendone la crescita attraverso aggiornamenti dedicati.</p>
+                <a href="sostienici.php#adozioni-distanza" class="scopri-link">Scopri di più <span class="freccia">&rarr;</span></a>
             </article>
             
             <article class="ruolo-card">
                 <img src="assets/img/icona_dono.png" alt="Icona Regalo" class="icon-png-large">
                 <h3>Sostienici</h3>
                 <p>Aiutaci donando cibo, coperte, farmaci o un piccolo contributo. Ogni singolo gesto fa un'enorme differenza per il rifugio.</p>
+                <a href="sostienici.php#donazioni" class="scopri-link">Scopri di più <span class="freccia">&rarr;</span></a>
             </article>
-        </div>
-
-        <!-- Link testuale unico centrato sotto la griglia -->
-        <div class="text-center mt-2">
-            <a href="contatti.php" class="scopri-link">Sostieni il gattile <span class="freccia">&rarr;</span></a>
         </div>
     </div>
 </section>

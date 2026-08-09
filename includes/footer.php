@@ -14,15 +14,25 @@
             </ul>
         </div>
 
-        <!-- Colonna 2: Esplora (Centrata) -->
+        <!-- Colonna 2: Esplora (Centrale) -->
         <div class="footer-col">
             <h3>Esplora</h3>
             <ul class="footer-links">
                 <li><a href="home.php">Home</a></li>
                 <li><a href="ospiti.php">I Nostri Ospiti</a></li>
                 <li><a href="volontariato.php">Diventa Volontario</a></li>
-                <li><a href="contatti.php">Sostienici</a></li> <!-- Aggiornato -->
+                <li><a href="sostienici.php">Sostienici</a></li>
             </ul>
+            
+            <!-- Icone Social inserite in modo sicuro DENTRO la colonna -->
+            <div class="footer-social">
+                <a href="#" aria-label="Seguici su Instagram">
+                    <img src="assets/img/icona_instagram.png" alt="Instagram">
+                </a>
+                <a href="#" aria-label="Seguici su Facebook">
+                    <img src="assets/img/icona_facebook.png" alt="Facebook">
+                </a>
+            </div>
         </div>
 
         <!-- Colonna 3: Note Legali -->
@@ -38,7 +48,7 @@
 
     </div>
 
-    <!-- Banner inferiore con scritte affiancate -->
+    <!-- Barra inferiore con scritte affiancate (Ora tornerà normale!) -->
     <div class="footer-bottom">
         <div class="footer-bottom-content">
             <p>&copy; 2026 Il Parco delle Fusa. Tutti i diritti riservati.</p>

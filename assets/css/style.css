@@ -248,7 +248,7 @@ button, input, select, textarea {
 /* ==========================================
    3. HEADER E NAVIGAZIONE
    ========================================== */
-.site-header {
+   .site-header {
     background: linear-gradient(135deg, #1A3629 0%, #2A4D3E 100%);
     padding: 1.5rem 0;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -261,7 +261,6 @@ button, input, select, textarea {
     margin: 0 auto;
     padding: 0 2rem;
     width: 100%;
-    gap: 1.5rem;
 }
 .logo a {
     display: flex; 
@@ -271,34 +270,80 @@ button, input, select, textarea {
     font-size: 1.4rem;
     font-weight: 700;
 }
+/* Dicitura | Home - Uniformata al menu */
+.logo-home-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #C2D5CD; /* Colore base del menu */
+    margin-left: 12px;
+    transition: color 0.3s ease;
+}
+.logo a:hover .logo-home-text {
+    color: var(--colore-testo-chiaro); /* Si illumina al passaggio come il menu */
+}
 .logo-icona {
     height: 50px; 
-    width: auto; 
+    width: 50px; 
+    object-fit: cover;
     margin-right: 15px; 
+    border-radius: 50%;
+}
+
+/* Gestione degli spazi: allontana il menu dal logo e spinge l'area utente a destra */
+.main-nav {
+    margin-left: 3.5rem; 
+    margin-right: auto;  
 }
 .main-nav ul {
     display: flex;
-    gap: 2.5rem;
+    gap: 3rem; /* Sezioni molto più distanziate */
     list-style: none;
 }
 .main-nav a {
     color: #C2D5CD; 
     text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-size: 1.05rem; /* Font leggermente più grande e di carattere */
+    font-weight: 700;
 }
-.main-nav a:hover {
+.main-nav a:hover, .main-nav a.active {
     color: var(--colore-testo-chiaro);
 }
+
+/* Area Utente in alto a destra */
 .user-area {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
     white-space: nowrap;
 }
 .status-testo {
     color: #C2D5CD;
     font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+    font-weight: 400; /* Font più fine (regular) per non sembrare un link cliccabile */
+}
+
+/* Magia CSS per l'icona utente Canva */
+.icon-utente-canva {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%; 
+    background-color: var(--colore-sfondo-chiaro); 
+    border: 2px solid #8AD9A5; 
+}
+
+.btn-admin {
+    color: var(--colore-accento);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+}
+.btn-admin:hover {
+    color: var(--colore-testo-chiaro);
 }
 
 /* ==========================================
@@ -677,6 +722,7 @@ button, input, select, textarea {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2.5rem;
+    margin-bottom: 1.5rem; /* Spazio sotto la riga */
 }
 .input-data-large {
     padding: 0.9rem 1.2rem;
@@ -970,4 +1016,391 @@ button, input, select, textarea {
 }
 .academic-credit strong {
     color: var(--colore-secondario);
+}
+
+/* Sezione Social Icons nel Footer (Sotto Esplora) */
+.footer-social {
+    display: flex;
+    justify-content: flex-start; 
+    gap: 1.5rem;
+    margin-top: 1.5rem; 
+    padding-left: 0.5rem; /* Sposta leggermente a destra per centrarle visivamente col testo sopra */
+}
+
+.footer-social a img {
+    width: 42px; /* Icone più grandi come richiesto */
+    height: 42px;
+    object-fit: contain;
+    opacity: 0.7; 
+    transition: all 0.3s ease;
+}
+
+.footer-social a:hover img {
+    opacity: 1; 
+    transform: translateY(-4px); 
+}
+
+/* ==========================================
+   9. PAGINA SOSTIENICI E FAQ
+   ========================================== */
+/* Assicura che le àncore non taglino i titoli */
+.scroll-anchor {
+    scroll-margin-top: 4rem;
+}
+
+/* Layout Spaccato (Per Adozioni del Cuore) */
+.content-split {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+    max-width: 1100px; /* Allargato leggermente per far respirare il box */
+    margin: 0 auto;    
+}
+
+.split-text {
+    flex: 1; /* Ridotto il flex per cedere spazio al box IBAN */
+    min-width: 300px;
+    text-align: left; 
+}
+
+/* Titolo grande a sinistra (Stile Hero) */
+.split-title {
+    font-size: 2.2rem;
+    color: var(--colore-testo-scuro);
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.split-text p {
+    font-size: 1.05rem;
+    color: #4A4A4A;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.split-box {
+    flex: 1.1; /* Box aumentato di larghezza */
+    min-width: 350px;
+}
+
+/* Box IBAN - Ora più basso (padding ridotto) e più largo */
+.info-bancarie-box {
+    background-color: var(--colore-bianco);
+    border: 1px solid #E8E5E1;
+    border-radius: 20px;
+    padding: 2rem 2.5rem; /* Ridotto lo spazio verticale per abbassarlo */
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.info-bancarie-box h4 {
+    color: var(--colore-primario);
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.info-bancarie-box p {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.iban-code {
+    font-family: monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--colore-primario);
+    letter-spacing: 1px;
+    background: #E8EDE9;
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    display: inline-block;
+    margin: 1rem 0;
+}
+
+/* Nuova area arrotondata per il 5x1000 (Simil Tasto) */
+.box-5x1000 {
+    background-color: #F9F8F6;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #555;
+    border: 1px solid #EAE6DF;
+    width: 100%;
+}
+
+/* Griglia Pacchetti Adozione a Distanza */
+.tier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    max-width: 1050px;
+    margin: 0 auto;
+}
+
+/* Card Beige (Bronzo e Oro) su sfondo bianco */
+.tier-card {
+    background-color: var(--colore-sfondo-chiaro);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    border: 1px solid #EAE6DF;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.tier-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+}
+
+/* Card Argento (Premium) - Sfondo bianco e bordo verde */
+.tier-card.premium-tier {
+    background-color: var(--colore-bianco);
+    border: 2px solid var(--colore-primario);
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(26, 54, 41, 0.1);
+}
+
+.tier-card.premium-tier:hover {
+    transform: scale(1.05) translateY(-8px);
+}
+
+.tier-icon-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin: 0 auto 1.5rem auto;
+}
+
+.tier-card h3 {
+    color: var(--colore-testo-scuro);
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.tier-price {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--colore-primario);
+    margin-bottom: 1.5rem;
+}
+
+.tier-price span {
+    font-size: 1rem;
+    color: #666;
+    font-weight: 400;
+}
+
+.tier-features {
+    text-align: left;
+    margin-bottom: 2rem;
+    padding-left: 1.5rem; 
+}
+
+.tier-features li {
+    margin-bottom: 0.8rem;
+    color: #555;
+    font-size: 0.95rem;
+    list-style-type: disc; 
+    line-height: 1.4;
+}
+
+/* Banner Email Adozioni a Distanza (Stile Alert) */
+.tier-footer-text {
+    margin: 4rem auto 0 auto; 
+    max-width: 800px; 
+    background-color: #E8F0EC; 
+    border: 1px solid #A3B5AE; 
+    padding: 1.2rem 2rem;
+    border-radius: 8px; 
+    text-align: center;
+    color: var(--colore-testo-scuro);
+    font-size: 0.95rem; /* Ridotto per essere coerente col resto del sito */
+}
+
+/* Stile per l'email evidenziata nel banner */
+.tier-footer-link {
+    color: var(--colore-primario);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.3s ease;
+}
+.tier-footer-link:hover {
+    color: #9c8a7b; /* Beige al passaggio del mouse */
+}
+
+/* Banner Elegante per Donazioni Materiali e Contatti */
+.donazioni-orizzontali {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.contact-banner {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    background-color: var(--colore-bianco);
+    padding: 3rem 2rem;
+    border-radius: 20px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06); 
+    border: 1px solid #E8E5E1;
+    flex-wrap: wrap;
+}
+
+.contact-banner-item {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+}
+
+.contact-banner-item .contact-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.contact-banner-item strong {
+    color: var(--colore-primario);
+    font-size: 1.1rem;
+}
+
+.contact-banner-item span {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* FAQ Accordion (Espandibile) */
+.faq-accordion {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-accordion details {
+    background-color: var(--colore-sfondo-chiaro); /* Sfondo beige per le card stesse */
+    border: 1px solid #EAE6DF;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    padding: 1.2rem 1.5rem;
+    transition: box-shadow 0.3s ease;
+}
+
+.faq-accordion details:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.faq-accordion summary {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--colore-primario);
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    padding-right: 2rem;
+    outline: none;
+}
+
+.faq-accordion summary::after {
+    content: "▼";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8rem;
+    color: var(--colore-secondario);
+    transition: transform 0.3s ease;
+}
+
+.faq-accordion details[open] summary::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.faq-accordion summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-accordion p {
+    margin-top: 1rem;
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    border-top: 1px solid #E8E5E1;
+    padding-top: 1rem;
+}
+
+/* ==========================================
+   CLASSI DI SUPPORTO TESTI E FORM (Niente stili inline)
+   ========================================== */
+
+/* Testo orari sotto il titolo (ospiti.php) */
+.orari-visita-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--colore-primario);
+    text-align: center;
+    margin-top: 0.5rem; /* Stesso spacing del sottotitolo precedente */
+    margin-bottom: 2rem;
+}
+
+/* Label del checkbox Ricordami (login.php) */
+.checkbox-label {
+    margin: 0;
+    font-weight: 400;
+}
+
+/* Testo di passaggio tra Login e Registrazione */
+.form-switch-text {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: #666;
+}
+
+/* Link contatti pulito */
+.contact-link {
+    color: var(--colore-primario);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.3s ease;
+}
+.contact-link:hover {
+    color: #D4C5B9; /* Il colore Beige/Panna al passaggio del mouse */
+}
+
+/* Rifiniture Form (Login, Registrazione, Ospiti) */
+.lista-selezionati {
+    max-width: 500px; /* Stringe il box dei gatti selezionati */
+    margin: 1.5rem auto 2rem auto;
+    padding: 1rem;
+}
+.form-hint {
+    font-size: 0.85rem; /* Molto più piccolo della label */
+    color: #888;        /* Grigio più chiaro per non confondersi col testo inserito */
+    margin-top: 0.4rem;
+    display: block;
+    line-height: 1.4;
+    font-weight: 400;
+}
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 1.5rem 0;
+}
+.checkbox-group input {
+    margin: 0 !important;
+    width: auto !important;
+    cursor: pointer;
 }

@@ -19,7 +19,7 @@ require 'includes/header.php';
             <div class="line"></div>
         </div>
         <p class="header-subtitle">
-            Scopri i felini in cerca di casa. <strong>Usa i filtri per esplorare la galleria</strong> e conoscere le loro storie, particolarità e attitudini.
+        Scopri i felini in cerca di casa. Usa i filtri per esplorare la galleria e conoscere le loro storie per trovare il micio più adatto a te.
         </p>
     </div>
 
@@ -49,21 +49,23 @@ require 'includes/header.php';
          ========================================== -->
     <?php if(isset($_SESSION['username'])): ?>
         <div class="prenotazione-wrapper mb-4" id="sezione-prenotazione">
+            
             <div class="prenotazione-header text-center mb-2">
-                <h3>Prenota una visita in struttura</h3>
-                <p style="color: #666;">Seleziona uno o più gatti dalle <strong>card in basso</strong> per compilare la tua richiesta.</p>
+                <h2>Prenota una visita in struttura</h2>
+                <p class="header-subtitle mb-2">Seleziona uno o più gatti dalle <strong>card in basso</strong> per compilare la tua richiesta.</p>
+                <p class="orari-visita-text">Le visite si effettuano tutti i giorni dalle 10:30 alle 17:30.</p>
             </div>
 
             <form action="processa_prenotazione.php" method="POST" id="form-prenotazione-visita">
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="data_visita" class="form-label-title">Data della visita</label>
+                        <label for="data_visita" class="form-label-title">Data della visita:</label>
                         <input type="date" id="data_visita" name="data_visita" class="input-data-large" required>
                         <span class="errore-js" id="err-data"></span>
                     </div>
                     <div class="form-group">
-                        <label for="ora_visita" class="form-label-title">Ora della visita</label>
+                        <label for="ora_visita" class="form-label-title">Ora della visita:</label>
                         <input type="time" id="ora_visita" name="ora_visita" class="input-data-large" required>
                         <span class="errore-js" id="err-ora"></span>
                     </div>
