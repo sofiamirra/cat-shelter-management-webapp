@@ -1,17 +1,20 @@
-/* ==========================================
-   1. VARIABILI E IMPOSTAZIONI DI BASE
-   ========================================== */
-   :root {
-    --colore-primario: #1A3629; 
-    --colore-sfondo-scuro: #0B251C; 
-    --colore-sfondo-chiaro: #F5F5F0; 
-    --colore-testo-chiaro: #FFFFFF;
-    --colore-testo-scuro: #1A1A1A;
-    --colore-bianco: #FFFFFF;
-    --colore-accento: #8AD9A5; 
-    --colore-secondario: #D4C5B9; 
-    --colore-errore: #d32f2f; 
-}
+/*
+ * Foglio di stile globale del progetto
+ * Gestisce grafica, layout delle pagine e adattamento ai diversi dispositivi.
+ * Il CSS è strutturato secondo il principio del Responsive Web Design. 
+ * I colori esadecimali sono implementati direttamente nelle classi per
+ * garantire massima compatibilità retroattiva cross-browser (Backward Compatibility).
+ *
+ * Verde principale: #1A3629
+ * Verde scuro: #0B251C
+ * Beige chiaro: #F5F5F0
+ * Beige secondario: #D4C5B9
+ * Verde chiaro: #8AD9A5
+ * Testo principale: #1A1A1A
+ */
+
+
+/* Impostazioni generali: Reset degli stili di default */
 
 * {
     box-sizing: border-box;
@@ -19,15 +22,15 @@
     padding: 0;
 }
 
-/* Abilita lo scorrimento fluido per i link interni (àncore) */
+/* Attivazione scorrimento fluido per migliorare la User Experience sulle ancore */
 html {
     scroll-behavior: smooth;
 }
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: var(--colore-sfondo-chiaro);
-    color: var(--colore-testo-scuro);
+    background-color: #F5F5F0;
+    color: #1A1A1A;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -38,17 +41,35 @@ main {
     width: 100%;
 }
 
-/* Forza l'ereditarietà del font per tutti gli elementi dei form */
-button, input, select, textarea {
+/* I controlli dei form ereditano il font principale del sito */
+button,
+input,
+select,
+textarea {
     font-family: inherit;
 }
 
-/* ==========================================
-   2. CLASSI DI UTILITÀ E COMPONENTI CONDIVISI
-   ========================================== */
-.page-wrapper { 
-    padding: 4rem 2rem 5rem 2rem; 
-    width: 100%; 
+
+/* Focus visibile durante la navigazione tramite tastiera.
+ * Intervento cruciale per l'accessibilità (A11y) in conformità alle direttive WCAG.
+ */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+    outline: 3px solid #8AD9A5;
+    outline-offset: 3px;
+}
+
+
+/* Classi di supporto per il controllo dei layout e del dimensionamento */
+
+.page-wrapper {
+    padding: 4rem 2rem 5rem;
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -57,54 +78,84 @@ button, input, select, textarea {
     padding: 5rem 2rem;
 }
 
-.text-center { text-align: center; }
-.mt-1 { margin-top: 1rem; }
-.mt-2 { margin-top: 2rem; }
-.mb-2 { margin-bottom: 2rem; }
-.mb-4 { margin-bottom: 4rem; }
-.w-100 { width: 100%; text-align: center; }
-.d-none { display: none !important; }
+.text-center {
+    text-align: center;
+}
 
-/* Separatore Semantico (Zampetta) */
+.mt-1 {
+    margin-top: 1rem;
+}
+
+.mt-2 {
+    margin-top: 2rem;
+}
+
+.mb-2 {
+    margin-bottom: 2rem;
+}
+
+.mb-4 {
+    margin-bottom: 4rem;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.d-none {
+    display: none !important;
+}
+
+
+/* Intestazioni delle sezioni */
+
 .section-header {
     text-align: center;
     margin-bottom: 3.5rem;
 }
+
 .section-header h2 {
     font-size: 2.2rem;
-    color: var(--colore-testo-scuro);
+    color: #1A1A1A;
     margin-bottom: 0.5rem;
     font-weight: 700;
 }
+
+/* Separatore grafico posto sotto i titoli */
 .paw-divider {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 15px;
     max-width: 300px;
-    margin: 1rem auto 2rem auto;
+    margin: 1rem auto 2rem;
 }
+
 .paw-divider .line {
     flex-grow: 1;
     height: 1px;
-    background-color: var(--colore-secondario);
-}
-.paw-divider .paw {
-    color: var(--colore-primario);
-    font-size: 1.2rem;
-}
-.header-subtitle {
-    text-align: center;
-    color: #666;
-    max-width: 600px;
-    margin: 1rem auto 3rem auto;
+    background-color: #D4C5B9;
 }
 
-/* Bottoni */
+.paw-divider .paw {
+    color: #1A3629;
+    font-size: 1.2rem;
+}
+
+.header-subtitle {
+    text-align: center;
+    color: #666666;
+    max-width: 600px;
+    margin: 1rem auto 3rem;
+}
+
+
+/* Pulsanti principali. Gestiscono varianti solide e ad alto contrasto */
+
 .btn-solid-dark {
     display: inline-block;
-    background-color: var(--colore-primario);
-    color: var(--colore-testo-chiaro);
+    background-color: #1A3629;
+    color: #FFFFFF;
     text-decoration: none;
     padding: 1rem 2.5rem;
     border-radius: 50px;
@@ -114,12 +165,12 @@ button, input, select, textarea {
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
 }
+
 .btn-solid-dark:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 15px rgba(26, 54, 41, 0.2);
 }
 
-/* Stile per il bottone disabilitato (quando nessun gatto è selezionato) */
 .btn-solid-dark:disabled {
     background-color: #A3B5AE;
     color: #F5F5F0;
@@ -130,76 +181,85 @@ button, input, select, textarea {
 
 .btn-outline {
     display: inline-block;
-    color: var(--colore-testo-chiaro);
+    color: #FFFFFF;
     text-decoration: none;
     padding: 0.8rem 2rem;
-    border: 1.5px solid var(--colore-testo-chiaro);
+    border: 1.5px solid #FFFFFF;
     border-radius: 50px;
     font-size: 0.95rem;
     font-weight: 600;
-    transition: all 0.3s ease;
-}
-.btn-outline:hover {
-    background-color: var(--colore-testo-chiaro);
-    color: var(--colore-primario);
+    transition: background-color 0.3s, color 0.3s;
 }
 
-/* Bottone Outline Scuro (Per la Hero e sfondi chiari) */
+.btn-outline:hover {
+    background-color: #FFFFFF;
+    color: #1A3629;
+}
+
 .btn-outline-dark {
     display: inline-block;
-    color: var(--colore-primario);
+    color: #1A3629;
     text-decoration: none;
-    padding: 1rem 2.5rem; 
-    border: 2px solid var(--colore-primario);
+    padding: 1rem 2.5rem;
+    border: 2px solid #1A3629;
     background-color: transparent;
     border-radius: 50px;
     font-size: 1.05rem;
     font-weight: 600;
-    transition: all 0.3s ease;
-}
-.btn-outline-dark:hover {
-    background-color: var(--colore-primario);
-    color: var(--colore-testo-chiaro);
+    transition: background-color 0.3s, color 0.3s;
 }
 
-/* Link animato "Scopri di più" */
+.btn-outline-dark:hover {
+    background-color: #1A3629;
+    color: #FFFFFF;
+}
+
+
+/* Collegamenti testuali delle card con animazioni fluide per hover */
+
 .scopri-link {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: #9c8a7b;
+    color: #9C8A7B;
     font-weight: 700;
     text-decoration: none;
     margin-top: 1rem;
-    transition: color 0.3s ease;
+    transition: color 0.3s;
 }
+
 .scopri-link:hover {
-    color: var(--colore-primario);
+    color: #1A3629;
 }
+
 .scopri-link .freccia {
-    transition: transform 0.3s ease;
+    transition: transform 0.3s;
 }
+
 .scopri-link:hover .freccia {
     transform: translateX(5px);
 }
 
-/* Link per gli alert (invito al login) */
+
+/* Messaggi utilizzati nelle pagine di autenticazione e Alert globali */
+
 .auth-alert-link {
-    color: var(--colore-primario);
+    color: #1A3629;
     font-weight: 700;
     text-decoration: underline;
     text-underline-offset: 3px;
-    transition: color 0.3s ease;
-}
-.auth-alert-link:hover {
-    color: #9c8a7b; /* Beige di "Scopri di più" */
+    transition: color 0.3s;
 }
 
-/* Modificatori per Alert chiudibili (Zero stili inline) */
+.auth-alert-link:hover {
+    color: #9C8A7B;
+}
+
 .alert-dismissible {
     position: relative;
-    padding-right: 3rem; 
+    padding-right: 3rem;
 }
+
 .btn-close-alert {
     position: absolute;
     top: 50%;
@@ -211,17 +271,16 @@ button, input, select, textarea {
     color: inherit;
     cursor: pointer;
     opacity: 0.6;
-    transition: opacity 0.3s ease;
-    font-family: inherit;
+    transition: opacity 0.3s;
 }
+
 .btn-close-alert:hover {
     opacity: 1;
 }
 
-/* Alert per form e JS */
 .auth-alert-danger {
     background-color: #FDE8E8;
-    color: var(--colore-errore);
+    color: #D32F2F;
     border: 1px solid #F8B4B4;
     padding: 1rem;
     border-radius: 8px;
@@ -230,9 +289,10 @@ button, input, select, textarea {
     margin-bottom: 2rem;
     font-weight: 600;
 }
+
 .auth-alert-success {
     background-color: #E8F0EC;
-    color: var(--colore-primario);
+    color: #1A3629;
     border: 1px solid #A3B5AE;
     padding: 1rem;
     border-radius: 8px;
@@ -240,19 +300,21 @@ button, input, select, textarea {
     text-align: center;
     margin-bottom: 2rem;
 }
+
 .alert-wrapper {
     max-width: 800px;
     margin: 0 auto;
 }
 
-/* ==========================================
-   3. HEADER E NAVIGAZIONE
-   ========================================== */
-   .site-header {
+
+/* Header e navigazione */
+
+.site-header {
     background: linear-gradient(135deg, #1A3629 0%, #2A4D3E 100%);
     padding: 1.5rem 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
 .header-container {
     display: flex;
     justify-content: space-between;
@@ -262,247 +324,303 @@ button, input, select, textarea {
     padding: 0 2rem;
     width: 100%;
 }
-.logo a {
-    display: flex; 
-    align-items: center; 
-    text-decoration: none; 
-    color: var(--colore-testo-chiaro);
+
+
+/* Logo e nome del sito */
+
+.logo-link,
+.logo-link:link,
+.logo-link:visited {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #FFFFFF;
     font-size: 1.4rem;
     font-weight: 700;
 }
-/* Dicitura | Home - Uniformata al menu */
-.logo-home-text {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #C2D5CD; /* Colore base del menu */
-    margin-left: 12px;
-    transition: color 0.3s ease;
+
+.logo-link:hover,
+.logo-link:focus {
+    color: #FFFFFF;
 }
-.logo a:hover .logo-home-text {
-    color: var(--colore-testo-chiaro); /* Si illumina al passaggio come il menu */
-}
+
 .logo-icona {
-    height: 50px; 
-    width: 50px; 
+    height: 50px;
+    width: 50px;
     object-fit: cover;
-    margin-right: 15px; 
+    margin-right: 15px;
     border-radius: 50%;
 }
 
-/* Gestione degli spazi: allontana il menu dal logo e spinge l'area utente a destra */
+
+/* Navigazione principale */
+
 .main-nav {
-    margin-left: 3.5rem; 
-    margin-right: auto;  
-}
-.main-nav ul {
-    display: flex;
-    gap: 3rem; /* Sezioni molto più distanziate */
-    list-style: none;
-}
-.main-nav a {
-    color: #C2D5CD; 
-    text-decoration: none;
-    font-size: 1.05rem; /* Font leggermente più grande e di carattere */
-    font-weight: 700;
-}
-.main-nav a:hover, .main-nav a.active {
-    color: var(--colore-testo-chiaro);
+    margin-left: 3.5rem;
+    margin-right: auto;
 }
 
-/* Area Utente in alto a destra */
+.main-nav ul {
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+}
+
+.main-nav a {
+    color: #C2D5CD;
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: #FFFFFF;
+}
+
+
+/* Area relativa allo stato dell'utente */
+
 .user-area {
     display: flex;
     align-items: center;
     gap: 1.5rem;
     white-space: nowrap;
 }
+
 .status-testo {
     color: #C2D5CD;
     font-size: 0.9rem;
     display: flex;
     align-items: center;
-    gap: 10px; 
-    font-weight: 400; /* Font più fine (regular) per non sembrare un link cliccabile */
+    gap: 10px;
+    font-weight: 400;
 }
 
-/* Magia CSS per l'icona utente Canva */
-.icon-utente-canva {
+.icona-utente {
     width: 32px;
     height: 32px;
     object-fit: cover;
-    border-radius: 50%; 
-    background-color: var(--colore-sfondo-chiaro); 
-    border: 2px solid #8AD9A5; 
+    border-radius: 50%;
+    background-color: #F5F5F0;
+    border: 2px solid #8AD9A5;
 }
 
 .btn-admin {
-    color: var(--colore-accento);
+    color: #8AD9A5;
     font-weight: 700;
     text-decoration: none;
     font-size: 0.95rem;
     transition: color 0.3s;
-}
-.btn-admin:hover {
-    color: var(--colore-testo-chiaro);
+    margin-right: 1rem;
 }
 
-/* ==========================================
-   4. AUTENTICAZIONE E REGISTRAZIONE
-   ========================================== */
+.btn-admin:hover {
+    color: #FFFFFF;
+}
+
+/* Lo spazio della navigazione viene ridotto quando compare il link Admin,
+ * permettendo l'inserimento senza spezzare l'allineamento su schermi ridotti. 
+ */
+.main-nav.nav-admin-logged {
+    margin-left: 1.5rem;
+}
+
+.main-nav.nav-admin-logged ul {
+    gap: 1.5rem;
+}
+
+
+/*
+ * Login e registrazione
+ * Questa sezione verrà controllata insieme ai relativi file PHP e JavaScript
+ */
+
 .auth-wrapper {
-    background-color: var(--colore-sfondo-chiaro);
+    background-color: #F5F5F0;
     min-height: 75vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 3rem 2rem;
 }
+
 .auth-card {
-    background-color: var(--colore-bianco);
+    background-color: #FFFFFF;
     width: 100%;
-    max-width: 450px; 
+    max-width: 450px;
     padding: 2.5rem;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     border: 1px solid #E8E5E1;
 }
+
 .auth-header {
     text-align: center;
     margin-bottom: 2rem;
 }
+
 .auth-header h2 {
-    color: var(--colore-primario);
+    color: #1A3629;
     font-size: 1.8rem;
     font-weight: 700;
 }
+
 .form-group {
     margin-bottom: 1.5rem;
 }
+
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
     font-weight: 600;
-    color: var(--colore-testo-scuro);
+    color: #1A1A1A;
 }
+
 .auth-card input[type="text"],
-.auth-card input[type="password"] {
+.auth-card input[type="password"],
+.auth-card input[type="email"] {
     width: 100%;
     padding: 0.75rem 1rem;
     margin-top: 0.4rem;
     border: 2px solid #EAE6DF;
     border-radius: 8px;
-    font-family: inherit;
     font-size: 0.95rem;
     background-color: #FAFAFA;
 }
+
 .auth-card input:focus {
     outline: none;
-    border-color: var(--colore-secondario);
-    background-color: var(--colore-bianco);
+    border-color: #D4C5B9;
+    background-color: #FFFFFF;
 }
 
-/* ==========================================
-   5. HOME PAGE (IL GATTILE)
-   ========================================== */
+
+/* Presentazione iniziale della home */
+
 .home-hero {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 4rem;
-    padding: 6rem 2rem; 
+    padding: 6rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
     flex-wrap: wrap;
 }
+
 .home-hero-text {
     flex: 1;
     min-width: 350px;
 }
+
 .home-hero-text h1 {
     font-size: 3rem;
-    color: var(--colore-testo-scuro);
+    color: #1A1A1A;
     line-height: 1.18;
-    margin-bottom: 2.5rem; 
+    margin-bottom: 2.5rem;
     font-weight: 700;
 }
+
 .home-hero-text p {
     font-size: 1.1rem;
     color: #4A4A4A;
     line-height: 1.7;
     margin-bottom: 2.5rem;
 }
+
+/* I pulsanti restano affiancati quando lo spazio disponibile lo consente */
 .home-hero-buttons {
     display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 1.5rem;
     flex-wrap: wrap;
 }
+
 .home-hero-image {
     flex: 1;
     min-width: 350px;
 }
+
 .home-hero-image img {
     width: 100%;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
-/* Step di adozione */
+
+/* Processo di adozione */
+
 .adoption-steps-wrapper {
-    background-color: var(--colore-sfondo-chiaro);
-    padding: 0 2rem 2rem 2rem; 
+    background-color: #F5F5F0;
+    padding: 0 2rem 2rem;
 }
+
 .adoption-steps {
-    max-width: 950px; 
+    max-width: 950px;
     margin: 0 auto;
-    background-color: var(--colore-bianco);
+    background-color: #FFFFFF;
     border-radius: 20px;
     padding: 4rem 3rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
+
 .adoption-grid {
     display: flex;
     justify-content: space-between;
     gap: 2rem;
     flex-wrap: wrap;
 }
+
 .step {
     flex: 1;
     min-width: 200px;
     text-align: center;
     padding: 0 1rem;
 }
+
 .step-icon {
     width: 80px;
     height: 80px;
-    background-color: #F0EDE6; 
+    background-color: #F0EDE6;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.5rem auto;
+    margin: 0 auto 1.5rem;
 }
+
 .step-icon img {
     width: 45px;
     height: 45px;
     object-fit: contain;
 }
+
 .step h3 {
     font-size: 1.2rem;
-    color: var(--colore-testo-scuro);
+    color: #1A1A1A;
     margin-bottom: 0.8rem;
 }
+
 .step p {
     font-size: 0.95rem;
-    color: #666;
+    color: #666666;
     line-height: 1.6;
 }
 
-/* Ultimi Arrivati */
+
+/* Ultimi gatti arrivati */
+
 .home-arrivals-section {
-    background-color: var(--colore-sfondo-chiaro);
-    padding: 3rem 2rem 5rem 2rem; 
+    background-color: #F5F5F0;
+    padding: 3rem 2rem 5rem;
 }
+
+
+/* Card informative per sostegno e volontariato */
+
 .icon-png-large {
     width: 70px;
     height: 70px;
@@ -510,89 +628,110 @@ button, input, select, textarea {
     margin-bottom: 1.5rem;
 }
 
-/* Sezione Emergenze */
+
+/* Emergenze */
+
 .home-emergency-section {
-    background-color: var(--colore-sfondo-chiaro); 
+    background-color: #F5F5F0;
 }
+
 .emergency-container {
     display: flex;
     max-width: 1100px;
     margin: 0 auto;
-    background-color: var(--colore-bianco);
+    background-color: #FFFFFF;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     flex-wrap: wrap;
 }
+
 .emergency-text {
     flex: 1;
-    padding: 4rem;
+    padding: 3rem;
     min-width: 300px;
 }
+
 .emergency-text h2 {
     font-size: 2rem;
-    color: var(--colore-primario);
-    margin-bottom: 3rem;
+    color: #1A3629;
+    margin-bottom: 0.5rem;
 }
+
+.emergency-subtitle {
+    text-align: left;
+    margin: 0 0 2rem 0; 
+}
+
 .emergency-item {
     display: flex;
     gap: 1.5rem;
     margin-bottom: 2.5rem;
     align-items: flex-start;
 }
+
 .icon-png-small {
     width: 45px;
     height: 45px;
     object-fit: contain;
 }
-.emergency-item-content h4 {
-    color: var(--colore-testo-scuro);
+
+.emergency-item-content h3 {
+    color: #1A1A1A;
     margin-bottom: 0.5rem;
     font-size: 1.1rem;
 }
+
 .emergency-item-content p {
-    color: #666;
+    color: #666666;
     line-height: 1.6;
 }
+
 .emergency-link {
-    color: var(--colore-primario);
+    color: #1A3629;
     font-weight: 600;
     text-decoration: underline;
-    text-decoration-color: var(--colore-secondario);
+    text-decoration-color: #D4C5B9;
     text-underline-offset: 4px;
     display: inline-block;
     margin-top: 0.4rem;
     transition: color 0.3s;
 }
+
 .emergency-link:hover {
-    color: #9c8a7b; 
+    color: #9C8A7B;
 }
+
 .emergency-image {
     flex: 1;
     min-width: 300px;
 }
+
 .emergency-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* ==========================================
-   6. CARD GATTI E REACT (I Nostri Ospiti)
-   ========================================== */
+/*
+ * Card dei gatti e componente React
+ * Le regole specifiche verranno riesaminate insieme a ospiti.php e GattiApp.js
+ */
+
 .gatti-grid-2 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 350px));
     justify-content: center;
     gap: 2.5rem;
-    max-width: 780px; 
+    max-width: 780px;
     margin: 0 auto;
 }
+
 .card-gatto-premium {
-    background: var(--colore-bianco);
+    background: #FFFFFF;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
     border: 1px solid #E8E5E1;
     transition: transform 0.3s ease;
     display: flex;
@@ -601,66 +740,75 @@ button, input, select, textarea {
     min-width: 280px;
     max-width: 350px;
 }
+
 .card-gatto-premium:hover {
     transform: translateY(-8px);
 }
+
 .card-img-wrapper {
-    position: relative; 
-    height: 240px; 
-    background-color: #F9F8F6; 
+    position: relative;
+    height: 240px;
+    background-color: #F9F8F6;
     border-bottom: 1px solid #EAE6DF;
     display: flex;
-    align-items: flex-end; 
+    align-items: flex-end;
     justify-content: center;
 }
+
 .card-img-wrapper img {
     width: 100%;
-    height: 90%; 
-    object-fit: contain; 
-    object-position: center bottom; 
-    padding: 0 1.5rem; 
+    height: 90%;
+    object-fit: contain;
+    object-position: center bottom;
+    padding: 0 1.5rem;
 }
+
 .badge-nuovo {
     position: absolute;
     top: 15px;
     left: 15px;
-    background-color: var(--colore-primario);
-    color: var(--colore-bianco);
+    background-color: #1A3629;
+    color: #FFFFFF;
     padding: 6px 14px;
     border-radius: 30px;
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
 }
+
 .card-body {
     padding: 2rem 1.5rem;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
 }
+
 .card-body h3 {
     font-size: 1.5rem;
-    color: var(--colore-primario);
+    color: #1A3629;
     margin-bottom: 0.8rem;
 }
+
 .card-desc {
-    color: #555;
+    color: #555555;
     line-height: 1.6;
     margin-bottom: 1.5rem;
 }
+
 .card-gatto-premium.selezionata {
-    border: 3px solid var(--colore-primario);
+    border: 3px solid #1A3629;
     transform: scale(1.02);
     box-shadow: 0 15px 35px rgba(26, 54, 41, 0.2);
     position: relative;
 }
+
 .card-gatto-premium.selezionata::after {
     content: "✓";
     position: absolute;
     top: 15px;
     right: 15px;
-    background-color: var(--colore-primario);
-    color: var(--colore-bianco);
+    background-color: #1A3629;
+    color: #FFFFFF;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -669,108 +817,91 @@ button, input, select, textarea {
     align-items: center;
     font-weight: bold;
     font-size: 1.2rem;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 10;
 }
-.card-cliccabile { cursor: pointer; }
 
-/* Contenitore e Filtri React */
-.react-container { width: 100%; }
+.card-cliccabile {
+    cursor: pointer;
+}
+
+.react-container {
+    width: 100%;
+}
+
 .filtri-ricerca {
     max-width: 800px;
-    margin: 0 auto 4rem auto;
+    margin: 0 auto 4rem;
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
 }
+
 .input-ricerca {
     padding: 0.8rem 1.5rem;
     border-radius: 50px;
     border: 2px solid #EAE6DF;
     flex: 1;
     min-width: 280px;
-    font-family: inherit;
     font-size: 0.95rem;
 }
+
 .select-ordinamento {
     padding: 0.8rem 1.5rem;
     border-radius: 50px;
     border: 2px solid #EAE6DF;
-    font-family: inherit;
     font-size: 0.95rem;
-    background-color: var(--colore-bianco);
+    background-color: #FFFFFF;
     cursor: pointer;
 }
 
-/* ==========================================
-   7. PRENOTAZIONE ADOZIONI E VOLONTARIATO
-   ========================================== */
+
+/*
+ * Prenotazioni e volontariato
+ * Le regole vengono mantenute fino alla revisione dei relativi file
+ */
+
 .prenotazione-wrapper {
     max-width: 800px;
-    margin: 0 auto 2rem auto;
-    background-color: var(--colore-bianco);
+    margin: 0 auto 2rem;
+    background-color: #FFFFFF;
     padding: 3rem;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
     border: 1px solid #E8E5E1;
 }
 
-/* Nuova griglia spaziosa per Data e Ora (Form adozioni) */
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2.5rem;
-    margin-bottom: 1.5rem; /* Spazio sotto la riga */
+    margin-bottom: 1.5rem;
 }
+
 .input-data-large {
     padding: 0.9rem 1.2rem;
     font-size: 1.1rem;
     border-radius: 8px;
     border: 2px solid #EAE6DF;
-    width: 100%; 
-    max-width: 100%; 
-    background-color: var(--colore-bianco);
-    color: var(--colore-testo-scuro);
+    width: 100%;
+    max-width: 100%;
+    background-color: #FFFFFF;
+    color: #1A1A1A;
     transition: border-color 0.3s;
 }
+
 .input-data-large:focus {
     outline: none;
-    border-color: var(--colore-secondario);
+    border-color: #D4C5B9;
 }
-/* Modificatore per form a colonna singola (Volontariato) */
+
 .input-data-full-width {
     display: block;
     width: 100%;
 }
 
-.lista-selezionati {
-    list-style: none;
-    margin: 1rem 0 2rem 0;
-    padding: 1rem;
-    background-color: #F9F8F6;
-    border-radius: 8px;
-    border: 1px dashed var(--colore-secondario);
-}
-.lista-selezionati li {
-    padding: 1rem 0.5rem; 
-    font-weight: 600;
-    color: var(--colore-primario);
-    border-bottom: 1px solid #EAE6DF;
-    display: flex;
-    align-items: center;
-}
-.lista-selezionati .nessun-gatto-selezionato {
-    color: #666;
-    font-style: italic;
-    font-weight: normal;
-    border-bottom: none;
-}
-
-/* ==========================================
-   FORM FASCE ORARIE (Banner Selezionabili)
-   ========================================== */
 .form-label-title {
     display: block;
     margin-bottom: 0.8rem;
@@ -780,31 +911,30 @@ button, input, select, textarea {
 
 .fasce-orarie-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 1rem;
     margin-top: 1rem;
 }
 
-/* Stile base del banner (label) */
 .fascia-oraria-label {
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 1rem; 
+    padding: 1.2rem;
     border: 2px solid #EAE6DF;
     border-radius: 8px;
-    background-color: var(--colore-bianco);
-    color: var(--colore-testo-scuro);
+    background-color: #FFFFFF;
+    color: #1A1A1A;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     flex: 1;
     min-width: 140px;
-    position: relative; /* Necessario per nascondere l'input */
+    position: relative;
+    font-size: 1.05rem;
 }
 
-/* Nasconde il checkbox nativo, ma lo mantiene accessibile */
 .fascia-oraria-label input[type="checkbox"] {
     position: absolute;
     opacity: 0;
@@ -812,24 +942,24 @@ button, input, select, textarea {
     height: 0;
 }
 
-/* Stile quando il checkbox è selezionato */
 .fascia-oraria-label input[type="checkbox"]:checked + span {
-    color: var(--colore-primario);
+    color: #1A3629;
 }
+
 .fascia-oraria-label:has(input[type="checkbox"]:checked) {
-    border-color: var(--colore-primario);
+    border-color: #1A3629;
     background-color: #E8F0EC;
     box-shadow: 0 4px 10px rgba(26, 54, 41, 0.1);
 }
 
-/* Stile disabilitato/Pieno */
 .fascia-oraria-label.pieno {
-    border-color: #f5c6c6;
+    border-color: #F5C6C6;
     background-color: #FDE8E8;
-    color: #a85454;
+    color: #A85454;
     cursor: not-allowed;
     opacity: 0.7;
 }
+
 .fascia-oraria-label.pieno::after {
     content: "AL COMPLETO 🚫";
     font-size: 0.85rem;
@@ -838,48 +968,68 @@ button, input, select, textarea {
     font-weight: 700;
 }
 
-/* Specifiche Pagina Volontariato */
-.volontariato-intro-wrapper { padding-top: 2rem; }
-.volontariato-header-mansioni { margin-top: 0; }
-.volontariato-form-wrapper { padding-top: 1rem; }
-.volontariato-prenotazione-box { margin-top: 0; }
+
+/* Pagina volontariato */
+
+.volontariato-intro-wrapper {
+    padding-top: 2rem;
+}
+
+.volontariato-header-mansioni {
+    margin-top: 0;
+}
+
+.volontariato-form-wrapper {
+    padding-top: 1rem;
+}
+
+.volontariato-prenotazione-box {
+    margin-top: 0;
+}
+
 .volontariato-header {
     margin-top: 2rem;
     margin-bottom: 3rem;
 }
+
 .volontariato-intro-content {
     display: flex;
     align-items: center;
-    gap: 4rem; 
+    gap: 4rem;
     margin: 0 auto;
-    max-width: 1050px; /* Allargato per fare spazio a un'immagine più grande */
+    max-width: 1050px;
     flex-wrap: wrap;
-    padding-bottom: 1rem; /* Ridotto lo spacing inferiore */
+    padding-bottom: 1rem;
 }
+
 .volontariato-intro-text {
-    flex: 1; /* Bilanciato a 50/50 per dare più spazio alla foto */
+    flex: 1;
     min-width: 300px;
     font-size: 1.1rem;
-    color: var(--colore-testo-scuro);
+    color: #1A1A1A;
     line-height: 1.8;
 }
+
 .testo-invito {
     font-weight: 700;
-    color: var(--colore-primario);
+    color: #1A3629;
     display: block;
     margin-top: 1.5rem;
 }
+
 .volontariato-intro-image {
-    flex: 1; /* Bilanciato a 50/50 */
+    flex: 1;
     min-width: 300px;
     text-align: center;
 }
+
 .volontariato-intro-image img {
     width: 100%;
-    max-width: 550px; /* Immagine più grande (prima era 400) */
+    max-width: 550px;
     border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08); /* Aggiunta ombra stile Home Page */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
+
 .msg-indirizzo {
     display: block;
     margin-top: 10px;
@@ -888,29 +1038,31 @@ button, input, select, textarea {
 }
 
 .volontariato-btn-wrapper {
-    margin-top: 3rem; /* Distanza perfetta dal testo corpo */
+    margin-top: 3rem;
     display: flex;
-    justify-content: center; /* Centratura assoluta e forzata */
+    justify-content: center;
     width: 100%;
 }
 
-/* Mansioni Volontariato */
 .ruoli-volontariato {
-    background-color: var(--colore-bianco);
-    padding-top: 2rem; /* Ridotto lo spacing superiore */
+    background-color: #FFFFFF;
+    padding-top: 2rem;
     padding-bottom: 5rem;
 }
+
 .ruoli-container {
     max-width: 1200px;
     margin: 0 auto;
 }
+
 .ruoli-grid {
     display: flex;
     gap: 2rem;
     flex-wrap: wrap;
 }
+
 .ruolo-card {
-    background-color: var(--colore-sfondo-chiaro);
+    background-color: #F5F5F0;
     padding: 2.5rem 2rem;
     border-radius: 12px;
     text-align: center;
@@ -922,80 +1074,125 @@ button, input, select, textarea {
     flex-direction: column;
     align-items: center;
 }
-.ruolo-card:hover { transform: translateY(-5px); }
+
+.ruolo-card:hover {
+    transform: translateY(-5px);
+}
+
 .ruolo-card h3 {
     font-size: 1.3rem;
-    color: var(--colore-testo-scuro);
+    color: #1A1A1A;
     margin-bottom: 1rem;
 }
+
 .ruolo-card p {
     font-size: 0.95rem;
-    color: #666;
+    color: #666666;
     line-height: 1.6;
 }
 
-/* ==========================================
-   8. FOOTER
-   ========================================== */
+
+/* Footer */
+
 .site-footer {
-    background-color: #152E22; 
-    color: #E8E5E1; 
+    background-color: #152E22;
+    color: #E8E5E1;
     padding-top: 4rem;
 }
+
 .footer-container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 auto 3rem;
     padding: 0 2rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 3rem;
-    margin-bottom: 3rem;
 }
-.footer-col h3 {
-    color: var(--colore-bianco);
+
+.footer-col h2 {
+    color: #FFFFFF;
     font-size: 1.2rem;
     margin-bottom: 1.5rem;
     font-weight: 700;
     letter-spacing: 0.5px;
-    border-bottom: 2px solid var(--colore-secondario);
+    border-bottom: 2px solid #D4C5B9;
     padding-bottom: 0.5rem;
     display: inline-block;
 }
+
 .footer-col p {
     font-size: 0.95rem;
     line-height: 1.6;
     color: #A3B5AE;
     margin-bottom: 1.5rem;
 }
-.footer-contact, .footer-links {
+
+.footer-col address {
+    font-style: normal;
+}
+
+.footer-contact,
+.footer-links,
+.footer-note-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-.footer-contact li, .footer-links li {
+
+.footer-contact li,
+.footer-links li,
+.footer-note-list li {
     font-size: 0.95rem;
     margin-bottom: 0.8rem;
     color: #A3B5AE;
 }
+
+.footer-contact a,
 .footer-links a {
     color: #A3B5AE;
     text-decoration: none;
+}
+
+.footer-contact a:hover,
+.footer-links a:hover {
+    color: #FFFFFF;
+}
+
+.footer-links a {
     font-size: 0.95rem;
     transition: color 0.3s, padding-left 0.3s;
     display: inline-block;
 }
+
 .footer-links a:hover {
-    color: var(--colore-bianco);
-    padding-left: 5px; 
+    padding-left: 5px;
 }
+
 .footer-container .footer-col:nth-child(2) {
     margin: 0 auto;
 }
+
+.footer-social {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding-left: 0.5rem;
+}
+
+.footer-social img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    opacity: 0.7;
+}
+
 .footer-bottom {
-    background-color: #0B1A12; 
+    background-color: #0B1A12;
     padding: 1.5rem 0;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
+
 .footer-bottom-content {
     max-width: 1200px;
     margin: 0 auto;
@@ -1003,71 +1200,53 @@ button, input, select, textarea {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     gap: 1rem;
 }
+
 .footer-bottom-content p {
     font-size: 0.85rem;
     color: #889C94;
     margin: 0;
 }
+
 .academic-credit {
     font-style: italic;
+    color: #D4C5B9;
 }
+
 .academic-credit strong {
-    color: var(--colore-secondario);
+    color: #D4C5B9;
 }
 
-/* Sezione Social Icons nel Footer (Sotto Esplora) */
-.footer-social {
-    display: flex;
-    justify-content: flex-start; 
-    gap: 1.5rem;
-    margin-top: 1.5rem; 
-    padding-left: 0.5rem; /* Sposta leggermente a destra per centrarle visivamente col testo sopra */
-}
 
-.footer-social a img {
-    width: 42px; /* Icone più grandi come richiesto */
-    height: 42px;
-    object-fit: contain;
-    opacity: 0.7; 
-    transition: all 0.3s ease;
-}
+/*
+ * Pagina Sostienici e FAQ
+ * Le regole vengono mantenute fino alla revisione della pagina
+ */
 
-.footer-social a:hover img {
-    opacity: 1; 
-    transform: translateY(-4px); 
-}
-
-/* ==========================================
-   9. PAGINA SOSTIENICI E FAQ
-   ========================================== */
-/* Assicura che le àncore non taglino i titoli */
 .scroll-anchor {
     scroll-margin-top: 4rem;
 }
 
-/* Layout Spaccato (Per Adozioni del Cuore) */
 .content-split {
     display: flex;
     align-items: center;
     gap: 4rem;
     flex-wrap: wrap;
-    max-width: 1100px; /* Allargato leggermente per far respirare il box */
-    margin: 0 auto;    
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
 .split-text {
-    flex: 1; /* Ridotto il flex per cedere spazio al box IBAN */
+    flex: 1;
     min-width: 300px;
-    text-align: left; 
+    text-align: left;
 }
 
-/* Titolo grande a sinistra (Stile Hero) */
 .split-title {
     font-size: 2.2rem;
-    color: var(--colore-testo-scuro);
+    color: #1A1A1A;
     margin-bottom: 1rem;
     font-weight: 700;
 }
@@ -1080,22 +1259,21 @@ button, input, select, textarea {
 }
 
 .split-box {
-    flex: 1.1; /* Box aumentato di larghezza */
+    flex: 1.1;
     min-width: 350px;
 }
 
-/* Box IBAN - Ora più basso (padding ridotto) e più largo */
 .info-bancarie-box {
-    background-color: var(--colore-bianco);
+    background-color: #FFFFFF;
     border: 1px solid #E8E5E1;
     border-radius: 20px;
-    padding: 2rem 2.5rem; /* Ridotto lo spazio verticale per abbassarlo */
+    padding: 2rem 2.5rem;
     text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .info-bancarie-box h4 {
-    color: var(--colore-primario);
+    color: #1A3629;
     font-size: 1.3rem;
     margin-bottom: 1rem;
     font-weight: 700;
@@ -1104,14 +1282,14 @@ button, input, select, textarea {
 .info-bancarie-box p {
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
-    color: #333;
+    color: #333333;
 }
 
 .iban-code {
     font-family: monospace;
     font-size: 1.2rem;
     font-weight: 700;
-    color: var(--colore-primario);
+    color: #1A3629;
     letter-spacing: 1px;
     background: #E8EDE9;
     padding: 0.8rem 1.2rem;
@@ -1120,7 +1298,6 @@ button, input, select, textarea {
     margin: 1rem 0;
 }
 
-/* Nuova area arrotondata per il 5x1000 (Simil Tasto) */
 .box-5x1000 {
     background-color: #F9F8F6;
     border-radius: 12px;
@@ -1128,12 +1305,11 @@ button, input, select, textarea {
     margin-top: 1rem;
     font-size: 0.95rem;
     line-height: 1.6;
-    color: #555;
+    color: #555555;
     border: 1px solid #EAE6DF;
     width: 100%;
 }
 
-/* Griglia Pacchetti Adozione a Distanza */
 .tier-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1142,9 +1318,8 @@ button, input, select, textarea {
     margin: 0 auto;
 }
 
-/* Card Beige (Bronzo e Oro) su sfondo bianco */
 .tier-card {
-    background-color: var(--colore-sfondo-chiaro);
+    background-color: #F5F5F0;
     border-radius: 16px;
     padding: 3rem 2rem;
     text-align: center;
@@ -1156,13 +1331,12 @@ button, input, select, textarea {
 
 .tier-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
 }
 
-/* Card Argento (Premium) - Sfondo bianco e bordo verde */
 .tier-card.premium-tier {
-    background-color: var(--colore-bianco);
-    border: 2px solid var(--colore-primario);
+    background-color: #FFFFFF;
+    border: 2px solid #1A3629;
     transform: scale(1.05);
     box-shadow: 0 10px 25px rgba(26, 54, 41, 0.1);
 }
@@ -1175,11 +1349,11 @@ button, input, select, textarea {
     width: 80px;
     height: 80px;
     object-fit: contain;
-    margin: 0 auto 1.5rem auto;
+    margin: 0 auto 1.5rem;
 }
 
 .tier-card h3 {
-    color: var(--colore-testo-scuro);
+    color: #1A1A1A;
     font-size: 1.4rem;
     margin-bottom: 0.5rem;
 }
@@ -1187,56 +1361,54 @@ button, input, select, textarea {
 .tier-price {
     font-size: 1.8rem;
     font-weight: 700;
-    color: var(--colore-primario);
+    color: #1A3629;
     margin-bottom: 1.5rem;
 }
 
 .tier-price span {
     font-size: 1rem;
-    color: #666;
+    color: #666666;
     font-weight: 400;
 }
 
 .tier-features {
     text-align: left;
     margin-bottom: 2rem;
-    padding-left: 1.5rem; 
+    padding-left: 1.5rem;
 }
 
 .tier-features li {
     margin-bottom: 0.8rem;
-    color: #555;
+    color: #555555;
     font-size: 0.95rem;
-    list-style-type: disc; 
+    list-style-type: disc;
     line-height: 1.4;
 }
 
-/* Banner Email Adozioni a Distanza (Stile Alert) */
 .tier-footer-text {
-    margin: 4rem auto 0 auto; 
-    max-width: 800px; 
-    background-color: #E8F0EC; 
-    border: 1px solid #A3B5AE; 
+    margin: 4rem auto 0;
+    max-width: 800px;
+    background-color: #E8F0EC;
+    border: 1px solid #A3B5AE;
     padding: 1.2rem 2rem;
-    border-radius: 8px; 
+    border-radius: 8px;
     text-align: center;
-    color: var(--colore-testo-scuro);
-    font-size: 0.95rem; /* Ridotto per essere coerente col resto del sito */
+    color: #1A1A1A;
+    font-size: 0.95rem;
 }
 
-/* Stile per l'email evidenziata nel banner */
 .tier-footer-link {
-    color: var(--colore-primario);
+    color: #1A3629;
     font-weight: 700;
     text-decoration: underline;
     text-underline-offset: 3px;
-    transition: color 0.3s ease;
-}
-.tier-footer-link:hover {
-    color: #9c8a7b; /* Beige al passaggio del mouse */
+    transition: color 0.3s;
 }
 
-/* Banner Elegante per Donazioni Materiali e Contatti */
+.tier-footer-link:hover {
+    color: #9C8A7B;
+}
+
 .donazioni-orizzontali {
     max-width: 900px;
     margin: 0 auto;
@@ -1247,10 +1419,10 @@ button, input, select, textarea {
     display: flex;
     justify-content: space-between;
     gap: 2rem;
-    background-color: var(--colore-bianco);
+    background-color: #FFFFFF;
     padding: 3rem 2rem;
-    border-radius: 20px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06); 
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
     border: 1px solid #E8E5E1;
     flex-wrap: wrap;
 }
@@ -1271,24 +1443,23 @@ button, input, select, textarea {
 }
 
 .contact-banner-item strong {
-    color: var(--colore-primario);
+    color: #1A3629;
     font-size: 1.1rem;
 }
 
 .contact-banner-item span {
-    color: #666;
+    color: #666666;
     font-size: 0.95rem;
     line-height: 1.6;
 }
 
-/* FAQ Accordion (Espandibile) */
 .faq-accordion {
     max-width: 800px;
     margin: 0 auto;
 }
 
 .faq-accordion details {
-    background-color: var(--colore-sfondo-chiaro); /* Sfondo beige per le card stesse */
+    background-color: #F5F5F0;
     border: 1px solid #EAE6DF;
     border-radius: 8px;
     margin-bottom: 1rem;
@@ -1297,13 +1468,13 @@ button, input, select, textarea {
 }
 
 .faq-accordion details:hover {
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
 }
 
 .faq-accordion summary {
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--colore-primario);
+    color: #1A3629;
     cursor: pointer;
     list-style: none;
     position: relative;
@@ -1318,7 +1489,7 @@ button, input, select, textarea {
     top: 50%;
     transform: translateY(-50%);
     font-size: 0.8rem;
-    color: var(--colore-secondario);
+    color: #D4C5B9;
     transition: transform 0.3s ease;
 }
 
@@ -1332,75 +1503,408 @@ button, input, select, textarea {
 
 .faq-accordion p {
     margin-top: 1rem;
-    color: #666;
+    color: #666666;
     font-size: 0.95rem;
     line-height: 1.6;
     border-top: 1px solid #E8E5E1;
     padding-top: 1rem;
 }
 
-/* ==========================================
-   CLASSI DI SUPPORTO TESTI E FORM (Niente stili inline)
-   ========================================== */
 
-/* Testo orari sotto il titolo (ospiti.php) */
+/* Classi di supporto per testi e form */
+
+.fw-bold {
+    font-weight: 700 !important;
+    color: inherit;
+    font-size: inherit;
+}
+
+.fw-bold-primary {
+    font-weight: 700 !important;
+    color: #1A3629 !important;
+}
+
 .orari-visita-text {
     font-size: 0.95rem;
     font-weight: 600;
-    color: var(--colore-primario);
+    color: #1A3629;
     text-align: center;
-    margin-top: 0.5rem; /* Stesso spacing del sottotitolo precedente */
+    margin-top: 0.5rem;
     margin-bottom: 2rem;
 }
 
-/* Label del checkbox Ricordami (login.php) */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 1rem;
+    margin-bottom: 0.2rem;
+}
+
+.checkbox-group input {
+    margin: 0 !important;
+    width: auto !important;
+    cursor: pointer;
+}
+
 .checkbox-label {
     margin: 0;
     font-weight: 400;
 }
 
-/* Testo di passaggio tra Login e Registrazione */
+.cookie-disclaimer {
+    font-size: 0.75rem;
+    color: #888888;
+    display: block;
+    line-height: 1.3;
+    margin-bottom: 1.5rem;
+}
+
 .form-switch-text {
     margin-top: 1.5rem;
     margin-bottom: 1rem;
     font-size: 0.95rem;
-    color: #666;
+    color: #666666;
 }
 
-/* Link contatti pulito */
 .contact-link {
-    color: var(--colore-primario);
+    color: #1A3629;
     font-weight: 700;
     text-decoration: underline;
     text-underline-offset: 2px;
     transition: color 0.3s ease;
 }
+
 .contact-link:hover {
-    color: #D4C5B9; /* Il colore Beige/Panna al passaggio del mouse */
+    color: #D4C5B9;
 }
 
-/* Rifiniture Form (Login, Registrazione, Ospiti) */
 .lista-selezionati {
-    max-width: 500px; /* Stringe il box dei gatti selezionati */
-    margin: 1.5rem auto 2rem auto;
+    width: 100%;
+    max-width: 100%;
+    margin: 1.5rem 0 2rem;
     padding: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
+.nessun-gatto-selezionato {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .form-hint {
-    font-size: 0.85rem; /* Molto più piccolo della label */
-    color: #888;        /* Grigio più chiaro per non confondersi col testo inserito */
+    font-size: 0.8rem;
+    color: #888888;
     margin-top: 0.4rem;
     display: block;
     line-height: 1.4;
     font-weight: 400;
 }
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 1.5rem 0;
+
+
+/*
+ * Schermi intermedi
+ * La navigazione passa su una seconda riga quando lo spazio orizzontale diminuisce.
+ * Media query essenziale per garantire un Layout Fluido (Fluid Layout).
+ */
+
+@media screen and (max-width: 68rem) {
+    .header-container {
+        flex-wrap: wrap;
+        row-gap: 1.25rem;
+    }
+
+    .main-nav,
+    .main-nav.nav-admin-logged {
+        order: 3;
+        width: 100%;
+        margin: 0;
+    }
+
+    .main-nav ul,
+    .main-nav.nav-admin-logged ul {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem 2rem;
+    }
 }
-.checkbox-group input {
-    margin: 0 !important;
-    width: auto !important;
-    cursor: pointer;
+
+
+/*
+ * Tablet e smartphone
+ * I contenuti affiancati vengono ridisposti incolonnati per assecondare la
+ * lettura in verticale (Mobile-First pattern per la riorganizzazione dello spazio).
+ */
+
+@media screen and (max-width: 48rem) {
+    .page-wrapper {
+        padding: 3rem 1.25rem 4rem;
+    }
+
+    .section-padding {
+        padding: 4rem 1.25rem;
+    }
+
+    .section-header {
+        margin-bottom: 2.5rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.9rem;
+    }
+
+
+    /* Header */
+
+    .header-container {
+        padding: 0 1.25rem;
+    }
+
+    .user-area {
+        flex-wrap: wrap;
+        white-space: normal;
+    }
+
+    .btn-admin {
+        margin-right: 0;
+    }
+
+
+    /* Home */
+
+    .home-hero {
+        gap: 2.5rem;
+        padding: 4rem 1.25rem;
+    }
+
+    .home-hero-text,
+    .home-hero-image {
+        min-width: 0;
+        flex-basis: 100%;
+    }
+
+    .home-hero-text h1 {
+        font-size: 2.4rem;
+    }
+
+    .home-hero-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .adoption-steps-wrapper {
+        padding: 0 1.25rem 2rem;
+    }
+
+    .adoption-steps {
+        padding: 3rem 1.5rem;
+    }
+
+    .adoption-grid {
+        flex-direction: column;
+    }
+
+    .gatti-grid-2 {
+        grid-template-columns: minmax(0, 1fr);
+        max-width: 350px;
+    }
+
+    .card-gatto-premium {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .emergency-text,
+    .emergency-image {
+        min-width: 0;
+        flex-basis: 100%;
+    }
+
+
+    /* Form */
+
+    .filtri-ricerca {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .input-ricerca {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .select-ordinamento {
+        width: 100%;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .fasce-orarie-container {
+        flex-wrap: wrap;
+    }
+
+
+    /* Sostegno e volontariato */
+
+    .content-split {
+        flex-direction: column;
+    }
+
+    .split-text,
+    .split-box {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .tier-card.premium-tier,
+    .tier-card.premium-tier:hover {
+        transform: none;
+    }
+
+
+    /* Footer */
+
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-container .footer-col:nth-child(2) {
+        margin: 0;
+    }
+
+    .footer-bottom-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+
+/* Smartphone con larghezza ridotta */
+
+@media screen and (max-width: 36rem) {
+    .home-hero-text h1 {
+        font-size: 2rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.7rem;
+    }
+
+    .adoption-steps {
+        padding: 2.5rem 1rem;
+    }
+
+    .emergency-text {
+        padding: 2.5rem 1.25rem;
+    }
+
+    .prenotazione-wrapper {
+        padding: 2rem 1rem;
+    }
+
+    .fasce-orarie-container {
+        flex-direction: column;
+    }
+
+    .fascia-oraria-label {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .lista-selezionati,
+    .nessun-gatto-selezionato {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+    }
+
+    .auth-wrapper {
+        padding: 2rem 1rem;
+    }
+
+    .auth-card {
+        padding: 2rem 1.25rem;
+    }
+}
+
+
+/* 
+ * Riduzione delle animazioni in base alle preferenze del dispositivo.
+ * Fondamentale per l'Accessibilità (Prevenzione di stress visivo per utenti
+ * sensibili ai movimenti).
+ */
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+
+/*
+ * Versione destinata alla stampa
+ * Vengono eliminati gli elementi utili soltanto alla navigazione per
+ * risparmiare inchiostro ed esaltare i contenuti di base.
+ */
+
+@media print {
+    body {
+        background: #FFFFFF;
+        color: #000000;
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .site-header,
+    .site-footer,
+    .paw-divider,
+    .home-hero-buttons,
+    .btn-solid-dark,
+    .btn-outline,
+    .btn-outline-dark,
+    .btn-admin,
+    .scopri-link {
+        display: none;
+    }
+
+    main,
+    .page-wrapper,
+    .section-padding {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .adoption-steps,
+    .card-gatto-premium,
+    .emergency-container,
+    .ruolo-card,
+    .tier-card,
+    .prenotazione-wrapper,
+    .auth-card {
+        box-shadow: none;
+        break-inside: avoid;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    a {
+        color: #000000;
+        text-decoration: underline;
+    }
 }

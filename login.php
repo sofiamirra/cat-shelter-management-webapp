@@ -97,13 +97,13 @@ require 'includes/header.php';
                 <span class="errore-js" id="err-password"></span>
             </div>
 
-            <!-- Checkbox pulito senza inline CSS -->
+            <!-- Checkbox riallineato con Disclaimer -->
             <div class="form-group checkbox-group">
                 <input type="checkbox" id="ricordami" name="ricordami" <?php if(!empty($username_precompilato)) echo 'checked'; ?>>
                 <label for="ricordami" class="checkbox-label">Ricordami per 72 ore</label>
             </div>
+            <span class="cookie-disclaimer">Spuntando la casella acconsenti all'uso dei cookie per mantenere l'accesso.</span>
 
-            <!-- Bottoni centrati -->
             <div class="text-center mt-2">
                 <button type="submit" class="btn-solid-dark w-100">Accedi</button>
                 <p class="form-switch-text">Non hai ancora un account?</p>

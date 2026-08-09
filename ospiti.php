@@ -52,7 +52,8 @@ require 'includes/header.php';
             
             <div class="prenotazione-header text-center mb-2">
                 <h2>Prenota una visita in struttura</h2>
-                <p class="header-subtitle mb-2">Seleziona uno o più gatti dalle <strong>card in basso</strong> per compilare la tua richiesta.</p>
+                <!-- Rimossi i margin bottom eccessivi per uniformare lo spazio -->
+                <p class="header-subtitle" style="margin-bottom: 0.5rem;">Seleziona uno o più gatti dalle <strong>card in basso</strong> per compilare la tua richiesta.</p>
                 <p class="orari-visita-text">Le visite si effettuano tutti i giorni dalle 10:30 alle 17:30.</p>
             </div>
 

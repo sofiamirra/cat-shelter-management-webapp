@@ -124,21 +124,22 @@ require 'includes/header.php';
             </p>
         </header>
 
-        <!-- Tolto il testo inutile, lasciato solo il banner contatti -->
         <div class="donazioni-orizzontali">
-        <div class="contact-banner">
+            <p>
+            Vuoi aiutare il rifugio senza adottare? Dona cibo, coperte, farmaci o accessori e contribuisci alle necessità quotidiane dei nostri ospiti.
+            </p>
+            
+            <div class="contact-banner">
                 <div class="contact-banner-item">
                     <span class="contact-icon">📍</span>
                     <strong>Punto di Raccolta</strong>
-                    <!-- Tolto il grassetto gigante -->
-                    <span>I volontari ritirano i vostri aiuti in<br>Via Roma 123, 10100 Torino (TO)</span>
+                    <span>I volontari ritirano i vostri aiuti in<br><span class="fw-bold">Via Roma 123, 10100 Torino (TO)</span></span>
                 </div>
                 
                 <div class="contact-banner-item">
                     <span class="contact-icon">🕒</span>
                     <strong>Orari di Ritiro</strong>
-                    <!-- Tolto il grassetto gigante -->
-                    <span>Tutti i giorni, 16:00 - 18:00<br>(senza appuntamento)</span>
+                    <span><span class="fw-bold">Tutti i giorni, 16:00 - 18:00</span><br>(senza appuntamento)</span>
                 </div>
                 
                 <div class="contact-banner-item">
@@ -147,7 +148,7 @@ require 'includes/header.php';
                     <span>+39 011 123 4567<br><a href="mailto:info@parcodellefusa.it" class="contact-link">info@parcodellefusa.it</a></span>
                 </div>
             </div>
-
+        </div>
     </div>
 </section>
 

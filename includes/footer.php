@@ -1,54 +1,63 @@
-</main> <!-- Chiusura del tag main aperto negli header -->
+<?php
+/*
+ * Piè di pagina comune del sito
+ * Chiude il tag principale del documento e organizza le informazioni di supporto. 
+ */
+?>
+</main>
 
+<!-- Piè di pagina comune -->
 <footer class="site-footer">
     <div class="footer-container">
-        
-        <!-- Colonna 1: Info Gattile -->
-        <div class="footer-col">
-            <h3>Il Parco delle Fusa</h3>
-            <p>Doniamo una seconda occasione ai felini in difficoltà. Un ambiente sicuro, cure mediche e tanto amore in attesa di una famiglia.</p>
-            <ul class="footer-contact">
-                <li>📍 Via Roma 123, 10100 Torino (TO)</li>
-                <li>📧 info@parcodellefusa.it</li>
-                <li>📞 +39 011 123 4567</li>
-            </ul>
-        </div>
 
-        <!-- Colonna 2: Esplora (Centrale) -->
-        <div class="footer-col">
-            <h3>Esplora</h3>
+        <!-- Informazioni e recapiti del gattile -->
+        <section class="footer-col">
+            <h2>Il Parco delle Fusa</h2>
+
+            <p>Doniamo una seconda occasione ai felini in difficoltà. Un ambiente sicuro, cure mediche e tanto amore in attesa di una famiglia.</p>
+
+            <address>
+                <ul class="footer-contact">
+                    <li><span aria-hidden="true">📍</span> Via Roma 123, 10100 Torino (TO)</li>
+                    <li><span aria-hidden="true">📧</span> <a href="mailto:info@parcodellefusa.it">info@parcodellefusa.it</a></li>
+                    <li><span aria-hidden="true">📞</span> <a href="tel:+390111234567">+39 011 123 4567</a></li>
+                </ul>
+            </address>
+        </section>
+
+        <!-- Navigazione secondaria -->
+        <section class="footer-col">
+            <h2>Esplora</h2>
+
             <ul class="footer-links">
                 <li><a href="home.php">Home</a></li>
                 <li><a href="ospiti.php">I Nostri Ospiti</a></li>
                 <li><a href="volontariato.php">Diventa Volontario</a></li>
                 <li><a href="sostienici.php">Sostienici</a></li>
             </ul>
-            
-            <!-- Icone Social inserite in modo sicuro DENTRO la colonna -->
-            <div class="footer-social">
-                <a href="#" aria-label="Seguici su Instagram">
-                    <img src="assets/img/icona_instagram.png" alt="Instagram">
-                </a>
-                <a href="#" aria-label="Seguici su Facebook">
-                    <img src="assets/img/icona_facebook.png" alt="Facebook">
-                </a>
-            </div>
-        </div>
 
-        <!-- Colonna 3: Note Legali -->
-        <div class="footer-col">
-            <h3>Note Legali</h3>
-            <ul class="footer-links">
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Cookie Policy</a></li>
-                <li><a href="#">Termini e Condizioni</a></li>
-                <li><a href="#">Statuto Associazione</a></li>
+            <!-- Icone come contenuto informativo per indisponibilità URL reali -->
+            <div class="footer-social">
+                <img src="assets/img/icona_instagram.png" alt="Instagram">
+                <img src="assets/img/icona_facebook.png" alt="Facebook">
+            </div>
+        </section>
+
+        <!-- Informazioni legali -->
+        <section class="footer-col">
+            <h2>Note Legali</h2>
+
+            <ul class="footer-note-list">
+                <li>Privacy Policy</li>
+                <li>Cookie Policy</li>
+                <li>Termini e Condizioni</li>
+                <li>Statuto Associazione</li>
             </ul>
-        </div>
+        </section>
 
     </div>
 
-    <!-- Barra inferiore con scritte affiancate (Ora tornerà normale!) -->
+    <!-- Informazioni conclusive sul progetto -->
     <div class="footer-bottom">
         <div class="footer-bottom-content">
             <p>&copy; 2026 Il Parco delle Fusa. Tutti i diritti riservati.</p>

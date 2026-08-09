@@ -1,49 +1,67 @@
 <?php
-/**
- * Configurazione della connessione al database MySQL.
- * Gestisce la connessione differenziata in base al ruolo utente.
+/*
+ * Configurazione centralizzata delle connessioni MySQL
+ * Le credenziali cambiano in base ai privilegi necessari alla pagina
  */
 
-// Abilita la gestione rigorosa delle eccezioni mysqli
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+// Gli errori MySQLi vengono controllati direttamente nel codice
+mysqli_report(MYSQLI_REPORT_OFF);
 
-function get_db_connection($role = 'lecture') {
-    // Parametri di connessione locali per il server MAMP
+function get_db_connection($role = 'lecture')
+{
+    // Parametri della connessione locale MAMP
     $host = '127.0.0.1';
     $db_name = 'gattile_db';
-    $port = 8889; 
-    
-    // Seleziona le credenziali in base al tipo di accesso
+    $port = 8889;
+
+    // Selezione dell'utente MySQL in base alle operazioni richieste
     switch ($role) {
         case 'modifier':
-            // Privilegi di lettura e scrittura 
+            // Utente con privilegi di lettura e modifica
             $user = 'modifier';
             $password = 'Str0ng#Admin9';
             break;
+
         case 'registrator':
-            // Privilegi limitati al solo inserimento nella tabella utenti
+            // Utente dedicato all'inserimento dei nuovi utenti
             $user = 'registrator';
             $password = 'ToB31nsert?';
             break;
+
         case 'lecture':
         default:
-            // Privilegi di sola lettura
+            // Utente con privilegi di sola lettura
             $user = 'lecture';
             $password = 'P@ssw0rd!';
             break;
     }
 
-    try {
-        // Tentativo di apertura della connessione con i parametri specificati
-        $con = mysqli_connect($host, $user, $password, $db_name, $port);
-        // Imposta la codifica della connessione a UTF-8
-        mysqli_set_charset($con, "utf8mb4");
-        return $con;
-    } catch (mysqli_sql_exception $e) {
-        // Gestione degli errori per evitare la propagazione di eccezioni non gestite
-        error_log("Errore di connessione al database: " . $e->getMessage());
-        die("Impossibile connettersi al database.");
+    // Apertura della connessione con le credenziali selezionate
+    $con = mysqli_connect($host, $user, $password, $db_name, $port);
+
+    if (!$con) {
+        // Il dettaglio tecnico viene registrato nel log del server
+        error_log(
+            'Errore di connessione MySQL per l\'utente '
+            . $user
+            . ': '
+            . mysqli_connect_error()
+        );
+
+        die('Impossibile connettersi al database');
     }
+
+    // Imposta UTF-8 completo per la corretta gestione dei dati testuali
+    if (!mysqli_set_charset($con, 'utf8mb4')) {
+        error_log(
+            'Errore durante l\'impostazione della codifica: '
+            . mysqli_error($con)
+        );
+
+        mysqli_close($con);
+        die('Impossibile configurare correttamente la connessione al database');
+    }
+
+    return $con;
 }
 ?>
-
