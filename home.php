@@ -29,46 +29,48 @@ require 'includes/header.php';
 </section>
 
 <!-- Processo di adozione -->
-<section class="adoption-steps-wrapper" aria-label="Step di Adozione">
+<section class="adoption-steps-wrapper section-padding" aria-label="Step di Adozione">
     <div class="adoption-steps">
-
-        <header class="section-header w-100">
+        <header class="section-header">
             <h2>Scopri Come Adottare</h2>
 
-            <!-- aria-hidden="true" esclude elementi puramente decorativi dai lettori di schermo -->
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
                 <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
                 <span class="line"></span>
             </div>
+
+            <p class="header-subtitle">Pochi semplici passi per accogliere un felino in famiglia.</p>
         </header>
 
-        <div class="adoption-grid w-100">
-            <article class="step">
-                <div class="step-icon">
-                    <img src="assets/img/icona_innamorati.png" alt="">
-                </div>
-                <h3>1. Innamorati</h3>
-                <p>Esplora la nostra galleria ospiti e trova il compagno di vita perfetto per te.</p>
-            </article>
+        <!-- I tre passaggi vengono raccolti in un unico contenitore beige -->
+        <div class="adoption-steps-box">
+            <div class="adoption-grid">
+                <article class="step">
+                    <div class="step-icon">
+                        <img src="assets/img/icona_innamorati.png" alt="">
+                    </div>
+                    <h3>1. Innamorati</h3>
+                    <p>Esplora la nostra galleria ospiti e trova il compagno di vita perfetto per te.</p>
+                </article>
 
-            <article class="step">
-                <div class="step-icon">
-                    <img src="assets/img/icona_incontralo.png" alt="">
-                </div>
-                <h3>2. Incontralo</h3>
-                <p>Seleziona i mici che ti interessano e prenota un incontro conoscitivo.</p>
-            </article>
+                <article class="step">
+                    <div class="step-icon">
+                        <img src="assets/img/icona_incontralo.png" alt="">
+                    </div>
+                    <h3>2. Incontralo</h3>
+                    <p>Seleziona i mici che ti interessano e prenota un incontro conoscitivo.</p>
+                </article>
 
-            <article class="step">
-                <div class="step-icon">
-                    <img src="assets/img/icona_casa.png" alt="">
-                </div>
-                <h3>3. Portalo a Casa</h3>
-                <p>Completa l'iter di adozione responsabile e regalagli una famiglia per sempre.</p>
-            </article>
+                <article class="step">
+                    <div class="step-icon">
+                        <img src="assets/img/icona_casa.png" alt="">
+                    </div>
+                    <h3>3. Portalo a Casa</h3>
+                    <p>Completa le pratiche di adozione e regalagli una famiglia per sempre.</p>
+                </article>
+            </div>
         </div>
-
     </div>
 </section>
 
