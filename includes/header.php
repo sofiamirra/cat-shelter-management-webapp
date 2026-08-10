@@ -23,7 +23,8 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
 
     <title>Il Parco delle Fusa - Gattile</title>
 
-    <link rel="icon" type="image/png" href="assets/img/favicon.png">
+    <link rel="icon" type="image/png" href="assets/img/favicon_parco.png">
+    <link rel="apple-touch-icon" href="assets/img/favicon_parco.png">
 
     <!-- Preconnect ottimizza i tempi di caricamento DNS per i font esterni -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

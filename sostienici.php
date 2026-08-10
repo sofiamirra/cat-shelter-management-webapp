@@ -1,66 +1,60 @@
 <?php
-session_start();
+/*
+ * Pagina dedicata alle modalità di sostegno al rifugio
+ * Presenta adozioni del cuore, adozioni a distanza, donazioni materiali e FAQ
+ */
+
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
 require 'includes/header.php';
 ?>
 
-<!-- ==========================================
-     HERO & ADOZIONI DEL CUORE
-     ========================================== -->
-<div class="page-wrapper" style="padding-bottom: 4rem;">
-    
-    <!-- Testo Introduttivo Generale -->
-    <div class="section-header" style="margin-bottom: 2rem;">
+<!-- Introduzione e Adozioni del Cuore -->
+<div class="page-wrapper sostienici-page-wrapper">
+    <header class="section-header sostienici-main-header">
         <h2>Sostieni il Parco delle Fusa</h2>
-        <div class="paw-divider">
-            <div class="line"></div>
-            <i class="paw">🐾</i>
-            <div class="line"></div>
+        <div class="paw-divider" aria-hidden="true">
+            <span class="line"></span>
+            <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
+            <span class="line"></span>
         </div>
-        <p class="header-subtitle">
-            Il nostro gattile si sostiene solo grazie al cuore di persone come te. Aiutaci a garantire pappe, cure mediche e un rifugio caldo ai mici sfortunati.
-        </p>
-    </div>
+        <p class="header-subtitle">Il nostro gattile si sostiene solo grazie al cuore di persone come te. Aiutaci a garantire pappe, cure mediche e un rifugio caldo ai mici sfortunati.</p>
+    </header>
 
-<!-- Sezione 1: Adozioni del Cuore -->
-<section id="adozioni-cuore" class="scroll-anchor" style="padding-top: 2rem;">
+    <!-- Adozioni del Cuore -->
+    <section id="adozioni-cuore" class="scroll-anchor sostienici-cuore-section">
         <div class="content-split">
-            
-            <!-- Colonna Testo (Con titolo integrato a sinistra) -->
             <div class="split-text">
                 <h2 class="split-title">Adozioni del Cuore</h2>
                 <p>Sostieni cure e terapie per gatti con disabilità o patologie, aiutandoli a ricevere l'assistenza necessaria. Le Adozioni del Cuore sono dedicate ai nostri ospiti più fragili, che possono avere maggiori difficoltà nel trovare una famiglia. Puoi contribuire alle loro cure con una donazione libera, senza un importo minimo. Ogni contributo aiuta a garantire le cure necessarie e una migliore qualità di vita.</p>
             </div>
 
-            <!-- Colonna Box IBAN (Più largo e compatto) -->
             <div class="split-box info-bancarie-box">
                 <h4>Coordinate per la donazione</h4>
                 <p><strong>Intestato a:</strong> Parco delle Fusa - Torino</p>
                 <p><strong>Causale:</strong> Erogazione liberale - Adozione del Cuore</p>
-                
                 <div class="iban-code">IT12 A345 6789 0123 4567 8901 234</div>
-                
-                <!-- Nuovo Finto Tasto / Area Arrotondata per 5x1000 -->
+
                 <div class="box-5x1000">
                     Puoi anche destinare il tuo <strong>5x1000</strong><br>
                     indicando il Codice Fiscale: <strong>90012345678</strong>
                 </div>
             </div>
-            
         </div>
     </section>
-
 </div>
 
-<!-- ==========================================
-     SEZIONE 2: ADOZIONI A DISTANZA 
-     ========================================== -->
-<section id="adozioni-distanza" class="scroll-anchor section-padding" style="background-color: var(--colore-bianco);">
+<!-- Adozioni a Distanza -->
+<section id="adozioni-distanza" class="scroll-anchor section-padding sostienici-section-white">
     <div class="ruoli-container">
-        
         <header class="section-header">
             <h2>Adozioni a Distanza</h2>
-            <div class="paw-divider">
-                <span class="line"></span><span class="paw">🐾</span><span class="line"></span>
+            <div class="paw-divider" aria-hidden="true">
+                <span class="line"></span>
+                <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
+                <span class="line"></span>
             </div>
             <p class="header-subtitle">Non puoi portare un micio a casa? Diventa il suo angelo custode fino all'adozione scegliendo uno dei nostri piani di supporto mensile.</p>
         </header>
@@ -109,41 +103,35 @@ require 'includes/header.php';
     </div>
 </section>
 
-<!-- ==========================================
-     SEZIONE 3: DONAZIONI MATERIALI
-     ========================================== -->
-<section id="donazioni" class="scroll-anchor section-padding" style="background-color: var(--colore-sfondo-chiaro);">
+<!-- Donazioni Materiali -->
+<section id="donazioni" class="scroll-anchor section-padding sostienici-section-beige">
     <div class="ruoli-container">
-        
         <header class="section-header">
             <h2>Donazioni Materiali</h2>
-            <div class="paw-divider">
-                <span class="line"></span><span class="paw">🐾</span><span class="line"></span>
+            <div class="paw-divider" aria-hidden="true">
+                <span class="line"></span>
+                <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
+                <span class="line"></span>
             </div>
-            <p class="header-subtitle">Vuoi aiutare il rifugio senza adottare? Dona cibo, coperte, farmaci o accessori e contribuisci alle necessità quotidiane dei nostri ospiti.
-            </p>
+            <p class="header-subtitle">Vuoi aiutare il rifugio senza adottare? Dona cibo, coperte, farmaci o accessori e contribuisci alle necessità quotidiane dei nostri ospiti.</p>
         </header>
 
         <div class="donazioni-orizzontali">
-            <p>
-            Vuoi aiutare il rifugio senza adottare? Dona cibo, coperte, farmaci o accessori e contribuisci alle necessità quotidiane dei nostri ospiti.
-            </p>
-            
             <div class="contact-banner">
                 <div class="contact-banner-item">
-                    <span class="contact-icon">📍</span>
+                    <img src="assets/img/icona_posizione_scura.png" alt="" class="contact-icon-img">
                     <strong>Punto di Raccolta</strong>
-                    <span>I volontari ritirano i vostri aiuti in<br><span class="fw-bold">Via Roma 123, 10100 Torino (TO)</span></span>
+                    <span>I volontari ritirano i vostri aiuti in<br>Strada Val Salice 123, Torino</span>
                 </div>
-                
+
                 <div class="contact-banner-item">
-                    <span class="contact-icon">🕒</span>
+                    <img src="assets/img/icona_orari.png" alt="" class="contact-icon-img">
                     <strong>Orari di Ritiro</strong>
-                    <span><span class="fw-bold">Tutti i giorni, 16:00 - 18:00</span><br>(senza appuntamento)</span>
+                    <span>Tutti i giorni, 16:00 - 18:00<br>(senza appuntamento)</span>
                 </div>
-                
+
                 <div class="contact-banner-item">
-                    <span class="contact-icon">📞</span>
+                    <img src="assets/img/icona_telefono_scuro.png" alt="" class="contact-icon-img">
                     <strong>Contatti</strong>
                     <span>+39 011 123 4567<br><a href="mailto:info@parcodellefusa.it" class="contact-link">info@parcodellefusa.it</a></span>
                 </div>
@@ -152,22 +140,19 @@ require 'includes/header.php';
     </div>
 </section>
 
-<!-- ==========================================
-     SEZIONE 4: F.A.Q. 
-     (Sfondo bianco forzato per spezzare dal beige sopra)
-     ========================================== -->
-<section class="scroll-anchor section-padding" style="background-color: var(--colore-bianco);">
+<!-- F.A.Q. -->
+<section class="scroll-anchor section-padding sostienici-section-white">
     <div class="ruoli-container">
-        
         <header class="section-header">
             <h2>F.A.Q. - Domande Frequenti</h2>
-            <div class="paw-divider">
-                <span class="line"></span><span class="paw">🐾</span><span class="line"></span>
+            <div class="paw-divider" aria-hidden="true">
+                <span class="line"></span>
+                <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
+                <span class="line"></span>
             </div>
         </header>
 
         <div class="faq-accordion">
-            
             <details>
                 <summary>Come mi preparo all'arrivo del micio a casa?</summary>
                 <p>Prepara una stanza sicura e tranquilla, con lettiera, ciotole distanti dalla lettiera, tiragraffi e nascondigli. Lascia che il gatto esplori gradualmente la casa, rispettando i suoi tempi e permettendogli di ambientarsi senza forzature.</p>
@@ -192,7 +177,6 @@ require 'includes/header.php';
                 <summary>Cosa succede se l'inserimento non funziona?</summary>
                 <p>Non sarai lasciato solo. I nostri volontari con esperienza nel comportamento felino offrono supporto e consulenze anche dopo l’adozione. Se l’incompatibilità dovesse risultare insuperabile, il gatto resterà sempre sotto la nostra tutela.</p>
             </details>
-
         </div>
     </div>
 </section>

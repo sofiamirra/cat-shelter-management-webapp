@@ -1,9 +1,6 @@
 /*
  * Foglio di stile globale del progetto
- * Gestisce grafica, layout delle pagine e adattamento ai diversi dispositivi.
- * Il CSS è strutturato secondo il principio del Responsive Web Design. 
- * I colori esadecimali sono implementati direttamente nelle classi per
- * garantire massima compatibilità retroattiva cross-browser (Backward Compatibility).
+ * Gestisce l'aspetto delle pagine, i layout responsive e la versione di stampa
  *
  * Verde principale: #1A3629
  * Verde scuro: #0B251C
@@ -14,7 +11,7 @@
  */
 
 
-/* Impostazioni generali: Reset degli stili di default */
+/* Impostazioni generali */
 
 * {
     box-sizing: border-box;
@@ -22,7 +19,6 @@
     padding: 0;
 }
 
-/* Attivazione scorrimento fluido per migliorare la User Experience sulle ancore */
 html {
     scroll-behavior: smooth;
 }
@@ -41,7 +37,6 @@ main {
     width: 100%;
 }
 
-/* I controlli dei form ereditano il font principale del sito */
 button,
 input,
 select,
@@ -50,9 +45,7 @@ textarea {
 }
 
 
-/* Focus visibile durante la navigazione tramite tastiera.
- * Intervento cruciale per l'accessibilità (A11y) in conformità alle direttive WCAG.
- */
+/* Focus visibile durante la navigazione tramite tastiera */
 
 a:focus-visible,
 button:focus-visible,
@@ -65,7 +58,7 @@ summary:focus-visible {
 }
 
 
-/* Classi di supporto per il controllo dei layout e del dimensionamento */
+/* Classi di supporto */
 
 .page-wrapper {
     padding: 4rem 2rem 5rem;
@@ -121,12 +114,13 @@ summary:focus-visible {
     font-weight: 700;
 }
 
-/* Separatore grafico posto sotto i titoli */
+/* Separatore grafico con icona centrale */
+
 .paw-divider {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 18px;
     max-width: 300px;
     margin: 1rem auto 2rem;
 }
@@ -137,9 +131,11 @@ summary:focus-visible {
     background-color: #D4C5B9;
 }
 
-.paw-divider .paw {
-    color: #1A3629;
-    font-size: 1.2rem;
+.paw-divider-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .header-subtitle {
@@ -147,10 +143,11 @@ summary:focus-visible {
     color: #666666;
     max-width: 600px;
     margin: 1rem auto 3rem;
+    line-height: 1.6;
 }
 
 
-/* Pulsanti principali. Gestiscono varianti solide e ad alto contrasto */
+/* Pulsanti principali */
 
 .btn-solid-dark {
     display: inline-block;
@@ -215,7 +212,7 @@ summary:focus-visible {
 }
 
 
-/* Collegamenti testuali delle card con animazioni fluide per hover */
+/* Collegamenti testuali delle card */
 
 .scopri-link {
     display: inline-flex;
@@ -241,7 +238,7 @@ summary:focus-visible {
 }
 
 
-/* Messaggi utilizzati nelle pagine di autenticazione e Alert globali */
+/* Messaggi e validazione dei form */
 
 .auth-alert-link {
     color: #1A3629;
@@ -306,6 +303,44 @@ summary:focus-visible {
     margin: 0 auto;
 }
 
+/* Icona utilizzata nei messaggi di conferma */
+
+.messaggio-successo-titolo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.icona-successo {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+.errore-js {
+    display: block;
+    min-height: 1.2rem;
+    margin-top: 0.35rem;
+    color: #D32F2F;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.errore-js-info {
+    color: #888888;
+}
+
+.errore-js-info.testo-errore,
+.testo-errore {
+    color: #D32F2F;
+}
+
+.input-error {
+    border-color: #D32F2F !important;
+}
+
 
 /* Header e navigazione */
 
@@ -337,6 +372,7 @@ summary:focus-visible {
     color: #FFFFFF;
     font-size: 1.4rem;
     font-weight: 700;
+    flex-shrink: 0;
 }
 
 .logo-link:hover,
@@ -353,7 +389,10 @@ summary:focus-visible {
 }
 
 
-/* Navigazione principale */
+/*
+ * Navigazione standard
+ * Questi valori restano validi anche quando l'utente non è autenticato
+ */
 
 .main-nav {
     margin-left: 3.5rem;
@@ -379,7 +418,7 @@ summary:focus-visible {
 }
 
 
-/* Area relativa allo stato dell'utente */
+/* Stato dell'utente */
 
 .user-area {
     display: flex;
@@ -412,29 +451,30 @@ summary:focus-visible {
     text-decoration: none;
     font-size: 0.95rem;
     transition: color 0.3s;
-    margin-right: 1rem;
+    margin-right: 0.75rem;
 }
 
 .btn-admin:hover {
     color: #FFFFFF;
 }
 
-/* Lo spazio della navigazione viene ridotto quando compare il link Admin,
- * permettendo l'inserimento senza spezzare l'allineamento su schermi ridotti. 
+
+/*
+ * Solo la navigazione dell'amministratore viene leggermente compattata
+ * per mantenere tutti gli elementi sulla stessa riga
  */
+
 .main-nav.nav-admin-logged {
-    margin-left: 1.5rem;
+    margin-left: 2.25rem;
+    margin-right: auto;
 }
 
 .main-nav.nav-admin-logged ul {
-    gap: 1.5rem;
+    gap: 1.75rem;
 }
 
 
-/*
- * Login e registrazione
- * Questa sezione verrà controllata insieme ai relativi file PHP e JavaScript
- */
+/* Login e registrazione */
 
 .auth-wrapper {
     background-color: #F5F5F0;
@@ -455,6 +495,10 @@ summary:focus-visible {
     border: 1px solid #E8E5E1;
 }
 
+.auth-card-large {
+    max-width: 650px;
+}
+
 .auth-header {
     text-align: center;
     margin-bottom: 2rem;
@@ -464,6 +508,12 @@ summary:focus-visible {
     color: #1A3629;
     font-size: 1.8rem;
     font-weight: 700;
+}
+
+.auth-header p {
+    color: #666666;
+    line-height: 1.6;
+    margin-top: 0.5rem;
 }
 
 .form-group {
@@ -494,6 +544,35 @@ summary:focus-visible {
     outline: none;
     border-color: #D4C5B9;
     background-color: #FFFFFF;
+}
+
+
+/*
+ * Il form di registrazione mantiene una distanza uniforme
+ * tra i gruppi di campi e i relativi suggerimenti
+ */
+
+#form-registrazione {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#form-registrazione .form-row {
+    margin-bottom: 0;
+    gap: 2rem;
+}
+
+#form-registrazione .form-group {
+    margin-bottom: 0;
+}
+
+#form-registrazione .text-center.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.auth-card-large .auth-header {
+    margin-bottom: 1.75rem;
 }
 
 
@@ -530,7 +609,6 @@ summary:focus-visible {
     margin-bottom: 2.5rem;
 }
 
-/* I pulsanti restano affiancati quando lo spazio disponibile lo consente */
 .home-hero-buttons {
     display: flex;
     flex-direction: row;
@@ -619,7 +697,7 @@ summary:focus-visible {
 }
 
 
-/* Card informative per sostegno e volontariato */
+/* Card informative */
 
 .icon-png-large {
     width: 70px;
@@ -660,7 +738,7 @@ summary:focus-visible {
 
 .emergency-subtitle {
     text-align: left;
-    margin: 0 0 2rem 0; 
+    margin: 0 0 2rem;
 }
 
 .emergency-item {
@@ -713,10 +791,8 @@ summary:focus-visible {
     object-fit: cover;
 }
 
-/*
- * Card dei gatti e componente React
- * Le regole specifiche verranno riesaminate insieme a ospiti.php e GattiApp.js
- */
+
+/* Card dei gatti e componente React */
 
 .gatti-grid-2 {
     display: grid;
@@ -815,7 +891,7 @@ summary:focus-visible {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: bold;
+    font-weight: 700;
     font-size: 1.2rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 10;
@@ -857,11 +933,21 @@ summary:focus-visible {
     cursor: pointer;
 }
 
+.messaggio-di-stato,
+.messaggio-errore,
+.nessun-risultato {
+    width: 100%;
+    text-align: center;
+    padding: 2rem 1rem;
+    color: #666666;
+}
 
-/*
- * Prenotazioni e volontariato
- * Le regole vengono mantenute fino alla revisione dei relativi file
- */
+.messaggio-errore {
+    color: #D32F2F;
+}
+
+
+/* Prenotazione delle visite */
 
 .prenotazione-wrapper {
     max-width: 800px;
@@ -871,6 +957,24 @@ summary:focus-visible {
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
     border: 1px solid #E8E5E1;
+}
+
+.prenotazione-header {
+    margin-bottom: 1.5rem;
+}
+
+.prenotazione-subtitle {
+    margin-bottom: 0.7rem;
+}
+
+.orari-visita-text {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: #666666;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
 }
 
 .form-row {
@@ -902,12 +1006,67 @@ summary:focus-visible {
     width: 100%;
 }
 
-.form-label-title {
+.form-label-title,
+.form-group .form-label-title {
     display: block;
     margin-bottom: 0.8rem;
     font-size: 1.1rem;
     font-weight: 700;
+    color: #1A1A1A;
 }
+
+
+/* La selezione dei gatti viene mantenuta vicina ai campi data e ora */
+
+#form-prenotazione-visita .form-row {
+    margin-bottom: 0.5rem;
+}
+
+#form-prenotazione-visita .form-group.mt-2 {
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.lista-selezionati {
+    width: 100%;
+    max-width: 100%;
+    min-height: 64px;
+    margin: 1rem 0 1.5rem;
+    padding: 0.8rem 1rem;
+    background-color: #F0EDE6;
+    border: 1px solid #D4C5B9;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    list-style: none;
+}
+
+.lista-selezionati li {
+    list-style: none;
+    flex: 0 0 auto;
+    background-color: #E8F0EC;
+    border: 1px solid #A3B5AE;
+    color: #1A3629;
+    border-radius: 30px;
+    padding: 0.55rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.lista-selezionati .nessun-gatto-selezionato {
+    background-color: transparent;
+    border: none;
+    color: #666666;
+    font-weight: 400;
+    padding: 0.4rem;
+}
+
+
+/* Turni di volontariato */
 
 .fasce-orarie-container {
     display: flex;
@@ -921,14 +1080,15 @@ summary:focus-visible {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 1.2rem;
+    padding: 1.4rem 1rem;
+    min-height: 74px;
     border: 2px solid #EAE6DF;
     border-radius: 8px;
     background-color: #FFFFFF;
     color: #1A1A1A;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
     flex: 1;
     min-width: 140px;
     position: relative;
@@ -946,7 +1106,7 @@ summary:focus-visible {
     color: #1A3629;
 }
 
-.fascia-oraria-label:has(input[type="checkbox"]:checked) {
+.fascia-oraria-label.selezionato {
     border-color: #1A3629;
     background-color: #E8F0EC;
     box-shadow: 0 4px 10px rgba(26, 54, 41, 0.1);
@@ -962,10 +1122,18 @@ summary:focus-visible {
 
 .fascia-oraria-label.pieno::after {
     content: "AL COMPLETO 🚫";
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     display: block;
-    margin-top: 0.4rem;
+    margin-left: 0.5rem;
     font-weight: 700;
+}
+
+.volontariato-prenotazione-box .form-group:last-of-type {
+    margin-bottom: 0.5rem;
+}
+
+.volontariato-prenotazione-box #btn-invia-turno {
+    margin-top: 1rem;
 }
 
 
@@ -1000,6 +1168,10 @@ summary:focus-visible {
     max-width: 1050px;
     flex-wrap: wrap;
     padding-bottom: 1rem;
+}
+
+.volontariato-intro-compatta {
+    padding-top: 0;
 }
 
 .volontariato-intro-text {
@@ -1139,7 +1311,30 @@ summary:focus-visible {
     margin: 0;
 }
 
-.footer-contact li,
+
+/*
+ * Ogni voce dei contatti è una riga flex
+ * Le icone occupano tutte lo stesso spazio per mantenere il testo allineato
+ */
+
+.footer-contact li {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    min-height: 30px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 0.9rem;
+    color: #A3B5AE;
+}
+
+.footer-contact-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    flex: 0 0 26px;
+}
+
 .footer-links li,
 .footer-note-list li {
     font-size: 0.95rem;
@@ -1148,23 +1343,23 @@ summary:focus-visible {
 }
 
 .footer-contact a,
-.footer-links a {
+.footer-links a,
+.footer-note-list a {
     color: #A3B5AE;
     text-decoration: none;
-}
-
-.footer-contact a:hover,
-.footer-links a:hover {
-    color: #FFFFFF;
-}
-
-.footer-links a {
     font-size: 0.95rem;
     transition: color 0.3s, padding-left 0.3s;
     display: inline-block;
 }
 
-.footer-links a:hover {
+.footer-contact a:hover,
+.footer-links a:hover,
+.footer-note-list a:hover {
+    color: #FFFFFF;
+}
+
+.footer-links a:hover,
+.footer-note-list a:hover {
     padding-left: 5px;
 }
 
@@ -1172,19 +1367,32 @@ summary:focus-visible {
     margin: 0 auto;
 }
 
-.footer-social {
+
+/* Le icone social restano informative e non diventano collegamenti */
+
+.footer-social,
+.social-icons {
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     gap: 1.5rem;
     margin-top: 1.5rem;
     padding-left: 0.5rem;
 }
 
-.footer-social img {
+.footer-social img,
+.social-icons img {
     width: 42px;
     height: 42px;
     object-fit: contain;
     opacity: 0.7;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.footer-social img:hover,
+.social-icons img:hover {
+    opacity: 1;
+    transform: translateY(-3px) scale(1.05);
 }
 
 .footer-bottom {
@@ -1211,22 +1419,40 @@ summary:focus-visible {
 }
 
 .academic-credit {
-    font-style: italic;
+    font-style: normal;
     color: #D4C5B9;
 }
 
 .academic-credit strong {
     color: #D4C5B9;
+    font-weight: 700;
 }
 
 
-/*
- * Pagina Sostienici e FAQ
- * Le regole vengono mantenute fino alla revisione della pagina
- */
+/* Pagina Sostienici */
 
 .scroll-anchor {
     scroll-margin-top: 4rem;
+}
+
+.sostienici-page-wrapper {
+    padding-bottom: 4rem;
+}
+
+.sostienici-main-header {
+    margin-bottom: 2rem;
+}
+
+.sostienici-cuore-section {
+    padding-top: 2rem;
+}
+
+.sostienici-section-white {
+    background-color: #FFFFFF;
+}
+
+.sostienici-section-beige {
+    background-color: #F5F5F0;
 }
 
 .content-split {
@@ -1291,11 +1517,12 @@ summary:focus-visible {
     font-weight: 700;
     color: #1A3629;
     letter-spacing: 1px;
-    background: #E8EDE9;
+    background-color: #E8EDE9;
     padding: 0.8rem 1.2rem;
     border-radius: 8px;
     display: inline-block;
     margin: 1rem 0;
+    max-width: 100%;
 }
 
 .box-5x1000 {
@@ -1437,8 +1664,10 @@ summary:focus-visible {
     gap: 0.5rem;
 }
 
-.contact-banner-item .contact-icon {
-    font-size: 2.2rem;
+.contact-icon-img {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
     margin-bottom: 0.5rem;
 }
 
@@ -1451,7 +1680,25 @@ summary:focus-visible {
     color: #666666;
     font-size: 0.95rem;
     line-height: 1.6;
+    font-weight: 400;
 }
+
+/* L'indirizzo, l'orario e il telefono restano testo normale */
+
+.contact-link {
+    color: #1A3629;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.3s;
+}
+
+.contact-link:hover {
+    color: #9C8A7B;
+}
+
+
+/* FAQ */
 
 .faq-accordion {
     max-width: 800px;
@@ -1524,15 +1771,6 @@ summary:focus-visible {
     color: #1A3629 !important;
 }
 
-.orari-visita-text {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #1A3629;
-    text-align: center;
-    margin-top: 0.5rem;
-    margin-bottom: 2rem;
-}
-
 .checkbox-group {
     display: flex;
     align-items: center;
@@ -1567,34 +1805,6 @@ summary:focus-visible {
     color: #666666;
 }
 
-.contact-link {
-    color: #1A3629;
-    font-weight: 700;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    transition: color 0.3s ease;
-}
-
-.contact-link:hover {
-    color: #D4C5B9;
-}
-
-.lista-selezionati {
-    width: 100%;
-    max-width: 100%;
-    margin: 1.5rem 0 2rem;
-    padding: 1rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.nessun-gatto-selezionato {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 .form-hint {
     font-size: 0.8rem;
     color: #888888;
@@ -1605,11 +1815,7 @@ summary:focus-visible {
 }
 
 
-/*
- * Schermi intermedi
- * La navigazione passa su una seconda riga quando lo spazio orizzontale diminuisce.
- * Media query essenziale per garantire un Layout Fluido (Fluid Layout).
- */
+/* Schermi intermedi */
 
 @media screen and (max-width: 68rem) {
     .header-container {
@@ -1633,11 +1839,7 @@ summary:focus-visible {
 }
 
 
-/*
- * Tablet e smartphone
- * I contenuti affiancati vengono ridisposti incolonnati per assecondare la
- * lettura in verticale (Mobile-First pattern per la riorganizzazione dello spazio).
- */
+/* Tablet e smartphone */
 
 @media screen and (max-width: 48rem) {
     .page-wrapper {
@@ -1745,8 +1947,17 @@ summary:focus-visible {
         gap: 1.5rem;
     }
 
+    #form-registrazione .form-row {
+        gap: 1rem;
+    }
+
     .fasce-orarie-container {
         flex-wrap: wrap;
+    }
+
+    .lista-selezionati {
+        flex-wrap: wrap;
+        overflow-x: visible;
     }
 
 
@@ -1817,11 +2028,14 @@ summary:focus-visible {
         min-width: 0;
     }
 
-    .lista-selezionati,
-    .nessun-gatto-selezionato {
+    .lista-selezionati {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .lista-selezionati li {
         white-space: normal;
-        overflow: visible;
-        text-overflow: clip;
+        text-align: center;
     }
 
     .auth-wrapper {
@@ -1831,14 +2045,27 @@ summary:focus-visible {
     .auth-card {
         padding: 2rem 1.25rem;
     }
+
+    #form-registrazione .form-row {
+        gap: 1rem;
+    }
+
+    .info-bancarie-box {
+        padding: 2rem 1rem;
+    }
+
+    .iban-code {
+        font-size: 1rem;
+        letter-spacing: 0;
+    }
+
+    .footer-contact li {
+        align-items: flex-start;
+    }
 }
 
 
-/* 
- * Riduzione delle animazioni in base alle preferenze del dispositivo.
- * Fondamentale per l'Accessibilità (Prevenzione di stress visivo per utenti
- * sensibili ai movimenti).
- */
+/* Riduzione delle animazioni quando richiesta dal dispositivo */
 
 @media (prefers-reduced-motion: reduce) {
     html {
@@ -1854,11 +2081,7 @@ summary:focus-visible {
 }
 
 
-/*
- * Versione destinata alla stampa
- * Vengono eliminati gli elementi utili soltanto alla navigazione per
- * risparmiare inchiostro ed esaltare i contenuti di base.
- */
+/* Versione destinata alla stampa */
 
 @media print {
     body {
@@ -1875,7 +2098,9 @@ summary:focus-visible {
     .btn-outline,
     .btn-outline-dark,
     .btn-admin,
-    .scopri-link {
+    .scopri-link,
+    .filtri-ricerca,
+    .btn-close-alert {
         display: none;
     }
 
@@ -1894,7 +2119,9 @@ summary:focus-visible {
     .ruolo-card,
     .tier-card,
     .prenotazione-wrapper,
-    .auth-card {
+    .auth-card,
+    .contact-banner,
+    .info-bancarie-box {
         box-shadow: none;
         break-inside: avoid;
     }

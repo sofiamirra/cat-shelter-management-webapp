@@ -15,17 +15,18 @@
             <h2>Il Parco delle Fusa</h2>
 
             <p>Doniamo una seconda occasione ai felini in difficoltà. Un ambiente sicuro, cure mediche e tanto amore in attesa di una famiglia.</p>
-
+            
+            <!-- I recapiti vengono raggruppati semanticamente come informazioni di contatto -->
             <address>
                 <ul class="footer-contact">
-                    <li><span aria-hidden="true">📍</span> Via Roma 123, 10100 Torino (TO)</li>
-                    <li><span aria-hidden="true">📧</span> <a href="mailto:info@parcodellefusa.it">info@parcodellefusa.it</a></li>
-                    <li><span aria-hidden="true">📞</span> <a href="tel:+390111234567">+39 011 123 4567</a></li>
+                    <li><img src="assets/img/icona_posizione_footer.png" alt="" class="footer-contact-icon"> Strada Val Salice 123, 10131 Torino (TO)</li>
+                    <li><img src="assets/img/icona_email_footer.png" alt="" class="footer-contact-icon"> <a href="mailto:info@parcodellefusa.it">info@parcodellefusa.it</a></li>
+                    <li><img src="assets/img/icona_telefono_footer.png" alt="" class="footer-contact-icon"> <a href="tel:+390111234567">+39 011 123 4567</a></li>
                 </ul>
             </address>
         </section>
 
-        <!-- Navigazione secondaria -->
+         <!-- Collegamenti alle principali sezioni del sito -->
         <section class="footer-col">
             <h2>Esplora</h2>
 
@@ -43,15 +44,16 @@
             </div>
         </section>
 
-        <!-- Informazioni legali -->
+        <!-- Documenti informativi e note legali -->
         <section class="footer-col">
             <h2>Note Legali</h2>
 
+            <!-- I PDF vengono aperti in una nuova scheda senza interrompere la navigazione del sito -->
             <ul class="footer-note-list">
-                <li>Privacy Policy</li>
-                <li>Cookie Policy</li>
-                <li>Termini e Condizioni</li>
-                <li>Statuto Associazione</li>
+                <li><a href="assets/docs/privacy_policy.pdf" target="_blank" rel="noopener">Privacy Policy</a></li>
+                <li><a href="assets/docs/cookie_policy.pdf" target="_blank" rel="noopener">Cookie Policy</a></li>
+                <li><a href="assets/docs/termini_condizioni.pdf" target="_blank" rel="noopener">Termini e Condizioni</a></li>
+                <li><a href="assets/docs/statuto_associativo.pdf" target="_blank" rel="noopener">Statuto Associazione</a></li>
             </ul>
         </section>
 

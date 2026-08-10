@@ -38,7 +38,7 @@ require 'includes/header.php';
             <!-- aria-hidden="true" esclude elementi puramente decorativi dai lettori di schermo -->
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
-                <span class="paw">🐾</span>
+                <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
                 <span class="line"></span>
             </div>
         </header>
@@ -79,7 +79,7 @@ require 'includes/header.php';
 
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
-            <span class="paw">🐾</span>
+            <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
             <span class="line"></span>
         </div>
 
@@ -188,7 +188,7 @@ require 'includes/header.php';
 
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
-                <span class="paw">🐾</span>
+                <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
                 <span class="line"></span>
             </div>
             

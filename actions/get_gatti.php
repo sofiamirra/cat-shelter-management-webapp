@@ -1,56 +1,79 @@
 <?php
-/**
- * API Backend per l'estrazione dei gatti.
- * Questo file viene interrogato in modo asincrono dal componente React.
- * Restituisce i dati esclusivamente in formato JSON.
+/*
+ * API utilizzata dal componente React della pagina Ospiti
+ * Recupera i dati dei gatti con un utente MySQL di sola lettura
+ * e restituisce al browser esclusivamente una risposta JSON
  */
 
-// Impostiamo l'header per dire al browser che stiamo inviando un JSON, non HTML
 header('Content-Type: application/json; charset=utf-8');
 
-require 'includes/db_config.php';
+require __DIR__ . '/../includes/db_config.php';
 
-// Array che conterrà la risposta finale
-$response = [];
+// La risposta mantiene sempre la stessa struttura con stato, dati o messaggio di errore
+$response = array(
+    'status' => 'error',
+    'message' => "Errore nell'esecuzione della query."
+);
 
-// Connessione al database usando l'utente con privilegi minimi (solo lettura)
+// Per questa operazione sono necessari esclusivamente privilegi di lettura
 $con = get_db_connection('lecture');
 
-if (!$con) {
-    echo json_encode(["error" => "Errore di connessione al database."]);
-    exit;
-}
+/*
+ * La query non contiene dati forniti dall'utente
+ * Vengono recuperati soltanto i campi effettivamente utilizzati dal componente React
+ */
+$query = 'SELECT id, nome, sesso, eta, razza, colore_mantello, descrizione, data_arrivo
+          FROM gatti
+          ORDER BY data_arrivo DESC';
 
-// Estrazione di tutti i gatti. Usiamo Prepared Statements per sicurezza standard.
-$query = "SELECT id, nome, sesso, eta, razza, colore_mantello, lunghezza_pelo, colore_occhi, descrizione, data_arrivo FROM gatti ORDER BY data_arrivo DESC";
+$stmt = mysqli_prepare($con, $query);
 
-if ($stmt = mysqli_prepare($con, $query)) {
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+if ($stmt) {
+    if (mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_bind_result(
+            $stmt,
+            $id,
+            $nome,
+            $sesso,
+            $eta,
+            $razza,
+            $colore_mantello,
+            $descrizione,
+            $data_arrivo
+        );
 
-    $gatti = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-        // Aggiungiamo ogni riga estratta al nostro array
-        $gatti[] = $row;
+        $gatti = array();
+
+        // Ogni riga del risultato viene trasformata in un elemento dell'array JSON
+        while (mysqli_stmt_fetch($stmt)) {
+            $gatti[] = array(
+                'id' => (int) $id,
+                'nome' => (string) $nome,
+                'sesso' => (string) $sesso,
+                'eta' => (int) $eta,
+                'razza' => (string) $razza,
+                'colore_mantello' => (string) $colore_mantello,
+                'descrizione' => (string) $descrizione,
+                'data_arrivo' => (string) $data_arrivo
+            );
+        }
+
+        $response = array(
+            'status' => 'success',
+            'data' => $gatti
+        );
+    } else {
+        // Il dettaglio tecnico viene registrato nel log senza essere inviato al browser
+        error_log('Errore durante l\'esecuzione della query dei gatti: ' . mysqli_stmt_error($stmt));
     }
-
-    // Risposta di successo
-    $response = [
-        "status" => "success",
-        "data" => $gatti
-    ];
 
     mysqli_stmt_close($stmt);
 } else {
-    // Gestione errore query
-    $response = [
-        "status" => "error",
-        "message" => "Errore nell'esecuzione della query."
-    ];
+    error_log('Errore nella preparazione della query dei gatti: ' . mysqli_error($con));
 }
 
 mysqli_close($con);
 
-// Codifica l'array PHP in formato JSON e lo stampa a schermo
+// L'array PHP viene convertito nel formato JSON atteso dal componente React
 echo json_encode($response);
 ?>
