@@ -154,8 +154,7 @@ require 'includes/header.php';
                 <input type="checkbox" id="ricordami" name="ricordami" <?php if (!empty($_COOKIE['remember_user'])) { echo 'checked'; } ?>>
                 <label for="ricordami" class="checkbox-label">Ricordami per 72 ore</label>
             </div>
-            <span class="cookie-disclaimer">Spuntando la casella acconsenti all'uso dei cookie per mantenere l'accesso.</span>
-
+            <span class="cookie-disclaimer">La funzione usa un cookie tecnico per ricordare il tuo username per 72 ore.</span>
             <div class="text-center mt-2">
                 <button type="submit" class="btn-solid-dark w-100">Accedi</button>
                 <p class="form-switch-text">Non hai ancora un account?</p>

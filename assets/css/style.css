@@ -45,7 +45,10 @@ textarea {
 }
 
 
-/* Focus visibile durante la navigazione tramite tastiera */
+/*
+ * Focus visibile durante la navigazione tramite tastiera
+ * Il tortora mantiene l'indicazione evidente senza usare il verde più acceso
+ */
 
 a:focus-visible,
 button:focus-visible,
@@ -53,8 +56,17 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 summary:focus-visible {
-    outline: 3px solid #8AD9A5;
+    outline: 2px solid #9C8A7B;
     outline-offset: 3px;
+}
+
+/* Sugli sfondi scuri il beige rende il focus più leggibile */
+
+.site-header a:focus-visible,
+.site-header button:focus-visible,
+.site-footer a:focus-visible,
+.site-footer button:focus-visible {
+    outline-color: #D4C5B9;
 }
 
 
@@ -300,8 +312,33 @@ summary:focus-visible {
     padding: 1rem;
     border-radius: 8px;
     font-size: 0.9rem;
+    line-height: 1.5;
     text-align: center;
     margin-bottom: 2rem;
+}
+
+/* Anche i collegamenti visitati nei banner mantengono i colori del sito */
+
+.auth-alert-success a,
+.auth-alert-success a:link,
+.auth-alert-success a:visited {
+    display: inline-block;
+    color: #1A3629;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    margin-top: 0.35rem;
+    transition: color 0.3s;
+}
+
+.auth-alert-success a:hover {
+    color: #9C8A7B;
+}
+
+/* Nella registrazione evita lo spazio eccessivo generato dai due br consecutivi */
+
+.auth-alert-success br + br {
+    display: none;
 }
 
 .alert-wrapper {
@@ -310,23 +347,27 @@ summary:focus-visible {
 }
 
 
-/* Titolo dei messaggi di conferma */
+/*
+ * Titolo dei messaggi di conferma
+ * Icona e testo vengono mantenuti sulla stessa linea e centrati
+ */
 
 .messaggio-successo-titolo {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.55rem;
-    line-height: 1.2;
+    gap: 0.3rem;
+    line-height: 1;
     vertical-align: middle;
 }
 
 .icona-successo {
     display: block;
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     object-fit: contain;
-    flex: 0 0 22px;
+    flex: 0 0 20px;
+    margin: 0;
 }
 
 .errore-js {
@@ -548,9 +589,11 @@ summary:focus-visible {
 }
 
 .auth-card input:focus {
-    outline: none;
+    outline: 2px solid #9C8A7B;
+    outline-offset: 2px;
     border-color: #D4C5B9;
     background-color: #FFFFFF;
+    box-shadow: none;
 }
 
 
@@ -681,10 +724,7 @@ summary:focus-visible {
 }
 
 
-/*
- * Le icone dei tre passaggi poggiano direttamente
- * sullo sfondo beige senza contenitori grafici aggiuntivi
- */
+/* Le icone poggiano direttamente sullo sfondo beige */
 
 .step-icon {
     width: 80px;
@@ -958,6 +998,16 @@ summary:focus-visible {
     cursor: pointer;
 }
 
+/* Il focus dei filtri resta evidente ma senza l'effetto verde acceso */
+
+.input-ricerca:focus,
+.select-ordinamento:focus {
+    outline: 2px solid #9C8A7B;
+    outline-offset: 2px;
+    border-color: #9C8A7B;
+    box-shadow: none;
+}
+
 .messaggio-di-stato,
 .messaggio-errore,
 .nessun-risultato {
@@ -1022,8 +1072,20 @@ summary:focus-visible {
 }
 
 .input-data-large:focus {
-    outline: none;
-    border-color: #D4C5B9;
+    outline: 2px solid #9C8A7B;
+    outline-offset: 2px;
+    border-color: #9C8A7B;
+    box-shadow: none;
+}
+
+/*
+ * Le cifre dell'orario occupano una larghezza uniforme
+ * rendendo più equilibrata la distanza visiva attorno ai due punti
+ */
+
+.input-data-large[type="time"] {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
 }
 
 .input-data-full-width {
@@ -1099,6 +1161,7 @@ summary:focus-visible {
 
 .fascia-oraria-label {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -1142,11 +1205,14 @@ summary:focus-visible {
     opacity: 0.7;
 }
 
+/* Il testo indica chiaramente il limite senza utilizzare emoji */
+
 .fascia-oraria-label.pieno::after {
-    content: "AL COMPLETO 🚫";
-    font-size: 0.75rem;
+    content: "AL COMPLETO";
     display: block;
-    margin-left: 0.5rem;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1.2;
     font-weight: 700;
 }
 
@@ -1785,22 +1851,33 @@ summary:focus-visible {
     color: #1A3629 !important;
 }
 
+
+/*
+ * Checkbox Ricordami
+ * Input e testo sono allineati sullo stesso asse verticale
+ */
+
 .checkbox-group {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.55rem;
     margin-top: 1rem;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.35rem;
 }
 
-.checkbox-group input {
+.checkbox-group input[type="checkbox"] {
+    width: 16px !important;
+    height: 16px;
     margin: 0 !important;
-    width: auto !important;
+    flex: 0 0 16px;
     cursor: pointer;
 }
 
-.checkbox-label {
+.checkbox-group .checkbox-label {
+    display: inline-flex;
+    align-items: center;
     margin: 0;
+    line-height: 1.2;
     font-weight: 400;
 }
 
@@ -1808,7 +1885,8 @@ summary:focus-visible {
     font-size: 0.75rem;
     color: #888888;
     display: block;
-    line-height: 1.3;
+    line-height: 1.4;
+    margin-top: 0;
     margin-bottom: 1.5rem;
 }
 
