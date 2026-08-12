@@ -14,7 +14,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
  * l'accesso, ma vengono accettate solamente pagine previste dal sito
  */
 $pagina_ritorno = 'home.php';
-$pagine_consentite = array('ospiti.php', 'volontariato.php');
+$pagine_consentite = array('ospiti.php', 'volontariato.php', 'area_personale.php');
 
 if (isset($_GET['ritorno']) && in_array($_GET['ritorno'], $pagine_consentite, true)) {
     $pagina_ritorno = $_GET['ritorno'];
@@ -152,9 +152,9 @@ require 'includes/header.php';
             <!-- Il cookie memorizza soltanto lo username e scade dopo 72 ore -->
             <div class="form-group checkbox-group">
                 <input type="checkbox" id="ricordami" name="ricordami" <?php if (!empty($_COOKIE['remember_user'])) { echo 'checked'; } ?>>
-                <label for="ricordami" class="checkbox-label">Ricordami per 72 ore</label>
+                <label for="ricordami" class="checkbox-label">Ricordami</label>
             </div>
-            <span class="cookie-disclaimer">La funzione usa un cookie tecnico per ricordare il tuo username per 72 ore.</span>
+            <span class="cookie-disclaimer">Selezionando la casella acconsenti all'uso di un cookie per ricordare il tuo username per 72 ore.</span>
             <div class="text-center mt-2">
                 <button type="submit" class="btn-solid-dark w-100">Accedi</button>
                 <p class="form-switch-text">Non hai ancora un account?</p>

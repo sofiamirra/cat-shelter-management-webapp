@@ -1,6 +1,6 @@
 <?php
 /*
- * Intestazione comune del sito.
+ * Intestazione comune del sito
  * Gestisce la sessione, la navigazione principale e lo stato dell'utente
  */
 
@@ -9,24 +9,26 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Controllo dello stato di amministratore. Viene riutilizzato per determinare
-// il rendering condizionale di link sensibili e layout della navigazione.
+// Lo stato amministratore determina la presenza delle funzioni riservate
 $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+
+// Percorso di base utilizzato per la favicon del progetto
+$base_path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 ?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
 
-    <!-- La viewport permette al layout di adattarsi dinamicamente ai dispositivi (Mobile-First) -->
+    <!-- La viewport permette al layout di adattarsi dinamicamente ai dispositivi -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Il Parco delle Fusa - Gattile</title>
 
-    <link rel="icon" type="image/png" href="assets/img/favicon_parco.png">
-    <link rel="apple-touch-icon" href="assets/img/favicon_parco.png">
+    <!-- Icona identificativa del sito -->
+    <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($base_path, ENT_QUOTES, 'UTF-8'); ?>/assets/img/favoriteicon_parco.png?v=31">
 
-    <!-- Preconnect ottimizza i tempi di caricamento DNS per i font esterni -->
+    <!-- Preconnect per i font esterni -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -34,19 +36,20 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
     <!-- Foglio di stile globale -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
 
 <header class="site-header">
     <div class="header-container">
 
-        <!-- Logo e collegamento alla home dotati di aria-label per conformità WCAG -->
+        <!-- Logo e collegamento alla home -->
         <a href="home.php" class="logo-link" aria-label="Torna alla Home">
             <img src="assets/img/logo_icona.png" alt="" class="logo-icona">
             <span>Il Parco delle Fusa</span>
         </a>
 
-        <!-- Navigazione principale. Rendering condizionale della classe per spaziatura Admin -->
-        <nav class="main-nav<?php echo $is_admin ? ' nav-admin-logged' : ''; ?>" aria-label="Navigazione principale">
+        <!-- Navigazione principale -->
+        <nav class="main-nav" aria-label="Navigazione principale">
             <ul>
                 <li><a href="ospiti.php">I Nostri Ospiti</a></li>
                 <li><a href="volontariato.php">Diventa Volontario</a></li>
@@ -58,19 +61,23 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
         <div class="user-area">
             <?php if (isset($_SESSION['username'])): ?>
 
-                <?php if ($is_admin): ?>
-                    <a href="admin.php" class="btn-admin">+ Admin</a>
-                <?php endif; ?>
+                <!-- Avatar e username aprono le funzioni associate all'account -->
+                <details class="account-menu">
+                    <summary class="account-summary">
+                        <img src="assets/img/icona_utente.png" alt="" class="icona-utente">
+                        <span><?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?></span>
+                    </summary>
 
-                <span class="status-testo">
-                    <img src="assets/img/icona_utente.png" alt="" class="icona-utente">
-                    <?php
-                    // Prevenzione vulnerabilità XSS: lo username, pur derivando dalla sessione,
-                    // viene sempre sanificato prima del rendering in HTML.
-                    echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8');
-                    ?>
-                </span>
+                    <div class="account-dropdown">
+                        <a href="area_personale.php">Le Mie Attività</a>
 
+                        <?php if ($is_admin): ?>
+                            <a href="admin.php">Pannello Amministratore</a>
+                        <?php endif; ?>
+                    </div>
+                </details>
+
+                <!-- Il logout resta immediatamente disponibile -->
                 <a href="logout.php" class="btn-outline">Logout</a>
 
             <?php else: ?>

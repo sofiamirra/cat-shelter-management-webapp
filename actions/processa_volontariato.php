@@ -38,7 +38,7 @@ $fasce = isset($_POST['fasce']) ? $_POST['fasce'] : array();
 $utente_id = (int) $_SESSION['user_id'];
 
 // Il server accetta solamente le tre fasce realmente presenti nel form
-$fasce_consentite = array('09:00:00', '14:00:00', '18:00:00');
+$fasce_consentite = array('09:00:00', '13:00:00', '17:00:00');
 $dati_validi = true;
 
 if ($data_turno === '' || !is_array($fasce) || count($fasce) === 0) {

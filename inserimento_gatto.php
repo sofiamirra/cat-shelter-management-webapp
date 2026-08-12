@@ -165,7 +165,7 @@ require 'includes/header.php';
 
 <div class="page-wrapper">
     <div class="prenotazione-wrapper">
-        <h2 class="text-center mb-2">Inserimento Nuovo Ospite (Pannello Admin)</h2>
+        <h2 class="text-center mb-2">Inserimento Nuovo Ospite</h2>
 
         <!-- Il messaggio comunica l'esito del controllo e dell'inserimento lato server -->
         <?php if (!empty($messaggio_server)): ?>

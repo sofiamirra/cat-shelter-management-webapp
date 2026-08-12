@@ -13,7 +13,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 // La pagina di ritorno viene accettata solo tra quelle previste dal sito
 // In assenza di una provenienza specifica, il comportamento resta il ritorno alla home
 $pagina_ritorno = 'home.php';
-$pagine_consentite = array('ospiti.php', 'volontariato.php');
+$pagine_consentite = array('ospiti.php', 'volontariato.php', 'area_personale.php');
 
 if (isset($_GET['ritorno']) && in_array($_GET['ritorno'], $pagine_consentite, true)) {
     $pagina_ritorno = $_GET['ritorno'];

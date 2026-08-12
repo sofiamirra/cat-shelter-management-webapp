@@ -223,59 +223,56 @@ require 'includes/header.php';
     </div>
 </section>
 
-<!-- Emergenze -->
+<!-- Informazioni per emergenze e ritrovamenti -->
 <section class="home-emergency-section section-padding" aria-label="Cosa fare in caso di emergenza">
     <div class="emergency-container">
 
-        <article class="emergency-text">
-            <h2>Animale in Difficoltà?</h2>
-            <p class="header-subtitle emergency-subtitle">Ecco a chi rivolgerti per soccorrere un animale ferito.</p>
+        <div class="emergency-text">
+            <h3 class="emergency-title">Animale in Difficoltà?</h3>
+            <p class="emergency-subtitle">Ecco a chi rivolgerti per soccorrere un esemplare bisognoso.</p>
 
             <div class="emergency-item">
                 <img src="assets/img/icona_ambulanza.png" alt="" class="icon-png-small">
-
                 <div class="emergency-item-content">
-                    <h3>Contattare il 112</h3>
-                    <p>Attiva le forze dell'ordine per il tempestivo soccorso.</p>
+                    <h4>Soccorso Gatto Ferito o Malato</h4>
+                    <p>Consulta le <a href="https://www.comune.torino.it/schede-informative/ritrovamenti-cani-gatti-sul-territorio-della-citta-torino" class="emergency-link" target="_blank" rel="noopener">indicazioni ufficiali del Comune.</a></p>
                 </div>
             </div>
 
             <div class="emergency-item">
                 <img src="assets/img/icona_scudo.png" alt="" class="icon-png-small">
-
                 <div class="emergency-item-content">
-                    <h3>Ufficio Tutela Animali di Torino</h3>
-                    <a href="https://www.comune.torino.it/amministrazione/servizio-tutela-animali"
-                       class="emergency-link"
-                       target="_blank"
-                       rel="noopener"
-                       aria-label="Vai alle direttive ufficiali del Comune di Torino">
-                        Consulta le direttive ufficiali per la città di Torino.
-                    </a>
+                    <h4>Avvistamento Gatto sul Territorio</h4>
+                    <p>Verifica sempre la sua <a href="https://www.comune.torino.it/schede-informative/colonie-feline" class="emergency-link" target="_blank" rel="noopener">appartenenza a una colonia.</a></p>
                 </div>
             </div>
 
             <div class="emergency-item">
                 <img src="assets/img/icona_selvatici.png" alt="" class="icon-png-small">
-
                 <div class="emergency-item-content">
-                    <h3>Ufficio Tutela Flora e Fauna</h3>
-                    <a href="https://www.cittametropolitana.torino.it/tutela-fauna-e-flora/salviamoli-insieme"
-                       class="emergency-link"
-                       target="_blank"
-                       rel="noopener"
-                       aria-label="Vai alle direttive per la flora e la fauna">
-                        Per le segnalazioni di animali selvatici in difficoltà.
-                    </a>
+                    <h4>Richiesta di Accoglienza al Rifugio</h4>
+                    <p>Contattaci prima di arrivare: <a href="tel:+390111234567" class="emergency-link">+39 011 123 4567</a></p>
                 </div>
             </div>
-        </article>
+        </div>
 
-        <figure class="emergency-image">
+        <div class="emergency-image">
             <img src="assets/img/gatto_strada.png" alt="Gattino in difficoltà sul ciglio di una strada">
-        </figure>
+        </div>
 
     </div>
 </section>
+
+<!-- Partner che sostengono il rifugio -->
+<aside class="home-partners-strip" aria-label="Partner del rifugio">
+    <p class="partners-label">CON IL SUPPORTO DI</p>
+
+    <div class="partners-logos">
+        <img src="assets/img/sponsor_monge.png" alt="Logo del partner 1" class="sponsor-logo">
+        <img src="assets/img/sponsor_lindocat.png" alt="Logo del partner 2" class="sponsor-logo">
+        <img src="assets/img/sponsor_candioli.png" alt="Logo del partner 3" class="sponsor-logo">
+        <img src="assets/img/sponsor_isolatesori.png" alt="Logo del partner 4" class="sponsor-logo">
+    </div>
+</aside>
 
 <?php require 'includes/footer.php'; ?>

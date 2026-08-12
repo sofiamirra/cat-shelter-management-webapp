@@ -1,6 +1,6 @@
 /*
  * Foglio di stile globale del progetto
- * Gestisce l'aspetto delle pagine, i layout responsive e la versione di stampa
+ * Gestisce grafica, layout delle pagine e adattamento ai diversi dispositivi
  *
  * Verde principale: #1A3629
  * Verde scuro: #0B251C
@@ -8,7 +8,7 @@
  * Beige secondario: #D4C5B9
  * Verde chiaro: #8AD9A5
  * Testo principale: #1A1A1A
- */
+*/
 
 
 /* Impostazioni generali */
@@ -45,10 +45,7 @@ textarea {
 }
 
 
-/*
- * Focus visibile durante la navigazione tramite tastiera
- * Il tortora mantiene l'indicazione evidente senza usare il verde più acceso
- */
+/* Focus visibile durante la navigazione tramite tastiera */
 
 a:focus-visible,
 button:focus-visible,
@@ -56,17 +53,8 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 summary:focus-visible {
-    outline: 2px solid #9C8A7B;
+    outline: 3px solid #9C8A7B;
     outline-offset: 3px;
-}
-
-/* Sugli sfondi scuri il beige rende il focus più leggibile */
-
-.site-header a:focus-visible,
-.site-header button:focus-visible,
-.site-footer a:focus-visible,
-.site-footer button:focus-visible {
-    outline-color: #D4C5B9;
 }
 
 
@@ -125,9 +113,6 @@ summary:focus-visible {
     margin-bottom: 0.5rem;
     font-weight: 700;
 }
-
-
-/* Separatore grafico con zampette */
 
 .paw-divider {
     display: flex;
@@ -256,7 +241,7 @@ summary:focus-visible {
 }
 
 
-/* Messaggi e validazione dei form */
+/* Messaggi e feedback */
 
 .auth-alert-link {
     color: #1A3629;
@@ -317,17 +302,13 @@ summary:focus-visible {
     margin-bottom: 2rem;
 }
 
-/* Anche i collegamenti visitati nei banner mantengono i colori del sito */
-
 .auth-alert-success a,
 .auth-alert-success a:link,
 .auth-alert-success a:visited {
-    display: inline-block;
     color: #1A3629;
     font-weight: 700;
     text-decoration: underline;
     text-underline-offset: 3px;
-    margin-top: 0.35rem;
     transition: color 0.3s;
 }
 
@@ -335,28 +316,22 @@ summary:focus-visible {
     color: #9C8A7B;
 }
 
-/* Nella registrazione evita lo spazio eccessivo generato dai due br consecutivi */
-
-.auth-alert-success br + br {
-    display: none;
-}
-
 .alert-wrapper {
-    max-width: 800px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 620px;
+    margin: 0 auto 1.5rem;
 }
 
-
-/*
- * Titolo dei messaggi di conferma
- * Icona e testo vengono mantenuti sulla stessa linea e centrati
- */
+.alert-wrapper .auth-alert-success,
+.alert-wrapper .auth-alert-danger {
+    margin-bottom: 0;
+}
 
 .messaggio-successo-titolo {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.3rem;
+    gap: 0.25rem;
     line-height: 1;
     vertical-align: middle;
 }
@@ -367,7 +342,6 @@ summary:focus-visible {
     height: 20px;
     object-fit: contain;
     flex: 0 0 20px;
-    margin: 0;
 }
 
 .errore-js {
@@ -403,9 +377,10 @@ summary:focus-visible {
 
 .header-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    max-width: 1200px;
+    gap: 3rem;
+    max-width: 1450px;
     margin: 0 auto;
     padding: 0 2rem;
     width: 100%;
@@ -421,9 +396,9 @@ summary:focus-visible {
     align-items: center;
     text-decoration: none;
     color: #FFFFFF;
-    font-size: 1.4rem;
+    font-size: 1.45rem;
     font-weight: 700;
-    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 .logo-link:hover,
@@ -443,21 +418,25 @@ summary:focus-visible {
 /* Navigazione principale */
 
 .main-nav {
-    margin-left: 3.5rem;
-    margin-right: auto;
+    margin: 0;
 }
 
 .main-nav ul {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 3rem;
     list-style: none;
 }
 
-.main-nav a {
+.main-nav a,
+.main-nav a:link,
+.main-nav a:visited {
     color: #C2D5CD;
     text-decoration: none;
-    font-size: 1.05rem;
+    font-size: 1.08rem;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 .main-nav a:hover,
@@ -466,12 +445,13 @@ summary:focus-visible {
 }
 
 
-/* Stato dell'utente */
+/* Area relativa allo stato dell'utente */
 
 .user-area {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    justify-content: flex-end;
+    gap: 1.35rem;
     white-space: nowrap;
 }
 
@@ -484,9 +464,6 @@ summary:focus-visible {
     font-weight: 400;
 }
 
-
-/* Il verde chiaro evidenzia lo stato autenticato dell'utente */
-
 .icona-utente {
     width: 32px;
     height: 32px;
@@ -496,29 +473,84 @@ summary:focus-visible {
     border: 2px solid #8AD9A5;
 }
 
-.btn-admin {
-    color: #8AD9A5;
-    font-weight: 700;
-    text-decoration: none;
+
+/* Menu personale */
+
+.account-menu {
+    position: relative;
+}
+
+.account-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    list-style: none;
+    cursor: pointer;
+    color: #C2D5CD;
     font-size: 0.95rem;
-    transition: color 0.3s;
-    margin-right: 0.75rem;
+    user-select: none;
 }
 
-.btn-admin:hover {
-    color: #FFFFFF;
+.account-summary::-webkit-details-marker {
+    display: none;
 }
 
-
-/* Solo la navigazione amministratore viene leggermente compattata */
-
-.main-nav.nav-admin-logged {
-    margin-left: 2.25rem;
-    margin-right: auto;
+.account-summary::marker {
+    content: "";
 }
 
-.main-nav.nav-admin-logged ul {
-    gap: 1.75rem;
+.account-summary::after {
+    content: "▾";
+    display: inline-block;
+    color: #8AD9A5;
+    font-size: 0.9rem;
+    margin-left: 0.1rem;
+    transition: transform 0.2s;
+}
+
+.account-menu[open] .account-summary::after {
+    transform: rotate(180deg);
+}
+
+.account-dropdown {
+    position: absolute;
+    top: calc(100% + 0.8rem);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    min-width: 245px;
+    padding: 0.55rem;
+    background-color: #FFFFFF;
+    border: 1px solid #E8E5E1;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.account-dropdown a,
+.account-dropdown a:link,
+.account-dropdown a:visited {
+    display: block;
+    padding: 0.85rem 0.9rem;
+    color: #1A3629;
+    background-color: transparent;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.account-dropdown a:hover {
+    color: #1A3629;
+    background-color: #F5F5F0;
+}
+
+.account-dropdown a + a {
+    margin-top: 0.35rem;
+    padding-top: 1rem;
+    border-top: 1px solid #E8E5E1;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
 
@@ -593,11 +625,7 @@ summary:focus-visible {
     outline-offset: 2px;
     border-color: #D4C5B9;
     background-color: #FFFFFF;
-    box-shadow: none;
 }
-
-
-/* Spaziatura uniforme del form di registrazione */
 
 #form-registrazione {
     display: flex;
@@ -676,11 +704,7 @@ summary:focus-visible {
 }
 
 
-/*
- * Processo di adozione
- * L'header poggia sullo sfondo bianco mentre i tre passaggi
- * sono raccolti nel contenitore beige
- */
+/* Processo di adozione */
 
 .adoption-steps-wrapper {
     background-color: #FFFFFF;
@@ -722,9 +746,6 @@ summary:focus-visible {
     text-align: center;
     padding: 0 1rem;
 }
-
-
-/* Le icone poggiano direttamente sullo sfondo beige */
 
 .step-icon {
     width: 80px;
@@ -772,7 +793,7 @@ summary:focus-visible {
 }
 
 
-/* Emergenze */
+/* Gatto in difficoltà */
 
 .home-emergency-section {
     background-color: #F5F5F0;
@@ -780,7 +801,7 @@ summary:focus-visible {
 
 .emergency-container {
     display: flex;
-    max-width: 1100px;
+    max-width: 1140px;
     margin: 0 auto;
     background-color: #FFFFFF;
     border-radius: 20px;
@@ -791,7 +812,7 @@ summary:focus-visible {
 
 .emergency-text {
     flex: 1;
-    padding: 3rem;
+    padding: 3.15rem;
     min-width: 300px;
 }
 
@@ -808,26 +829,32 @@ summary:focus-visible {
 
 .emergency-item {
     display: flex;
-    gap: 1.5rem;
-    margin-bottom: 2.5rem;
+    gap: 1.25rem;
+    margin-bottom: 1.8rem;
     align-items: flex-start;
+}
+
+.emergency-item:last-child {
+    margin-bottom: 0;
 }
 
 .icon-png-small {
     width: 45px;
     height: 45px;
     object-fit: contain;
+    flex-shrink: 0;
 }
 
 .emergency-item-content h3 {
     color: #1A1A1A;
-    margin-bottom: 0.5rem;
-    font-size: 1.1rem;
+    margin-bottom: 0.35rem;
+    font-size: 1.05rem;
 }
 
 .emergency-item-content p {
     color: #666666;
-    line-height: 1.6;
+    line-height: 1.5;
+    font-size: 0.92rem;
 }
 
 .emergency-link {
@@ -837,7 +864,7 @@ summary:focus-visible {
     text-decoration-color: #D4C5B9;
     text-underline-offset: 4px;
     display: inline-block;
-    margin-top: 0.4rem;
+    margin-top: 0.3rem;
     transition: color 0.3s;
 }
 
@@ -856,6 +883,52 @@ summary:focus-visible {
     object-fit: cover;
 }
 
+
+/* Partner del rifugio */
+
+.home-partners-strip {
+    width: 100%;
+    background-color: #FFFFFF;
+    padding: 2.75rem 2rem 3rem;
+}
+
+.partners-label {
+    text-align: center;
+    color: #666666;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1.6rem;
+}
+
+.partners-logos {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.partners-logos .sponsor-logo {
+    display: block;
+    width: 170px;
+    height: 85px;
+    max-width: 22%;
+    object-fit: contain;
+    object-position: center;
+    flex: 0 1 170px;
+    cursor: default;
+    transition: transform 0.3s;
+}
+
+.partners-logos .sponsor-logo:hover {
+    transform: translateY(-4px);
+}
 
 /* Card dei gatti e componente React */
 
@@ -970,6 +1043,9 @@ summary:focus-visible {
     width: 100%;
 }
 
+
+/* Ricerca e ordinamento della galleria */
+
 .filtri-ricerca {
     max-width: 800px;
     margin: 0 auto 4rem;
@@ -998,14 +1074,11 @@ summary:focus-visible {
     cursor: pointer;
 }
 
-/* Il focus dei filtri resta evidente ma senza l'effetto verde acceso */
-
 .input-ricerca:focus,
 .select-ordinamento:focus {
     outline: 2px solid #9C8A7B;
     outline-offset: 2px;
-    border-color: #9C8A7B;
-    box-shadow: none;
+    border-color: #D4C5B9;
 }
 
 .messaggio-di-stato,
@@ -1074,14 +1147,14 @@ summary:focus-visible {
 .input-data-large:focus {
     outline: 2px solid #9C8A7B;
     outline-offset: 2px;
-    border-color: #9C8A7B;
-    box-shadow: none;
+    border-color: #D4C5B9;
 }
 
-/*
- * Le cifre dell'orario occupano una larghezza uniforme
- * rendendo più equilibrata la distanza visiva attorno ai due punti
- */
+#form-inserimento select.input-data-large {
+    font-size: 0.95rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+}
 
 .input-data-large[type="time"] {
     font-variant-numeric: tabular-nums;
@@ -1204,8 +1277,6 @@ summary:focus-visible {
     cursor: not-allowed;
     opacity: 0.7;
 }
-
-/* Il testo indica chiaramente il limite senza utilizzare emoji */
 
 .fascia-oraria-label.pieno::after {
     content: "AL COMPLETO";
@@ -1352,162 +1423,350 @@ summary:focus-visible {
 }
 
 
-/* Footer */
+/* Area personale */
 
-.site-footer {
-    background-color: #152E22;
-    color: #E8E5E1;
-    padding-top: 4rem;
+.area-personale-wrapper {
+    max-width: 1150px;
 }
 
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto 3rem;
-    padding: 0 2rem;
+.area-personale-wrapper .section-header {
+    margin-bottom: 1.5rem;
+}
+
+.area-personale-wrapper .header-subtitle {
+    margin-bottom: 0;
+}
+
+.area-personale-wrapper .alert-wrapper {
+    margin-bottom: 1rem;
+}
+
+.area-personale-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 3rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    align-items: start;
+    margin-top: 0;
 }
 
-.footer-col h2 {
-    color: #FFFFFF;
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #D4C5B9;
-    padding-bottom: 0.5rem;
-    display: inline-block;
+.dashboard-section {
+    background-color: #FFFFFF;
+    border: 1px solid #E8E5E1;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
-.footer-col p {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: #A3B5AE;
+.dashboard-section-header {
     margin-bottom: 1.5rem;
 }
 
-.footer-col address {
-    font-style: normal;
+.dashboard-section-header h3 {
+    color: #1A3629;
+    font-size: 1.4rem;
+    margin-bottom: 0.4rem;
 }
 
-.footer-contact,
-.footer-links,
-.footer-note-list {
-    list-style: none;
-    padding: 0;
+.dashboard-section-header p {
+    color: #666666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.dashboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.dashboard-item {
+    background-color: #F5F5F0;
+    border: 1px solid #EAE6DF;
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+        "header action"
+        "description action";
+    column-gap: 1rem;
+    row-gap: 0.3rem;
+    align-items: center;
+}
+
+.dashboard-item-header {
+    grid-area: header;
+    display: block;
     margin: 0;
 }
 
-.footer-contact li {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    min-height: 30px;
-    font-size: 0.95rem;
+.dashboard-item-header h4 {
+    color: #1A1A1A;
+    font-size: 1.05rem;
+    margin-bottom: 0.15rem;
+}
+
+.dashboard-orario {
+    color: #666666;
+    font-size: 0.9rem;
+}
+
+.dashboard-description {
+    grid-area: description;
+    color: #555555;
+    font-size: 0.9rem;
     line-height: 1.4;
-    margin-bottom: 0.9rem;
-    color: #A3B5AE;
+    margin: 0;
 }
 
-.footer-contact-icon {
-    width: 26px;
-    height: 26px;
-    object-fit: contain;
-    flex: 0 0 26px;
+.form-annulla-attivita {
+    grid-area: action;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+    margin: 0;
 }
 
-.footer-links li,
-.footer-note-list li {
-    font-size: 0.95rem;
-    margin-bottom: 0.8rem;
-    color: #A3B5AE;
-}
-
-.footer-contact a,
-.footer-links a,
-.footer-note-list a {
-    color: #A3B5AE;
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: color 0.3s, padding-left 0.3s;
+.btn-annulla-attivita {
     display: inline-block;
+    background-color: transparent;
+    color: #A85454;
+    border: 1.5px solid #A85454;
+    border-radius: 50px;
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.footer-contact a:hover,
-.footer-links a:hover,
-.footer-note-list a:hover {
+.btn-annulla-attivita:hover {
+    background-color: #A85454;
     color: #FFFFFF;
 }
 
-.footer-links a:hover,
-.footer-note-list a:hover {
-    padding-left: 5px;
+.dashboard-empty {
+    color: #777777;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: #F5F5F0;
+    border: 1px solid #EAE6DF;
+    border-radius: 12px;
 }
 
-.footer-container .footer-col:nth-child(2) {
-    margin: 0 auto;
+
+/* Pannello amministratore */
+
+.admin-page-wrapper {
+    max-width: 1150px;
 }
 
-
-/* Icone social */
-
-.footer-social,
-.social-icons {
+.admin-card-ospiti {
+    position: relative;
+    background-color: #FFFFFF;
+    border: 1px solid #E8E5E1;
+    border-radius: 20px;
+    padding: 2.4rem 2rem;
+    min-height: 185px;
+    margin-bottom: 2rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 1.5rem;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.admin-card-ospiti .admin-card-header {
+    display: block;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.admin-card-ospiti .admin-card-header h3 {
+    text-align: center;
+    font-size: 1.45rem;
+}
+
+.admin-card-ospiti .admin-card-header p {
+    text-align: center;
+    font-size: 0.92rem;
+}
+
+.admin-card-badge-ospiti {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.7rem;
+}
+
+.admin-card-action {
     margin-top: 1.5rem;
-    padding-left: 0;
+    text-align: center;
 }
 
-.footer-social img,
-.social-icons img {
-    width: 42px;
-    height: 42px;
-    object-fit: contain;
-    opacity: 0.7;
-    transition: opacity 0.3s, transform 0.3s;
+.admin-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    align-items: start;
 }
 
-.footer-social img:hover,
-.social-icons img:hover {
-    opacity: 1;
-    transform: translateY(-3px) scale(1.05);
+.admin-dashboard-card {
+    background-color: #FFFFFF;
+    border: 1px solid #E8E5E1;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
-.footer-bottom {
-    background-color: #0B1A12;
-    padding: 1.5rem 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+.admin-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
-.footer-bottom-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
+.admin-card-header h3 {
+    color: #1A3629;
+    font-size: 1.35rem;
+    margin-bottom: 0.35rem;
+}
+
+.admin-card-header p {
+    color: #666666;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.admin-card-badge {
+    flex-shrink: 0;
+    background-color: #E8F0EC;
+    border: 1px solid #A3B5AE;
+    color: #1A3629;
+    padding: 0.35rem 0.7rem;
+    border-radius: 30px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.admin-subtitle {
+    color: #1A1A1A;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.admin-date-divider {
+    color: #1A3629;
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-top: 0.65rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid #D4C5B9;
+}
+
+.admin-date-divider:first-child {
+    margin-top: 0;
+}
+
+.admin-list-item {
+    background-color: #F5F5F0;
+    border: 1px solid #EAE6DF;
+    border-radius: 9px;
+    padding: 0.9rem 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
     gap: 1rem;
 }
 
-.footer-bottom-content p {
-    font-size: 0.85rem;
-    color: #889C94;
-    margin: 0;
+.admin-list-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
 }
 
-.academic-credit {
-    font-style: normal;
-    color: #D4C5B9;
+.admin-list-main strong {
+    color: #1A3629;
+    font-size: 0.9rem;
 }
 
-.academic-credit strong {
-    color: #D4C5B9;
+.admin-list-main span,
+.admin-list-detail {
+    color: #666666;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.admin-list-detail {
+    text-align: right;
+}
+
+.admin-list-item-history {
+    opacity: 0.82;
+}
+
+.admin-empty {
+    color: #777777;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background-color: #F5F5F0;
+    border-radius: 9px;
+}
+
+.admin-history {
+    margin-top: 1.5rem;
+    border-top: 1px solid #E8E5E1;
+    padding-top: 1rem;
+}
+
+.admin-history summary {
+    color: #1A3629;
+    font-size: 0.9rem;
     font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    padding-right: 1.5rem;
+}
+
+.admin-history summary::-webkit-details-marker {
+    display: none;
+}
+
+.admin-history summary::after {
+    content: "▼";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9C8A7B;
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+}
+
+.admin-history[open] summary::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.admin-history-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-top: 1rem;
 }
 
 
@@ -1593,18 +1852,88 @@ summary:focus-visible {
     color: #333333;
 }
 
+
+/* IBAN con funzione di copia */
+
+.iban-copy-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    margin: 1rem auto;
+}
+
 .iban-code {
+    width: 100%;
     font-family: monospace;
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: #1A3629;
     letter-spacing: 1px;
+    white-space: nowrap;
+    text-align: center;
     background-color: #E8EDE9;
-    padding: 0.8rem 1.2rem;
+    padding: 0.8rem 3.4rem 0.8rem 1.2rem;
     border-radius: 8px;
-    display: inline-block;
-    margin: 1rem 0;
-    max-width: 100%;
+    display: block;
+}
+
+.btn-copia-iban {
+    position: absolute;
+    top: 50%;
+    right: 0.65rem;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: background-color 0.2s;
+}
+
+.btn-copia-iban:hover {
+    background-color: rgba(26, 54, 41, 0.1);
+}
+
+.copy-icon {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid #1A3629;
+    border-radius: 2px;
+}
+
+.copy-icon::before {
+    content: "";
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    top: -5px;
+    left: -5px;
+    border: 1.5px solid #1A3629;
+    border-radius: 2px;
+    background-color: #E8EDE9;
+}
+
+.copy-feedback {
+    position: absolute;
+    right: 0.2rem;
+    bottom: calc(100% + 0.4rem);
+    background-color: #1A3629;
+    color: #FFFFFF;
+    border-radius: 6px;
+    padding: 0.35rem 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.copy-feedback:empty {
+    display: none;
 }
 
 .box-5x1000 {
@@ -1706,7 +2035,9 @@ summary:focus-visible {
     font-size: 0.95rem;
 }
 
-.tier-footer-link {
+.tier-footer-link,
+.tier-footer-link:link,
+.tier-footer-link:visited {
     color: #1A3629;
     font-weight: 700;
     text-decoration: underline;
@@ -1765,7 +2096,12 @@ summary:focus-visible {
     font-weight: 400;
 }
 
-.contact-link {
+.contact-link,
+.contact-link:link,
+.contact-link:visited,
+.phone-link,
+.phone-link:link,
+.phone-link:visited {
     color: #1A3629;
     font-weight: 700;
     text-decoration: underline;
@@ -1773,7 +2109,8 @@ summary:focus-visible {
     transition: color 0.3s;
 }
 
-.contact-link:hover {
+.contact-link:hover,
+.phone-link:hover {
     color: #9C8A7B;
 }
 
@@ -1838,6 +2175,162 @@ summary:focus-visible {
 }
 
 
+/* Footer */
+
+.site-footer {
+    background-color: #152E22;
+    color: #E8E5E1;
+    padding-top: 4rem;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+}
+
+.footer-col h2 {
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #D4C5B9;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.footer-col p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #A3B5AE;
+    margin-bottom: 1.5rem;
+}
+
+.footer-col address {
+    font-style: normal;
+}
+
+.footer-contact,
+.footer-links,
+.footer-note-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-contact li {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    min-height: 30px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 0.9rem;
+    color: #A3B5AE;
+}
+
+.footer-contact-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    flex: 0 0 26px;
+}
+
+.footer-links li,
+.footer-note-list li {
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+    color: #A3B5AE;
+}
+
+.footer-contact a,
+.footer-links a,
+.footer-note-list a {
+    color: #A3B5AE;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s, padding-left 0.3s;
+    display: inline-block;
+}
+
+.footer-contact a:hover,
+.footer-links a:hover,
+.footer-note-list a:hover {
+    color: #FFFFFF;
+}
+
+.footer-links a:hover,
+.footer-note-list a:hover {
+    padding-left: 5px;
+}
+
+.footer-container .footer-col:nth-child(2) {
+    margin: 0 auto;
+}
+
+.footer-social,
+.social-icons {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding-left: 0;
+}
+
+.footer-social img,
+.social-icons img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    opacity: 0.7;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.footer-social img:hover,
+.social-icons img:hover {
+    opacity: 1;
+    transform: translateY(-3px) scale(1.05);
+}
+
+.footer-bottom {
+    background-color: #0B1A12;
+    padding: 1.5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-bottom-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-bottom-content p {
+    font-size: 0.85rem;
+    color: #889C94;
+    margin: 0;
+}
+
+.academic-credit {
+    font-style: normal;
+    color: #D4C5B9;
+}
+
+.academic-credit strong {
+    color: #D4C5B9;
+    font-weight: 700;
+}
+
+
 /* Classi di supporto per testi e form */
 
 .fw-bold {
@@ -1850,12 +2343,6 @@ summary:focus-visible {
     font-weight: 700 !important;
     color: #1A3629 !important;
 }
-
-
-/*
- * Checkbox Ricordami
- * Input e testo sono allineati sullo stesso asse verticale
- */
 
 .checkbox-group {
     display: flex;
@@ -1912,21 +2399,29 @@ summary:focus-visible {
 @media screen and (max-width: 68rem) {
     .header-container {
         flex-wrap: wrap;
+        justify-content: space-between;
         row-gap: 1.25rem;
     }
 
-    .main-nav,
-    .main-nav.nav-admin-logged {
+    .main-nav {
         order: 3;
         width: 100%;
         margin: 0;
     }
 
-    .main-nav ul,
-    .main-nav.nav-admin-logged ul {
+    .main-nav ul {
         justify-content: center;
         flex-wrap: wrap;
         gap: 1rem 2rem;
+    }
+
+    .sponsor-banner {
+        max-width: 850px;
+    }
+
+    .sponsor-logo {
+        width: 175px;
+        height: 90px;
     }
 }
 
@@ -1962,8 +2457,10 @@ summary:focus-visible {
         white-space: normal;
     }
 
-    .btn-admin {
-        margin-right: 0;
+    .account-dropdown {
+        left: auto;
+        right: 0;
+        transform: none;
     }
 
 
@@ -2076,6 +2573,45 @@ summary:focus-visible {
     }
 
 
+    /* Area personale */
+
+    .area-personale-wrapper .section-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .area-personale-grid {
+        grid-template-columns: 1fr;
+        margin-top: 0;
+    }
+
+
+    /* Pannello amministratore */
+
+    .admin-dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* Sponsor */
+
+    .home-partners-strip {
+        padding: 2.5rem 1.25rem;
+    }
+
+    .partners-logos {
+        max-width: 500px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+        justify-items: center;
+    }
+
+    .partners-logos .sponsor-logo {
+        width: 170px;
+        height: 85px;
+        max-width: 100%;
+    }
+
     /* Footer */
 
     .footer-container {
@@ -2143,18 +2679,83 @@ summary:focus-visible {
         padding: 2rem 1.25rem;
     }
 
-    #form-registrazione .form-row {
-        gap: 1rem;
+
+    /* Area personale */
+
+    .dashboard-section {
+        padding: 1.5rem 1rem;
     }
+
+    .dashboard-item {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "header"
+            "description"
+            "action";
+        row-gap: 0.7rem;
+    }
+
+    .form-annulla-attivita {
+        justify-content: flex-start;
+        align-self: auto;
+    }
+
+
+    /* Pannello amministratore */
+
+    .admin-dashboard-card,
+    .admin-card-ospiti {
+        padding: 1.5rem 1rem;
+    }
+
+    .admin-card-header {
+        flex-direction: column;
+    }
+
+    .admin-card-badge-ospiti {
+        position: static;
+        align-self: center;
+        margin-bottom: 1rem;
+    }
+
+    .admin-list-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-list-detail {
+        text-align: left;
+    }
+
+
+    /* Sostienici */
 
     .info-bancarie-box {
         padding: 2rem 1rem;
     }
 
     .iban-code {
-        font-size: 1rem;
+        font-size: 0.78rem;
         letter-spacing: 0;
+        white-space: nowrap;
     }
+
+
+    /* Sponsor */
+
+    .partners-logos {
+        max-width: 240px;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .partners-logos .sponsor-logo {
+        width: 180px;
+        height: 90px;
+    }
+
+
+    /* Footer */
 
     .footer-contact li {
         align-items: flex-start;
@@ -2162,7 +2763,7 @@ summary:focus-visible {
 }
 
 
-/* Riduzione delle animazioni quando richiesta dal dispositivo */
+/* Riduzione delle animazioni */
 
 @media (prefers-reduced-motion: reduce) {
     html {
@@ -2175,6 +2776,58 @@ summary:focus-visible {
         transition: none !important;
         animation: none !important;
     }
+}
+
+/* Assetto definitivo della fascia partner */
+
+.home-sponsor-section {
+    width: 100%;
+    max-width: none;
+    flex: 0 0 100%;
+    align-self: stretch;
+    background-color: #FFFFFF;
+    padding: 2.75rem 2rem 3rem;
+}
+
+.home-sponsor-section .sponsor-label {
+    width: 100%;
+    text-align: center;
+    color: #666666;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0 auto 1.6rem;
+}
+
+.home-sponsor-section .sponsor-banner {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.home-sponsor-section .sponsor-logo {
+    display: block;
+    width: 170px;
+    height: 85px;
+    max-width: 22%;
+    object-fit: contain;
+    object-position: center;
+    flex: 0 1 170px;
+    cursor: default;
+    transition: transform 0.3s;
+}
+
+.home-sponsor-section .sponsor-logo:hover {
+    transform: translateY(-4px);
 }
 
 
@@ -2194,10 +2847,11 @@ summary:focus-visible {
     .btn-solid-dark,
     .btn-outline,
     .btn-outline-dark,
-    .btn-admin,
     .scopri-link,
     .filtri-ricerca,
-    .btn-close-alert {
+    .btn-close-alert,
+    .btn-copia-iban,
+    .btn-annulla-attivita {
         display: none;
     }
 
@@ -2218,7 +2872,10 @@ summary:focus-visible {
     .prenotazione-wrapper,
     .auth-card,
     .contact-banner,
-    .info-bancarie-box {
+    .info-bancarie-box,
+    .dashboard-section,
+    .admin-dashboard-card,
+    .admin-card-ospiti {
         box-shadow: none;
         break-inside: avoid;
     }

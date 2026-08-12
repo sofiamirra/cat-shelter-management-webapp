@@ -115,12 +115,12 @@ require 'includes/header.php';
                         </label>
 
                         <label class="fascia-oraria-label" id="label-pomeriggio">
-                            <input type="checkbox" name="fasce[]" value="14:00:00" class="chk-fascia" disabled>
+                            <input type="checkbox" name="fasce[]" value="13:00:00" class="chk-fascia" disabled>
                             <span>Pomeriggio (13 - 17)</span>
                         </label>
 
                         <label class="fascia-oraria-label" id="label-sera">
-                            <input type="checkbox" name="fasce[]" value="18:00:00" class="chk-fascia" disabled>
+                            <input type="checkbox" name="fasce[]" value="17:00:00" class="chk-fascia" disabled>
                             <span>Sera (17 - 21)</span>
                         </label>
                     </div>

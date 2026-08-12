@@ -35,7 +35,13 @@ require 'includes/header.php';
                 <h4>Coordinate per la donazione</h4>
                 <p><strong>Intestato a:</strong> Parco delle Fusa - Torino</p>
                 <p><strong>Causale:</strong> Erogazione liberale - Adozione del Cuore</p>
-                <div class="iban-code">IT12 A345 6789 0123 4567 8901 234</div>
+                <div class="iban-copy-wrapper">
+                    <div class="iban-code" id="iban-donazione">IT12 A345 6789 0123 4567 8901 234</div>
+                    <button type="button" class="btn-copia-iban" id="btn-copia-iban" aria-label="Copia IBAN">
+                        <span class="copy-icon" aria-hidden="true"></span>
+                    </button>
+                    <span class="copy-feedback" id="copy-feedback" aria-live="polite"></span>
+                </div>
 
                 <div class="box-5x1000">
                     Puoi anche destinare il tuo <strong>5x1000</strong><br>
@@ -133,7 +139,7 @@ require 'includes/header.php';
                 <div class="contact-banner-item">
                     <img src="assets/img/icona_telefono_scuro.png" alt="" class="contact-icon-img">
                     <strong>Contatti</strong>
-                    <span>+39 011 123 4567<br><a href="mailto:info@parcodellefusa.it" class="contact-link">info@parcodellefusa.it</a></span>
+                    <span><a href="tel:+390111234567" class="phone-link">+39 011 123 4567</a><br><a href="mailto:info@parcodellefusa.it" class="contact-link">info@parcodellefusa.it</a></span>
                 </div>
             </div>
         </div>
@@ -180,5 +186,31 @@ require 'includes/header.php';
         </div>
     </div>
 </section>
+
+<script>
+/*
+ * Copia l'IBAN negli appunti eliminando gli spazi utilizzati per la visualizzazione
+ * Dopo la copia viene mostrato un breve messaggio di conferma
+ */
+const btnCopiaIban = document.getElementById('btn-copia-iban');
+
+if (btnCopiaIban) {
+    btnCopiaIban.addEventListener('click', function() {
+        const iban = document.getElementById('iban-donazione').textContent.replace(/\s+/g, '');
+        const feedback = document.getElementById('copy-feedback');
+
+        navigator.clipboard.writeText(iban)
+            .then(function() {
+                feedback.textContent = 'Copiato!';
+                setTimeout(function() {
+                    feedback.textContent = '';
+                }, 1800);
+            })
+            .catch(function() {
+                feedback.textContent = 'Copia non riuscita';
+            });
+    });
+}
+</script>
 
 <?php require 'includes/footer.php'; ?>

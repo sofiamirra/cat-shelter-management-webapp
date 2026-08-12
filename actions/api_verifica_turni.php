@@ -48,8 +48,8 @@ require __DIR__ . '/../includes/db_config.php';
 // Le tre fasce partono da zero anche quando non esistono prenotazioni
 $conteggio_fasce = array(
     '09:00:00' => 0,
-    '14:00:00' => 0,
-    '18:00:00' => 0
+    '13:00:00' => 0,
+    '17:00:00' => 0
 );
 
 // Per questa operazione sono necessari esclusivamente privilegi di lettura
