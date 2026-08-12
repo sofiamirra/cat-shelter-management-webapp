@@ -8,7 +8,7 @@
  * Beige secondario: #D4C5B9
  * Verde chiaro: #8AD9A5
  * Testo principale: #1A1A1A
-*/
+ */
 
 
 /* Impostazioni generali */
@@ -127,11 +127,6 @@ summary:focus-visible {
     flex-grow: 1;
     height: 1px;
     background-color: #D4C5B9;
-}
-
-.paw-divider .paw {
-    color: #1A3629;
-    font-size: 1.2rem;
 }
 
 .paw-divider-icon {
@@ -318,13 +313,9 @@ summary:focus-visible {
 
 .alert-wrapper {
     width: 100%;
-    max-width: 620px;
-    margin: 0 auto 1.5rem;
-}
-
-.alert-wrapper .auth-alert-success,
-.alert-wrapper .auth-alert-danger {
-    margin-bottom: 0;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .messaggio-successo-titolo {
@@ -621,9 +612,8 @@ summary:focus-visible {
 }
 
 .auth-card input:focus {
-    outline: 2px solid #9C8A7B;
-    outline-offset: 2px;
-    border-color: #D4C5B9;
+    outline: none;
+    border-color: #9C8A7B;
     background-color: #FFFFFF;
 }
 
@@ -793,93 +783,111 @@ summary:focus-visible {
 }
 
 
-/* Gatto in difficoltà */
+/* Animale in difficoltà */
 
 .home-emergency-section {
     background-color: #F5F5F0;
 }
 
-.emergency-container {
+.home-emergency-section.section-padding {
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
+}
+
+.home-emergency-section .emergency-container {
     display: flex;
-    max-width: 1140px;
+    width: 100%;
+    max-width: 1000px;
     margin: 0 auto;
     background-color: #FFFFFF;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    flex-wrap: wrap;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    flex-wrap: nowrap;
 }
 
-.emergency-text {
-    flex: 1;
-    padding: 3.15rem;
-    min-width: 300px;
+.home-emergency-section .emergency-text {
+    flex: 1 1 55%;
+    min-width: 0;
+    padding: 3.25rem 3rem;
 }
 
-.emergency-text h2 {
-    font-size: 2rem;
+.home-emergency-section .emergency-title {
+    font-size: 2.25rem;
+    line-height: 1.2;
     color: #1A3629;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.7rem;
+    font-weight: 700;
 }
 
-.emergency-subtitle {
+.home-emergency-section .emergency-subtitle {
     text-align: left;
-    margin: 0 0 2rem;
+    color: #666666;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 0 2.4rem;
 }
 
-.emergency-item {
+.home-emergency-section .emergency-item {
     display: flex;
-    gap: 1.25rem;
+    gap: 1.35rem;
     margin-bottom: 1.8rem;
     align-items: flex-start;
 }
 
-.emergency-item:last-child {
+.home-emergency-section .emergency-item:last-child {
     margin-bottom: 0;
 }
 
-.icon-png-small {
+.home-emergency-section .icon-png-small {
     width: 45px;
     height: 45px;
     object-fit: contain;
-    flex-shrink: 0;
+    flex: 0 0 45px;
 }
 
-.emergency-item-content h3 {
+.home-emergency-section .emergency-item-content {
+    min-width: 0;
+}
+
+.home-emergency-section .emergency-item-content h4 {
     color: #1A1A1A;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.3rem;
     font-size: 1.05rem;
+    line-height: 1.4;
 }
 
-.emergency-item-content p {
+.home-emergency-section .emergency-item-content p {
     color: #666666;
     line-height: 1.5;
     font-size: 0.92rem;
 }
 
-.emergency-link {
+.home-emergency-section .emergency-link,
+.home-emergency-section .emergency-link:link,
+.home-emergency-section .emergency-link:visited {
     color: #1A3629;
     font-weight: 600;
     text-decoration: underline;
     text-decoration-color: #D4C5B9;
     text-underline-offset: 4px;
-    display: inline-block;
-    margin-top: 0.3rem;
     transition: color 0.3s;
 }
 
-.emergency-link:hover {
+.home-emergency-section .emergency-link:hover {
     color: #9C8A7B;
 }
 
-.emergency-image {
-    flex: 1;
-    min-width: 300px;
+.home-emergency-section .emergency-image {
+    flex: 0 0 45%;
+    min-width: 0;
 }
 
-.emergency-image img {
+.home-emergency-section .emergency-image img {
+    display: block;
     width: 100%;
     height: 100%;
+    min-height: 390px;
     object-fit: cover;
 }
 
@@ -889,46 +897,45 @@ summary:focus-visible {
 .home-partners-strip {
     width: 100%;
     background-color: #FFFFFF;
-    padding: 2.75rem 2rem 3rem;
+    text-align: center;
+    padding: 2.3rem 2rem 2.6rem;
 }
 
 .partners-label {
-    text-align: center;
     color: #666666;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.78rem;
     font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 1.6rem;
+    letter-spacing: 0.16em;
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
 }
 
 .partners-logos {
     width: 100%;
-    max-width: 900px;
+    max-width: 880px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     align-items: center;
-    gap: 2rem;
+    justify-items: center;
+    gap: 1.5rem;
 }
 
-.partners-logos .sponsor-logo {
+.sponsor-logo {
     display: block;
     width: 170px;
-    height: 85px;
-    max-width: 22%;
+    height: 80px;
+    max-width: 100%;
     object-fit: contain;
-    object-position: center;
-    flex: 0 1 170px;
     cursor: default;
     transition: transform 0.3s;
 }
 
-.partners-logos .sponsor-logo:hover {
-    transform: translateY(-4px);
+.sponsor-logo:hover {
+    transform: translateY(-5px);
 }
+
 
 /* Card dei gatti e componente React */
 
@@ -1076,9 +1083,9 @@ summary:focus-visible {
 
 .input-ricerca:focus,
 .select-ordinamento:focus {
-    outline: 2px solid #9C8A7B;
-    outline-offset: 2px;
-    border-color: #D4C5B9;
+    outline: none;
+    border-color: #9C8A7B;
+    box-shadow: 0 0 0 3px rgba(156, 138, 123, 0.14);
 }
 
 .messaggio-di-stato,
@@ -1134,7 +1141,7 @@ summary:focus-visible {
 
 .input-data-large {
     padding: 0.9rem 1.2rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
     border-radius: 8px;
     border: 2px solid #EAE6DF;
     width: 100%;
@@ -1145,15 +1152,9 @@ summary:focus-visible {
 }
 
 .input-data-large:focus {
-    outline: 2px solid #9C8A7B;
-    outline-offset: 2px;
-    border-color: #D4C5B9;
-}
-
-#form-inserimento select.input-data-large {
-    font-size: 0.95rem;
-    padding-top: 0.8rem;
-    padding-bottom: 0.8rem;
+    outline: none;
+    border-color: #9C8A7B;
+    box-shadow: 0 0 0 3px rgba(156, 138, 123, 0.12);
 }
 
 .input-data-large[type="time"] {
@@ -1220,6 +1221,41 @@ summary:focus-visible {
     color: #666666;
     font-weight: 400;
     padding: 0.4rem;
+}
+
+
+/* Inserimento di un nuovo ospite */
+
+.inserimento-gatto-wrapper {
+    position: relative;
+}
+
+.back-admin-link,
+.back-admin-link:link,
+.back-admin-link:visited {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 0.8rem;
+    color: #1A3629;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.back-admin-link:hover {
+    color: #9C8A7B;
+    transform: translateX(-3px);
+}
+
+.back-admin-link span {
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+.inserimento-gatto-wrapper .auth-alert-success {
+    font-weight: 700;
 }
 
 
@@ -1429,16 +1465,12 @@ summary:focus-visible {
     max-width: 1150px;
 }
 
-.area-personale-wrapper .section-header {
-    margin-bottom: 1.5rem;
+.area-personale-wrapper > .section-header {
+    margin-bottom: 3.5rem;
 }
 
-.area-personale-wrapper .header-subtitle {
+.area-personale-wrapper > .section-header .header-subtitle {
     margin-bottom: 0;
-}
-
-.area-personale-wrapper .alert-wrapper {
-    margin-bottom: 1rem;
 }
 
 .area-personale-grid {
@@ -1446,7 +1478,6 @@ summary:focus-visible {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem;
     align-items: start;
-    margin-top: 0;
 }
 
 .dashboard-section {
@@ -1566,19 +1597,23 @@ summary:focus-visible {
     max-width: 1150px;
 }
 
+.admin-page-wrapper > .section-header {
+    margin-bottom: 3.5rem;
+}
+
+.admin-page-wrapper > .section-header .header-subtitle {
+    margin-bottom: 0;
+}
+
 .admin-card-ospiti {
     position: relative;
     background-color: #FFFFFF;
     border: 1px solid #E8E5E1;
     border-radius: 20px;
-    padding: 2.4rem 2rem;
-    min-height: 185px;
+    padding: 2rem;
     margin-bottom: 2rem;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
 .admin-card-ospiti .admin-card-header {
@@ -1589,22 +1624,22 @@ summary:focus-visible {
 
 .admin-card-ospiti .admin-card-header h3 {
     text-align: center;
-    font-size: 1.45rem;
+    margin-bottom: 0.8rem;
 }
 
 .admin-card-ospiti .admin-card-header p {
     text-align: center;
-    font-size: 0.92rem;
+    margin-bottom: 0;
 }
 
-.admin-card-badge-ospiti {
+.admin-card-ospiti .admin-card-badge {
     position: absolute;
     top: 1.5rem;
-    right: 1.7rem;
+    right: 1.5rem;
 }
 
 .admin-card-action {
-    margin-top: 1.5rem;
+    margin-top: 0.8rem;
     text-align: center;
 }
 
@@ -2415,13 +2450,17 @@ summary:focus-visible {
         gap: 1rem 2rem;
     }
 
-    .sponsor-banner {
-        max-width: 850px;
+    .home-emergency-section .emergency-container {
+        max-width: 980px;
+    }
+
+    .partners-logos {
+        max-width: 800px;
     }
 
     .sponsor-logo {
-        width: 175px;
-        height: 90px;
+        width: 155px;
+        height: 75px;
     }
 }
 
@@ -2513,10 +2552,27 @@ summary:focus-visible {
         width: 100%;
     }
 
-    .emergency-text,
-    .emergency-image {
+
+    /* Emergenze */
+
+    .home-emergency-section .emergency-container {
+        flex-wrap: wrap;
+        max-width: 650px;
+    }
+
+    .home-emergency-section .emergency-text,
+    .home-emergency-section .emergency-image {
+        flex: 0 0 100%;
         min-width: 0;
-        flex-basis: 100%;
+    }
+
+    .home-emergency-section .emergency-text {
+        padding: 2.75rem 2rem;
+    }
+
+    .home-emergency-section .emergency-image img {
+        min-height: 300px;
+        max-height: 390px;
     }
 
 
@@ -2575,13 +2631,8 @@ summary:focus-visible {
 
     /* Area personale */
 
-    .area-personale-wrapper .section-header {
-        margin-bottom: 1.5rem;
-    }
-
     .area-personale-grid {
         grid-template-columns: 1fr;
-        margin-top: 0;
     }
 
 
@@ -2592,25 +2643,19 @@ summary:focus-visible {
     }
 
 
-    /* Sponsor */
-
-    .home-partners-strip {
-        padding: 2.5rem 1.25rem;
-    }
+    /* Partner */
 
     .partners-logos {
-        max-width: 500px;
-        display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.5rem;
-        justify-items: center;
+        max-width: 470px;
+        gap: 1rem 1.5rem;
     }
 
-    .partners-logos .sponsor-logo {
+    .sponsor-logo {
         width: 170px;
-        height: 85px;
-        max-width: 100%;
+        height: 80px;
     }
+
 
     /* Footer */
 
@@ -2644,8 +2689,16 @@ summary:focus-visible {
         padding: 2rem 1rem;
     }
 
-    .emergency-text {
+    .home-emergency-section .emergency-text {
         padding: 2.5rem 1.25rem;
+    }
+    
+    .home-emergency-section .emergency-title {
+        font-size: 1.7rem;
+    }
+    
+    .home-emergency-section .emergency-item {
+        gap: 1rem;
     }
 
     .prenotazione-wrapper {
@@ -2712,9 +2765,9 @@ summary:focus-visible {
         flex-direction: column;
     }
 
-    .admin-card-badge-ospiti {
+    .admin-card-ospiti .admin-card-badge {
         position: static;
-        align-self: center;
+        display: inline-block;
         margin-bottom: 1rem;
     }
 
@@ -2741,16 +2794,20 @@ summary:focus-visible {
     }
 
 
-    /* Sponsor */
+    /* Partner */
 
-    .partners-logos {
-        max-width: 240px;
-        grid-template-columns: 1fr;
-        gap: 1rem;
+    .home-partners-strip {
+        padding: 2rem 1rem 2.2rem;
     }
 
-    .partners-logos .sponsor-logo {
-        width: 180px;
+    .partners-logos {
+        grid-template-columns: 1fr;
+        max-width: 240px;
+        gap: 0.4rem;
+    }
+
+    .sponsor-logo {
+        width: 190px;
         height: 90px;
     }
 
@@ -2778,58 +2835,6 @@ summary:focus-visible {
     }
 }
 
-/* Assetto definitivo della fascia partner */
-
-.home-sponsor-section {
-    width: 100%;
-    max-width: none;
-    flex: 0 0 100%;
-    align-self: stretch;
-    background-color: #FFFFFF;
-    padding: 2.75rem 2rem 3rem;
-}
-
-.home-sponsor-section .sponsor-label {
-    width: 100%;
-    text-align: center;
-    color: #666666;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin: 0 auto 1.6rem;
-}
-
-.home-sponsor-section .sponsor-banner {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0;
-    background-color: #FFFFFF;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
-}
-
-.home-sponsor-section .sponsor-logo {
-    display: block;
-    width: 170px;
-    height: 85px;
-    max-width: 22%;
-    object-fit: contain;
-    object-position: center;
-    flex: 0 1 170px;
-    cursor: default;
-    transition: transform 0.3s;
-}
-
-.home-sponsor-section .sponsor-logo:hover {
-    transform: translateY(-4px);
-}
-
 
 /* Versione destinata alla stampa */
 
@@ -2851,7 +2856,8 @@ summary:focus-visible {
     .filtri-ricerca,
     .btn-close-alert,
     .btn-copia-iban,
-    .btn-annulla-attivita {
+    .btn-annulla-attivita,
+    .back-admin-link {
         display: none;
     }
 

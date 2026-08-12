@@ -229,7 +229,7 @@ require 'includes/header.php';
 
         <div class="emergency-text">
             <h3 class="emergency-title">Animale in Difficoltà?</h3>
-            <p class="emergency-subtitle">Ecco a chi rivolgerti per soccorrere un esemplare bisognoso.</p>
+            <p class="emergency-subtitle">Ecco chi contattare per soccorrere un micio bisognoso.</p>
 
             <div class="emergency-item">
                 <img src="assets/img/icona_ambulanza.png" alt="" class="icon-png-small">
@@ -243,7 +243,7 @@ require 'includes/header.php';
                 <img src="assets/img/icona_scudo.png" alt="" class="icon-png-small">
                 <div class="emergency-item-content">
                     <h4>Avvistamento Gatto sul Territorio</h4>
-                    <p>Verifica sempre la sua <a href="https://www.comune.torino.it/schede-informative/colonie-feline" class="emergency-link" target="_blank" rel="noopener">appartenenza a una colonia.</a></p>
+                    <p>Verifica se il gatto <a href="https://www.comune.torino.it/schede-informative/colonie-feline" class="emergency-link" target="_blank" rel="noopener">appartiene a una colonia felina.</a></p>
                 </div>
             </div>
 
