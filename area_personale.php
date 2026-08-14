@@ -5,6 +5,7 @@
  * Ogni utente può intervenire esclusivamente sulle proprie prenotazioni
  */
 
+// La pagina non include ancora l'header comune e inizializza quindi direttamente la sessione
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
@@ -25,11 +26,10 @@ $errore_caricamento = false;
 // Per visualizzare le attività sono sufficienti privilegi di sola lettura
 $con = get_db_connection('lecture');
 
-
 /*
  * Recupero delle visite future appartenenti all'utente con gli eventuali gatti associati
- * Le righe della stessa prenotazione vengono raggruppate utilizzando l'id della visita
- * Il filtro sull'utente impedisce di visualizzare prenotazioni appartenenti ad altri account
+ * Le righe della stessa prenotazione vengono successivamente raggruppate utilizzando l'id della visita
+ * Il filtro su utente_id impedisce di visualizzare prenotazioni appartenenti ad altri account
  */
 $query_visite = 'SELECT pv.id, pv.data_ora, g.nome
                   FROM prenotazioni_visite AS pv
@@ -44,7 +44,6 @@ if ($stmt_visite) {
     mysqli_stmt_bind_param($stmt_visite, 'i', $utente_id);
 
     if (mysqli_stmt_execute($stmt_visite)) {
-        // Il binding dei risultati viene effettuato soltanto dopo l'esecuzione della query
         mysqli_stmt_bind_result(
             $stmt_visite,
             $visita_id,
@@ -54,7 +53,7 @@ if ($stmt_visite) {
 
         /*
          * L'array temporaneo usa l'id della prenotazione come chiave
-         * Una visita con più gatti rimane quindi una sola card con più nomi
+         * Una visita associata a più gatti rimane quindi una sola attività con più nomi
          */
         $visite_indicizzate = array();
 
@@ -69,13 +68,13 @@ if ($stmt_visite) {
                 );
             }
 
-            // Il nome può essere NULL nel caso di una vecchia visita priva di associazioni
+            // Il nome può essere NULL nel caso di una visita priva di associazioni
             if ($visita_nome_gatto !== null && $visita_nome_gatto !== '') {
                 $visite_indicizzate[$id_corrente]['gatti'][] = (string) $visita_nome_gatto;
             }
         }
 
-        // Gli indici temporanei vengono rimossi prima della visualizzazione
+        // Gli indici basati sull'id vengono rimossi prima di utilizzare l'array nella visualizzazione
         $visite = array_values($visite_indicizzate);
     } else {
         error_log('Errore durante il recupero delle visite personali: ' . mysqli_stmt_error($stmt_visite));
@@ -88,10 +87,9 @@ if ($stmt_visite) {
     $errore_caricamento = true;
 }
 
-
 /*
  * Recupero dei turni futuri appartenenti all'utente
- * Anche i turni vengono letti utilizzando esclusivamente l'identificativo della sessione
+ * Anche questa query utilizza esclusivamente l'identificativo salvato nella sessione
  */
 $query_turni = 'SELECT id, fascia_oraria
                 FROM turni_volontariato
@@ -127,13 +125,14 @@ mysqli_close($con);
 
 require 'includes/header.php';
 
+// Il parametro status permette di mostrare l'esito delle action di annullamento
 $status = isset($_GET['status']) ? $_GET['status'] : '';
 ?>
 
 <div class="page-wrapper area-personale-wrapper">
 
     <header class="section-header">
-        <h2>Le Mie Attività</h2>
+        <h1>Le Mie Attività</h1>
 
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
@@ -149,25 +148,28 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
     <!-- Feedback delle operazioni effettuate dalla pagina personale -->
     <?php if ($status === 'visita_eliminata'): ?>
         <div class="alert-wrapper mb-2">
-            <div class="auth-alert-success">
-                <strong>Visita annullata correttamente.</strong> 
+            <div class="auth-alert-success" role="status">
+                <strong>Visita annullata correttamente.</strong>
             </div>
         </div>
+
     <?php elseif ($status === 'turno_eliminato'): ?>
         <div class="alert-wrapper mb-2">
-            <div class="auth-alert-success">
+            <div class="auth-alert-success" role="status">
                 <strong>Turno di volontariato annullato correttamente.</strong>
             </div>
         </div>
+
     <?php elseif ($status === 'non_disponibile'): ?>
         <div class="alert-wrapper mb-2">
-            <div class="auth-alert-danger">
+            <div class="auth-alert-danger" role="alert">
                 La prenotazione richiesta non è più disponibile oppure non appartiene al tuo account.
             </div>
         </div>
+
     <?php elseif ($status === 'errore'): ?>
         <div class="alert-wrapper mb-2">
-            <div class="auth-alert-danger">
+            <div class="auth-alert-danger" role="alert">
                 Si è verificato un errore durante l'operazione. Riprova più tardi.
             </div>
         </div>
@@ -175,7 +177,7 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
 
     <?php if ($errore_caricamento): ?>
         <div class="alert-wrapper mb-2">
-            <div class="auth-alert-danger">
+            <div class="auth-alert-danger" role="alert">
                 Non è stato possibile caricare tutte le attività. Riprova più tardi.
             </div>
         </div>
@@ -185,10 +187,10 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
 
         <!-- Visite prenotate -->
         <section class="dashboard-section">
-            <div class="dashboard-section-header">
-                <h3>Le Mie Visite</h3>
+            <header class="dashboard-section-header">
+                <h2>Le Mie Visite</h2>
                 <p>Incontri già programmati con i nostri ospiti.</p>
-            </div>
+            </header>
 
             <?php if (count($visite) > 0): ?>
                 <div class="dashboard-list">
@@ -200,7 +202,7 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
                         $data_visita = $timestamp_visita ? date('d/m/Y', $timestamp_visita) : '';
                         $ora_visita = $timestamp_visita ? date('H:i', $timestamp_visita) : '';
 
-                        // I nomi dei gatti associati vengono mostrati sulla stessa riga
+                        // I nomi dei gatti associati alla stessa prenotazione vengono mostrati insieme
                         $nomi_gatti = count($visita['gatti']) > 0
                             ? implode(', ', $visita['gatti'])
                             : 'Nessun gatto associato';
@@ -208,8 +210,11 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
 
                         <article class="dashboard-item">
                             <div class="dashboard-item-header">
-                                <h4><?php echo htmlspecialchars($data_visita, ENT_QUOTES, 'UTF-8'); ?></h4>
-                                <span class="dashboard-orario">Ore <?php echo htmlspecialchars($ora_visita, ENT_QUOTES, 'UTF-8'); ?></span>
+                                <h3><?php echo htmlspecialchars($data_visita, ENT_QUOTES, 'UTF-8'); ?></h3>
+
+                                <span class="dashboard-orario">
+                                    Ore <?php echo htmlspecialchars($ora_visita, ENT_QUOTES, 'UTF-8'); ?>
+                                </span>
                             </div>
 
                             <p class="dashboard-description">
@@ -217,10 +222,22 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
                                 <?php echo htmlspecialchars($nomi_gatti, ENT_QUOTES, 'UTF-8'); ?>
                             </p>
 
-                            <!-- L'id inviato al server identifica la sola prenotazione da annullare -->
-                            <form action="actions/elimina_prenotazione.php" method="POST" class="form-annulla-attivita" data-messaggio="Vuoi annullare questa visita?">
-                                <input type="hidden" name="prenotazione_id" value="<?php echo (int) $visita['id']; ?>">
-                                <button type="submit" class="btn-annulla-attivita">Annulla Visita</button>
+                            <!-- L'id identifica la prenotazione richiesta, mentre l'action ricontrollerà anche il proprietario -->
+                            <form
+                                action="actions/elimina_prenotazione.php"
+                                method="POST"
+                                class="form-annulla-attivita"
+                                data-messaggio="Vuoi annullare questa visita?"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="prenotazione_id"
+                                    value="<?php echo (int) $visita['id']; ?>"
+                                >
+
+                                <button type="submit" class="btn-annulla-attivita">
+                                    Annulla Visita
+                                </button>
                             </form>
                         </article>
 
@@ -234,24 +251,24 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
             <?php endif; ?>
         </section>
 
-
         <!-- Turni di volontariato prenotati -->
         <section class="dashboard-section">
-            <div class="dashboard-section-header">
-                <h3>I Miei Turni</h3>
+            <header class="dashboard-section-header">
+                <h2>I Miei Turni</h2>
                 <p>Disponibilità già registrate per il volontariato.</p>
-            </div>
+            </header>
 
             <?php if (count($turni) > 0): ?>
                 <div class="dashboard-list">
 
                     <?php foreach ($turni as $turno): ?>
                         <?php
+                        // Data e ora vengono ricavate dal valore DATETIME salvato nel database
                         $timestamp_turno = strtotime($turno['fascia_oraria']);
                         $data_turno = $timestamp_turno ? date('d/m/Y', $timestamp_turno) : '';
                         $ora_turno = $timestamp_turno ? date('H:i', $timestamp_turno) : '';
 
-                        // L'orario memorizzato nel database viene convertito nel nome della fascia corrispondente
+                        // L'orario viene convertito nel nome della fascia mostrata nella pagina Volontariato
                         $nome_fascia = 'Turno';
 
                         if ($ora_turno === '09:00') {
@@ -265,14 +282,29 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
 
                         <article class="dashboard-item">
                             <div class="dashboard-item-header">
-                                <h4><?php echo htmlspecialchars($data_turno, ENT_QUOTES, 'UTF-8'); ?></h4>
-                                <span class="dashboard-orario"><?php echo htmlspecialchars($nome_fascia, ENT_QUOTES, 'UTF-8'); ?></span>
+                                <h3><?php echo htmlspecialchars($data_turno, ENT_QUOTES, 'UTF-8'); ?></h3>
+
+                                <span class="dashboard-orario">
+                                    <?php echo htmlspecialchars($nome_fascia, ENT_QUOTES, 'UTF-8'); ?>
+                                </span>
                             </div>
 
-                            <!-- L'annullamento viene limitato al turno identificato dall'id ricevuto dal form -->
-                            <form action="actions/elimina_turno.php" method="POST" class="form-annulla-attivita" data-messaggio="Vuoi annullare questo turno di volontariato?">
-                                <input type="hidden" name="turno_id" value="<?php echo (int) $turno['id']; ?>">
-                                <button type="submit" class="btn-annulla-attivita">Annulla Turno</button>
+                            <!-- Anche in questo caso l'action verifica che il turno appartenga all'utente autenticato -->
+                            <form
+                                action="actions/elimina_turno.php"
+                                method="POST"
+                                class="form-annulla-attivita"
+                                data-messaggio="Vuoi annullare questo turno di volontariato?"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="turno_id"
+                                    value="<?php echo (int) $turno['id']; ?>"
+                                >
+
+                                <button type="submit" class="btn-annulla-attivita">
+                                    Annulla Turno
+                                </button>
                             </form>
                         </article>
 
@@ -287,13 +319,12 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
         </section>
 
     </div>
-
 </div>
 
 <script>
 /*
- * Prima di cancellare una prenotazione viene richiesta una conferma
- * L'operazione viene inviata al server soltanto dopo la scelta dell'utente
+ * Prima di inviare una richiesta di annullamento viene chiesta una conferma
+ * Il messaggio specifico viene letto dall'attributo data-messaggio del relativo form
  */
 document.querySelectorAll('.form-annulla-attivita').forEach(function(form) {
     form.addEventListener('submit', function(event) {

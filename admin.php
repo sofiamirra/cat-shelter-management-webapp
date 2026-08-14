@@ -5,11 +5,15 @@
  * le visite e i turni registrati nella struttura
  */
 
+// La pagina non include ancora l'header comune e inizializza direttamente la sessione
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
-// Il controllo viene effettuato lato server e non dipende dalla visibilità del link nell'header
+/*
+ * L'autorizzazione viene verificata lato server
+ * La sola presenza del collegamento Admin nell'interfaccia non viene quindi utilizzata come protezione
+ */
 $is_admin = isset($_SESSION['username'])
     && isset($_SESSION['is_admin'])
     && (int) $_SESSION['is_admin'] === 1;
@@ -29,14 +33,13 @@ $turni_futuri = array();
 $turni_storici = array();
 $errore_admin = false;
 
-// Il pannello consulta i dati utilizzando esclusivamente l'utente con privilegi di sola lettura
+// Il pannello consulta i dati utilizzando esclusivamente l'utente con privilegi di lettura
 $con = get_db_connection('lecture');
-
 
 /*
  * Recupero delle visite con lo username e gli eventuali gatti associati
- * Le LEFT JOIN mantengono visibile anche una visita che non avesse associazioni nella tabella visita_gatti
- * Le righe appartenenti alla stessa prenotazione vengono poi raggruppate nell'array PHP
+ * Le LEFT JOIN mantengono visibile anche una visita priva di associazioni in visita_gatti
+ * Più righe relative alla stessa prenotazione vengono poi ricomposte nell'array PHP
  */
 $query_visite = 'SELECT pv.id, pv.data_ora, u.username, g.nome
                   FROM prenotazioni_visite AS pv
@@ -45,11 +48,16 @@ $query_visite = 'SELECT pv.id, pv.data_ora, u.username, g.nome
                   LEFT JOIN gatti AS g ON g.id = vg.gatto_id
                   ORDER BY pv.data_ora ASC, pv.id ASC, g.nome ASC';
 
+/*
+ * La query non contiene input esterno e quindi non richiede bind_param
+ * Lo statement mantiene lo stesso flusso MySQLi utilizzato nelle altre letture del progetto
+ */
 $stmt_visite = mysqli_prepare($con, $query_visite);
 
 if ($stmt_visite) {
     if (mysqli_stmt_execute($stmt_visite)) {
-        // Il binding dei risultati viene effettuato dopo l'esecuzione dello statement
+
+        // Le colonne della SELECT vengono associate alle variabili nello stesso ordine della query
         mysqli_stmt_bind_result(
             $stmt_visite,
             $visita_id,
@@ -60,14 +68,14 @@ if ($stmt_visite) {
 
         /*
          * L'id della prenotazione viene utilizzato come chiave temporanea
-         * In questo modo una visita con più gatti rimane una sola visita con più nomi associati
+         * Una visita con più gatti rimane così una sola attività con più nomi associati
          */
         $visite_indicizzate = array();
 
         while (mysqli_stmt_fetch($stmt_visite)) {
             $id_corrente = (int) $visita_id;
 
-            // La struttura principale della visita viene creata soltanto alla prima riga trovata
+            // La struttura principale della visita viene creata soltanto alla prima riga con lo stesso id
             if (!isset($visite_indicizzate[$id_corrente])) {
                 $visite_indicizzate[$id_corrente] = array(
                     'id' => $id_corrente,
@@ -77,13 +85,13 @@ if ($stmt_visite) {
                 );
             }
 
-            // Con una LEFT JOIN il nome può essere NULL se la visita non possiede gatti associati
+            // Con la LEFT JOIN il nome può essere NULL se non esistono gatti associati alla visita
             if ($visita_nome_gatto !== null && $visita_nome_gatto !== '') {
                 $visite_indicizzate[$id_corrente]['gatti'][] = (string) $visita_nome_gatto;
             }
         }
 
-        // Vengono ripristinati gli indici numerici utilizzati nel resto della pagina
+        // Vengono rimossi gli indici temporanei basati sugli id prima della visualizzazione
         $visite = array_values($visite_indicizzate);
     } else {
         error_log('Errore durante il recupero delle visite amministrative: ' . mysqli_stmt_error($stmt_visite));
@@ -96,10 +104,9 @@ if ($stmt_visite) {
     $errore_admin = true;
 }
 
-
 /*
- * Recupero di tutti i turni di volontariato
- * Anche questa operazione richiede esclusivamente privilegi di lettura
+ * Recupero di tutti i turni di volontariato insieme allo username dell'utente
+ * Anche questa query è statica e richiede esclusivamente privilegi di lettura
  */
 $query_turni = 'SELECT tv.id, tv.fascia_oraria, u.username
                 FROM turni_volontariato AS tv
@@ -110,8 +117,14 @@ $stmt_turni = mysqli_prepare($con, $query_turni);
 
 if ($stmt_turni) {
     if (mysqli_stmt_execute($stmt_turni)) {
-        mysqli_stmt_bind_result($stmt_turni, $turno_id, $turno_fascia, $turno_username);
+        mysqli_stmt_bind_result(
+            $stmt_turni,
+            $turno_id,
+            $turno_fascia,
+            $turno_username
+        );
 
+        // Ogni riga viene trasformata nell'elemento utilizzato successivamente dal pannello
         while (mysqli_stmt_fetch($stmt_turni)) {
             $turni[] = array(
                 'id' => (int) $turno_id,
@@ -132,10 +145,9 @@ if ($stmt_turni) {
 
 mysqli_close($con);
 
-
 /*
- * Le attività vengono separate tra prossime e concluse
- * Lo storico viene mostrato partendo dagli eventi più recenti
+ * Le attività vengono separate tra future e concluse confrontando i relativi timestamp
+ * Le query arrivano già in ordine crescente, quindi lo storico viene invertito per mostrare prima gli eventi recenti
  */
 $adesso = time();
 
@@ -169,7 +181,7 @@ require 'includes/header.php';
 <div class="page-wrapper admin-page-wrapper">
 
     <header class="section-header">
-        <h2>Pannello Amministratore</h2>
+        <h1>Pannello Amministratore</h1>
 
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
@@ -177,53 +189,62 @@ require 'includes/header.php';
             <span class="line"></span>
         </div>
 
-        <p class="header-subtitle">Gestisci gli ospiti e consulta le attività programmate nella struttura.</p>
+        <p class="header-subtitle">
+            Gestisci gli ospiti e consulta le attività programmate nella struttura.
+        </p>
     </header>
 
     <?php if ($errore_admin): ?>
         <div class="alert-wrapper mb-2">
-            <div class="auth-alert-danger">
+            <div class="auth-alert-danger" role="alert">
                 Non è stato possibile caricare tutte le informazioni. Riprova più tardi.
             </div>
         </div>
     <?php endif; ?>
 
-    <!-- Gestione degli ospiti -->
+    <!-- Collegamento alla funzione amministrativa per l'inserimento di nuovi ospiti -->
     <section class="admin-dashboard-card admin-card-ospiti">
         <span class="admin-card-badge admin-card-badge-ospiti">Gatti</span>
 
         <div class="admin-card-header admin-card-header-centered">
             <div>
-                <h3>Gestione Ospiti</h3>
+                <h2>Gestione Ospiti</h2>
                 <p>Registra la scheda di un nuovo gatto accolto nella struttura.</p>
             </div>
         </div>
 
         <div class="admin-card-action">
-            <a href="inserimento_gatto.php" class="btn-solid-dark">Inserisci un Nuovo Gatto</a>
+            <a href="inserimento_gatto.php" class="btn-solid-dark">
+                Inserisci un Nuovo Gatto
+            </a>
         </div>
     </section>
 
     <div class="admin-dashboard-grid">
 
-        <!-- Gestione delle visite -->
+        <!-- Visite prenotate dagli utenti -->
         <section class="admin-dashboard-card">
-
             <div class="admin-card-header">
                 <div>
-                    <h3>Gestione Visite</h3>
+                    <h2>Gestione Visite</h2>
                     <p>Consulta gli incontri programmati dagli utenti.</p>
                 </div>
 
-                <span class="admin-card-badge"><?php echo count($visite_future); ?> visite</span>
+                <span class="admin-card-badge">
+                    <?php echo count($visite_future); ?> visite
+                </span>
             </div>
 
-            <h4 class="admin-subtitle">Prossime Visite</h4>
+            <h3 class="admin-subtitle">Prossime Visite</h3>
 
             <?php if (count($visite_future) > 0): ?>
                 <div class="admin-list">
 
                     <?php
+                    /*
+                     * giorno_corrente permette di stampare la data una sola volta
+                     * per tutte le visite appartenenti allo stesso giorno
+                     */
                     $giorno_corrente = '';
 
                     foreach ($visite_future as $visita):
@@ -262,6 +283,7 @@ require 'includes/header.php';
                 <p class="admin-empty">Non ci sono visite future programmate.</p>
             <?php endif; ?>
 
+            <!-- details e summary forniscono un controllo espandibile nativo senza JavaScript -->
             <details class="admin-history">
                 <summary>Storico Visite</summary>
 
@@ -307,22 +329,22 @@ require 'includes/header.php';
                     <?php endif; ?>
                 </div>
             </details>
-
         </section>
 
-        <!-- Gestione del volontariato -->
+        <!-- Turni di volontariato prenotati dagli utenti -->
         <section class="admin-dashboard-card">
-
             <div class="admin-card-header">
                 <div>
-                    <h3>Gestione Volontari</h3>
+                    <h2>Gestione Volontari</h2>
                     <p>Consulta gli utenti iscritti ai prossimi turni.</p>
                 </div>
 
-                <span class="admin-card-badge"><?php echo count($turni_futuri); ?> turni</span>
+                <span class="admin-card-badge">
+                    <?php echo count($turni_futuri); ?> turni
+                </span>
             </div>
 
-            <h4 class="admin-subtitle">Prossimi Turni</h4>
+            <h3 class="admin-subtitle">Prossimi Turni</h3>
 
             <?php if (count($turni_futuri) > 0): ?>
                 <div class="admin-list">
@@ -336,6 +358,7 @@ require 'includes/header.php';
                         $data = $timestamp ? date('d/m/Y', $timestamp) : '';
                         $ora = $timestamp ? date('H:i', $timestamp) : '';
 
+                        // L'orario memorizzato viene convertito nella stessa etichetta utilizzata nella pagina Volontariato
                         if ($ora === '09:00') {
                             $nome_fascia = 'Mattina (09 - 13)';
                         } elseif ($ora === '13:00') {
@@ -415,11 +438,9 @@ require 'includes/header.php';
                     <?php endif; ?>
                 </div>
             </details>
-
         </section>
 
     </div>
-
 </div>
 
 <?php require 'includes/footer.php'; ?>

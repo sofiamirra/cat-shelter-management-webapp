@@ -5,6 +5,7 @@
  * e restituisce in JSON il numero di iscritti presenti nelle tre fasce
  */
 
+// L'action non include l'header comune e inizializza quindi direttamente la sessione
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
@@ -20,9 +21,13 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
+// Il parametro GET contiene la data selezionata nel form di volontariato
 $data_richiesta = isset($_GET['data']) ? trim($_GET['data']) : '';
 
-// La data deve rispettare il formato prodotto dal campo input type="date"
+/*
+ * Prima viene controllato il formato YYYY-MM-DD
+ * Successivamente checkdate verifica che i valori costituiscano una data realmente esistente
+ */
 $data_valida = preg_match('/^\d{4}-\d{2}-\d{2}$/', $data_richiesta);
 
 if ($data_valida) {
@@ -45,16 +50,23 @@ if (!$data_valida || $data_richiesta < date('Y-m-d', strtotime('+1 day'))) {
 
 require __DIR__ . '/../includes/db_config.php';
 
-// Le tre fasce partono da zero anche quando non esistono prenotazioni
+/*
+ * Le tre fasce vengono inizializzate a zero
+ * In questo modo la risposta contiene sempre tutte le fasce anche quando non esistono prenotazioni
+ */
 $conteggio_fasce = array(
     '09:00:00' => 0,
     '13:00:00' => 0,
     '17:00:00' => 0
 );
 
-// Per questa operazione sono necessari esclusivamente privilegi di lettura
+// La verifica richiede esclusivamente privilegi di lettura
 $con = get_db_connection('lecture');
 
+/*
+ * Per la data richiesta vengono contati i volontari registrati in ciascuna fascia
+ * GROUP BY produce un risultato separato per ogni orario presente nel database
+ */
 $query = 'SELECT TIME(fascia_oraria), COUNT(*)
           FROM turni_volontariato
           WHERE DATE(fascia_oraria) = ?
@@ -63,6 +75,7 @@ $query = 'SELECT TIME(fascia_oraria), COUNT(*)
 $stmt = mysqli_prepare($con, $query);
 
 if (!$stmt) {
+    // Il dettaglio tecnico viene registrato nel log senza essere incluso nella risposta JSON
     error_log('Errore nella preparazione del controllo turni: ' . mysqli_error($con));
     mysqli_close($con);
 
@@ -73,6 +86,7 @@ if (!$stmt) {
     exit;
 }
 
+// La data ricevuta viene associata al placeholder della query come stringa
 mysqli_stmt_bind_param($stmt, 's', $data_richiesta);
 
 if (!mysqli_stmt_execute($stmt)) {
@@ -87,17 +101,15 @@ if (!mysqli_stmt_execute($stmt)) {
     exit;
 }
 
+// Le due colonne restituite dalla query vengono associate alle rispettive variabili PHP
 mysqli_stmt_bind_result($stmt, $orario_turno, $totale_iscritti);
 
-// Ogni risultato viene associato alla relativa fascia del form
+// Ogni risultato aggiorna il conteggio della fascia corrispondente
 while (mysqli_stmt_fetch($stmt)) {
-    /*
-     * Le conversioni esplicite chiariscono anche all'analisi statica
-     * che la chiave dell'array è una stringa e il conteggio un intero
-     */
     $orario = (string) $orario_turno;
     $totale = (int) $totale_iscritti;
 
+    // Vengono accettati soltanto gli orari previsti dal form
     if (array_key_exists($orario, $conteggio_fasce)) {
         $conteggio_fasce[$orario] = $totale;
     }
@@ -106,6 +118,7 @@ while (mysqli_stmt_fetch($stmt)) {
 mysqli_stmt_close($stmt);
 mysqli_close($con);
 
+// Il JavaScript utilizza questi conteggi per abilitare o disabilitare le tre fasce
 echo json_encode(array(
     'status' => 'success',
     'data' => $conteggio_fasce

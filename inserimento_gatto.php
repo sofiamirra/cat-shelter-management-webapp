@@ -5,11 +5,15 @@
  * l'utente modifier per registrare i dati nella tabella gatti
  */
 
+// La pagina non include ancora l'header comune e inizializza direttamente la sessione
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
-// Anche conoscendo direttamente l'indirizzo della pagina un utente normale non può accedervi
+/*
+ * Il controllo amministratore viene effettuato lato server
+ * Anche conoscendo direttamente l'indirizzo della pagina un utente normale non può accedervi
+ */
 $is_admin = isset($_SESSION['username'])
     && isset($_SESSION['is_admin'])
     && (int) $_SESSION['is_admin'] === 1;
@@ -36,7 +40,10 @@ $colore_occhi = '';
 $data_arrivo = '';
 $descrizione = '';
 
-// Il server controlla nuovamente i dati ricevuti dopo la validazione JavaScript
+/*
+ * Il server controlla nuovamente tutti i dati ricevuti
+ * La validazione JavaScript migliora l'interazione ma non viene considerata sufficiente per l'inserimento
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = isset($_POST['nome']) ? trim($_POST['nome']) : '';
     $eta_input = isset($_POST['eta']) ? trim($_POST['eta']) : '';
@@ -49,10 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data_arrivo = isset($_POST['data_arrivo']) ? trim($_POST['data_arrivo']) : '';
     $descrizione = isset($_POST['descrizione']) ? trim($_POST['descrizione']) : '';
 
+    // Le versioni numeriche vengono utilizzate nei controlli e successivamente nel prepared statement
     $eta = $eta_input !== '' ? (int) $eta_input : 0;
     $peso = $peso_input !== '' ? (float) $peso_input : 0.0;
 
-    // Tutti i dati della scheda devono essere presenti prima dell'inserimento
+    // Tutti i dati previsti dalla scheda devono essere presenti prima dell'inserimento
     if (
         $nome === '' ||
         $eta_input === '' ||
@@ -69,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $messaggio_server = 'Per favore, compila tutti i campi.';
     }
 
-    // Vengono accettati solamente i due valori previsti dal form
+    // Vengono accettati solamente i due valori previsti dal menu del form
     if (!$errore_server && $sesso !== 'M' && $sesso !== 'F') {
         $errore_server = true;
         $messaggio_server = 'Il valore selezionato per il sesso non è valido.';
@@ -93,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $messaggio_server = 'Il peso deve essere compreso tra 0.1 e 15 kg.';
     }
 
-    // La lunghezza del pelo deve corrispondere a uno dei valori del menu
+    // La lunghezza del pelo deve corrispondere a uno dei valori realmente presenti nel form
     $lunghezze_consentite = array('Corto', 'Semilungo', 'Lungo');
 
     if (!$errore_server && !in_array($lunghezza_pelo, $lunghezze_consentite, true)) {
@@ -101,9 +109,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $messaggio_server = 'Seleziona una lunghezza del pelo valida.';
     }
 
-    // Controllo elementare della data ricevuta
+    /*
+     * La data deve rispettare il formato YYYY-MM-DD prodotto dal campo date
+     * checkdate verifica inoltre che giorno, mese e anno costituiscano una data reale
+     */
     if (!$errore_server && preg_match('/^\d{4}-\d{2}-\d{2}$/', $data_arrivo)) {
         $parti_data = explode('-', $data_arrivo);
+
         $data_valida = checkdate(
             (int) $parti_data[1],
             (int) $parti_data[2],
@@ -119,20 +131,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $messaggio_server = 'La data di arrivo inserita non è valida.';
     }
 
+    // Soltanto dati che hanno superato tutti i controlli raggiungono l'operazione di scrittura
     if (!$errore_server) {
-        // L'inserimento richiede il ruolo MySQL con privilegi di modifica
+
+        // L'inserimento modifica il database e richiede quindi l'utente modifier
         $con = get_db_connection('modifier');
 
         $query = 'INSERT INTO gatti
                   (nome, descrizione, peso, colore_mantello, lunghezza_pelo, razza, colore_occhi, eta, sesso, data_arrivo)
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
+        // Lo statement viene preparato mantenendo separata la query dai valori ricevuti dal form
         $stmt = mysqli_prepare($con, $query);
 
         if ($stmt) {
             /*
              * s = stringa, d = numero decimale, i = intero
-             * L'ordine dei parametri corrisponde alle colonne dichiarate nella query
+             * I tipi e l'ordine dei parametri devono corrispondere ai placeholder presenti nella query
              */
             mysqli_stmt_bind_param(
                 $stmt,
@@ -149,11 +164,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $data_arrivo
             );
 
+            // execute effettua l'INSERT utilizzando i valori precedentemente associati
             if (mysqli_stmt_execute($stmt)) {
                 $messaggio_server = 'Scheda del felino registrata con successo nel sistema.';
                 $errore_server = false;
 
-                // Dopo il salvataggio il form viene ripulito
+                // Dopo il salvataggio riuscito il form viene riportato allo stato iniziale
                 $nome = '';
                 $eta_input = '';
                 $sesso = '';
@@ -165,6 +181,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $data_arrivo = '';
                 $descrizione = '';
             } else {
+
+                // Il dettaglio tecnico dell'errore resta nel log e non viene mostrato direttamente all'utente
                 error_log('Errore durante l\'inserimento del gatto: ' . mysqli_stmt_error($stmt));
                 $errore_server = true;
                 $messaggio_server = 'Errore di persistenza durante il salvataggio nel database.';
@@ -172,7 +190,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             mysqli_stmt_close($stmt);
         } else {
-            // Il dettaglio della query non viene mostrato all'utente ma resta nel log del server
             error_log('Errore nella preparazione dell\'inserimento gatto: ' . mysqli_error($con));
             $errore_server = true;
             $messaggio_server = 'Errore di persistenza durante il salvataggio nel database.';
@@ -187,38 +204,68 @@ require 'includes/header.php';
 
 <div class="page-wrapper">
     <div class="prenotazione-wrapper inserimento-gatto-wrapper">
+
         <a href="admin.php" class="back-admin-link">
             <span aria-hidden="true">←</span>
             Torna al pannello
         </a>
 
-        <h2 class="text-center mb-2">Inserimento Nuovo Ospite</h2>
+        <!-- Titolo principale della pagina amministrativa di inserimento -->
+        <h1 class="text-center mb-2">Inserimento Nuovo Ospite</h1>
 
         <!-- Il messaggio comunica l'esito del controllo e dell'inserimento lato server -->
         <?php if (!empty($messaggio_server)): ?>
-            <div class="<?php echo $errore_server ? 'auth-alert-danger' : 'auth-alert-success'; ?>">
+            <div
+                class="<?php echo $errore_server ? 'auth-alert-danger' : 'auth-alert-success'; ?>"
+                role="<?php echo $errore_server ? 'alert' : 'status'; ?>"
+            >
                 <?php echo htmlspecialchars($messaggio_server, ENT_QUOTES, 'UTF-8'); ?>
             </div>
         <?php endif; ?>
 
-        <!-- La validazione lato client viene effettuata in Vanilla JavaScript -->
+        <!-- novalidate lascia la validazione lato client al codice Vanilla JavaScript -->
         <form action="inserimento_gatto.php" method="POST" id="form-inserimento" novalidate>
 
             <div class="form-group">
                 <label for="nome">Nome del gatto:</label>
-                <input type="text" id="nome" name="nome" class="input-data-large" value="<?php echo htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'); ?>" required>
+                <input
+                    type="text"
+                    id="nome"
+                    name="nome"
+                    class="input-data-large"
+                    value="<?php echo htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'); ?>"
+                    aria-describedby="err-nome"
+                    required
+                >
                 <span class="errore-js" id="err-nome"></span>
             </div>
 
             <div class="form-group">
                 <label for="eta">Età stimata (in anni):</label>
-                <input type="number" id="eta" name="eta" class="input-data-large" min="0" max="25" step="1" value="<?php echo htmlspecialchars($eta_input, ENT_QUOTES, 'UTF-8'); ?>" required>
+                <input
+                    type="number"
+                    id="eta"
+                    name="eta"
+                    class="input-data-large"
+                    min="0"
+                    max="25"
+                    step="1"
+                    value="<?php echo htmlspecialchars($eta_input, ENT_QUOTES, 'UTF-8'); ?>"
+                    aria-describedby="err-eta"
+                    required
+                >
                 <span class="errore-js" id="err-eta"></span>
             </div>
 
             <div class="form-group">
                 <label for="sesso">Sesso:</label>
-                <select id="sesso" name="sesso" class="input-data-large" required>
+                <select
+                    id="sesso"
+                    name="sesso"
+                    class="input-data-large"
+                    aria-describedby="err-sesso"
+                    required
+                >
                     <option value="">-- Seleziona --</option>
                     <option value="M" <?php if ($sesso === 'M') { echo 'selected'; } ?>>Maschio</option>
                     <option value="F" <?php if ($sesso === 'F') { echo 'selected'; } ?>>Femmina</option>
@@ -228,19 +275,44 @@ require 'includes/header.php';
 
             <div class="form-group">
                 <label for="peso">Peso (kg):</label>
-                <input type="number" step="0.1" id="peso" name="peso" class="input-data-large" min="0.1" max="15" value="<?php echo htmlspecialchars($peso_input, ENT_QUOTES, 'UTF-8'); ?>" required>
+                <input
+                    type="number"
+                    id="peso"
+                    name="peso"
+                    class="input-data-large"
+                    min="0.1"
+                    max="15"
+                    step="0.1"
+                    value="<?php echo htmlspecialchars($peso_input, ENT_QUOTES, 'UTF-8'); ?>"
+                    aria-describedby="err-peso"
+                    required
+                >
                 <span class="errore-js" id="err-peso"></span>
             </div>
 
             <div class="form-group">
                 <label for="colore_mantello">Colore del mantello:</label>
-                <input type="text" id="colore_mantello" name="colore_mantello" class="input-data-large" value="<?php echo htmlspecialchars($colore_mantello, ENT_QUOTES, 'UTF-8'); ?>" required>
+                <input
+                    type="text"
+                    id="colore_mantello"
+                    name="colore_mantello"
+                    class="input-data-large"
+                    value="<?php echo htmlspecialchars($colore_mantello, ENT_QUOTES, 'UTF-8'); ?>"
+                    aria-describedby="err-mantello"
+                    required
+                >
                 <span class="errore-js" id="err-mantello"></span>
             </div>
 
             <div class="form-group">
                 <label for="lunghezza_pelo">Lunghezza del pelo:</label>
-                <select id="lunghezza_pelo" name="lunghezza_pelo" class="input-data-large" required>
+                <select
+                    id="lunghezza_pelo"
+                    name="lunghezza_pelo"
+                    class="input-data-large"
+                    aria-describedby="err-pelo"
+                    required
+                >
                     <option value="">-- Seleziona --</option>
                     <option value="Corto" <?php if ($lunghezza_pelo === 'Corto') { echo 'selected'; } ?>>Corto</option>
                     <option value="Semilungo" <?php if ($lunghezza_pelo === 'Semilungo') { echo 'selected'; } ?>>Semilungo</option>
@@ -251,25 +323,56 @@ require 'includes/header.php';
 
             <div class="form-group">
                 <label for="razza">Razza:</label>
-                <input type="text" id="razza" name="razza" class="input-data-large" value="<?php echo htmlspecialchars($razza, ENT_QUOTES, 'UTF-8'); ?>" required>
+                <input
+                    type="text"
+                    id="razza"
+                    name="razza"
+                    class="input-data-large"
+                    value="<?php echo htmlspecialchars($razza, ENT_QUOTES, 'UTF-8'); ?>"
+                    aria-describedby="err-razza"
+                    required
+                >
                 <span class="errore-js" id="err-razza"></span>
             </div>
 
             <div class="form-group">
                 <label for="colore_occhi">Colore degli occhi:</label>
-                <input type="text" id="colore_occhi" name="colore_occhi" class="input-data-large" value="<?php echo htmlspecialchars($colore_occhi, ENT_QUOTES, 'UTF-8'); ?>" required>
+                <input
+                    type="text"
+                    id="colore_occhi"
+                    name="colore_occhi"
+                    class="input-data-large"
+                    value="<?php echo htmlspecialchars($colore_occhi, ENT_QUOTES, 'UTF-8'); ?>"
+                    aria-describedby="err-occhi"
+                    required
+                >
                 <span class="errore-js" id="err-occhi"></span>
             </div>
 
             <div class="form-group">
                 <label for="data_arrivo">Data di arrivo in struttura:</label>
-                <input type="date" id="data_arrivo" name="data_arrivo" class="input-data-large" value="<?php echo htmlspecialchars($data_arrivo, ENT_QUOTES, 'UTF-8'); ?>" required>
+                <input
+                    type="date"
+                    id="data_arrivo"
+                    name="data_arrivo"
+                    class="input-data-large"
+                    value="<?php echo htmlspecialchars($data_arrivo, ENT_QUOTES, 'UTF-8'); ?>"
+                    aria-describedby="err-data"
+                    required
+                >
                 <span class="errore-js" id="err-data"></span>
             </div>
 
             <div class="form-group">
                 <label for="descrizione">Descrizione e note caratteriali:</label>
-                <textarea id="descrizione" name="descrizione" rows="4" class="input-data-large" required><?php echo htmlspecialchars($descrizione, ENT_QUOTES, 'UTF-8'); ?></textarea>
+                <textarea
+                    id="descrizione"
+                    name="descrizione"
+                    rows="4"
+                    class="input-data-large"
+                    aria-describedby="err-descrizione"
+                    required
+                ><?php echo htmlspecialchars($descrizione, ENT_QUOTES, 'UTF-8'); ?></textarea>
                 <span class="errore-js" id="err-descrizione"></span>
             </div>
 
@@ -284,8 +387,10 @@ require 'includes/header.php';
  * I controlli fondamentali vengono ripetuti anche dal PHP dopo il submit
  */
 document.getElementById('form-inserimento').addEventListener('submit', function(event) {
+    // let viene utilizzato perché cambia se almeno uno dei controlli fallisce
     let formValido = true;
 
+    // I riferimenti agli elementi restano invariati durante tutta la validazione
     const inputNome = document.getElementById('nome');
     const inputEta = document.getElementById('eta');
     const inputSesso = document.getElementById('sesso');
@@ -308,7 +413,7 @@ document.getElementById('form-inserimento').addEventListener('submit', function(
     const errData = document.getElementById('err-data');
     const errDescrizione = document.getElementById('err-descrizione');
 
-    // Prima di ogni controllo vengono eliminati gli errori del tentativo precedente
+    // Prima di ogni nuovo tentativo vengono rimossi gli errori prodotti dalla validazione precedente
     [
         inputNome,
         inputEta,
@@ -339,13 +444,14 @@ document.getElementById('form-inserimento').addEventListener('submit', function(
         errore.textContent = '';
     });
 
-    // Tutti i dati della scheda devono essere compilati
+    // I campi testuali principali non possono essere inviati vuoti
     if (inputNome.value.trim() === '') {
         errNome.textContent = 'Inserisci il nome del gatto.';
         inputNome.classList.add('input-error');
         formValido = false;
     }
 
+    // L'età deve essere un intero compreso nell'intervallo previsto
     if (inputEta.value === '') {
         errEta.textContent = 'Inserisci l\'età stimata.';
         inputEta.classList.add('input-error');
@@ -366,6 +472,7 @@ document.getElementById('form-inserimento').addEventListener('submit', function(
         formValido = false;
     }
 
+    // Il peso viene convertito in numero prima di confrontarlo con i limiti ammessi
     if (inputPeso.value === '') {
         errPeso.textContent = 'Inserisci il peso.';
         inputPeso.classList.add('input-error');

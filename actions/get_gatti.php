@@ -5,22 +5,26 @@
  * e restituisce al browser esclusivamente una risposta JSON
  */
 
+// L'endpoint produce JSON e non una pagina HTML
 header('Content-Type: application/json; charset=utf-8');
 
 require __DIR__ . '/../includes/db_config.php';
 
-// La risposta mantiene sempre la stessa struttura con stato, dati o messaggio di errore
+/*
+ * La risposta parte da uno stato di errore
+ * e viene sostituita solo se lettura e costruzione dei dati riescono
+ */
 $response = array(
     'status' => 'error',
     'message' => "Errore nell'esecuzione della query."
 );
 
-// Per questa operazione sono necessari esclusivamente privilegi di lettura
+// La galleria richiede esclusivamente privilegi di lettura
 $con = get_db_connection('lecture');
 
 /*
- * La query non contiene dati forniti dall'utente
- * Vengono recuperati soltanto i campi effettivamente utilizzati dal componente React
+ * La query non contiene dati forniti dall'utente e quindi non richiede bind_param
+ * Vengono recuperati soltanto i campi utilizzati dal componente React
  */
 $query = 'SELECT id, nome, sesso, eta, razza, colore_mantello, descrizione, data_arrivo
           FROM gatti
@@ -30,6 +34,8 @@ $stmt = mysqli_prepare($con, $query);
 
 if ($stmt) {
     if (mysqli_stmt_execute($stmt)) {
+
+        // Le colonne della SELECT vengono associate alle variabili PHP nello stesso ordine della query
         mysqli_stmt_bind_result(
             $stmt,
             $id,
@@ -44,7 +50,7 @@ if ($stmt) {
 
         $gatti = array();
 
-        // Ogni riga del risultato viene trasformata in un elemento dell'array JSON
+        // Ogni riga viene trasformata nell'oggetto che React riceverà attraverso il JSON
         while (mysqli_stmt_fetch($stmt)) {
             $gatti[] = array(
                 'id' => (int) $id,
@@ -58,12 +64,14 @@ if ($stmt) {
             );
         }
 
+        // Un array vuoto è comunque una risposta valida se il database non contiene gatti
         $response = array(
             'status' => 'success',
             'data' => $gatti
         );
     } else {
-        // Il dettaglio tecnico viene registrato nel log senza essere inviato al browser
+
+        // I dettagli tecnici rimangono nel log del server e non vengono esposti al client
         error_log('Errore durante l\'esecuzione della query dei gatti: ' . mysqli_stmt_error($stmt));
     }
 
@@ -74,6 +82,6 @@ if ($stmt) {
 
 mysqli_close($con);
 
-// L'array PHP viene convertito nel formato JSON atteso dal componente React
+// L'array PHP viene convertito nel formato JSON atteso da GattiApp
 echo json_encode($response);
 ?>

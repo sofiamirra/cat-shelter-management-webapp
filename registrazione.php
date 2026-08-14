@@ -5,13 +5,15 @@
  * sia lato server sia tramite il codice Vanilla JavaScript del form
  */
 
-// La sessione serve anche per impedire una nuova registrazione a chi è già autenticato
+// La sessione permette anche di impedire una nuova registrazione a chi è già autenticato
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
-// La pagina di ritorno viene accettata solo tra quelle previste dal sito
-// In assenza di una provenienza specifica, il comportamento resta il ritorno alla home
+/*
+ * La pagina di ritorno viene accettata soltanto tra quelle previste dal sito
+ * In assenza di una provenienza valida il comportamento predefinito resta il ritorno alla Home
+ */
 $pagina_ritorno = 'home.php';
 $pagine_consentite = array('ospiti.php', 'volontariato.php', 'area_personale.php');
 
@@ -19,7 +21,7 @@ if (isset($_GET['ritorno']) && in_array($_GET['ritorno'], $pagine_consentite, tr
     $pagina_ritorno = $_GET['ritorno'];
 }
 
-// Un utente già autenticato non deve creare un secondo account
+// Un utente già autenticato non deve creare un secondo account durante la stessa sessione
 if (isset($_SESSION['username'])) {
     header('Location: ' . $pagina_ritorno);
     exit;
@@ -27,7 +29,7 @@ if (isset($_SESSION['username'])) {
 
 require 'includes/db_config.php';
 
-// Messaggi restituiti dal controllo lato server
+// Messaggi prodotti dalla validazione e dalle operazioni lato server
 $errore_php = '';
 $successo_php = '';
 
@@ -37,7 +39,7 @@ $cognome = '';
 $indirizzo = '';
 $username = '';
 
-// Il parametro di ritorno viene mantenuto anche dopo l'invio del form
+// Il parametro di ritorno viene mantenuto anche dopo l'invio del form e nel collegamento al login
 $azione_form = 'registrazione.php';
 $link_login = 'login.php';
 
@@ -46,7 +48,10 @@ if ($pagina_ritorno !== 'home.php') {
     $link_login .= '?ritorno=' . $pagina_ritorno;
 }
 
-// Il server ricontrolla sempre i dati ricevuti, indipendentemente dalla validazione JavaScript
+/*
+ * Il server ricontrolla sempre i dati ricevuti
+ * La validazione JavaScript migliora l'interazione ma non sostituisce quella lato server
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = isset($_POST['nome']) ? trim($_POST['nome']) : '';
     $cognome = isset($_POST['cognome']) ? trim($_POST['cognome']) : '';
@@ -55,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $conferma_password = isset($_POST['conferma_password']) ? $_POST['conferma_password'] : '';
 
-    // I controlli lato server ripetono i vincoli applicati dal form sul browser
+    // I controlli lato server ripetono i vincoli principali applicati dal JavaScript
     if (empty($nome) || empty($cognome) || empty($indirizzo) || empty($username) || empty($password)) {
         $errore_php = 'Tutti i campi sono obbligatori.';
     } elseif ($password !== $conferma_password) {
@@ -66,8 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errore_php = 'La password non rispetta i requisiti minimi di sicurezza.';
     } else {
         /*
-         * Il controllo dello username richiede una SELECT
-         * Viene quindi utilizzato l'utente di sola lettura e non il registrator
+         * Prima dell'inserimento viene verificata la disponibilità dello username
+         * Questa operazione richiede soltanto una SELECT e utilizza quindi l'utente di sola lettura
          */
         $con_lettura = get_db_connection('lecture');
         $check_query = 'SELECT id FROM utenti WHERE username = ?';
@@ -83,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $errore_php = 'Questo username è già in uso. Scegline un altro.';
                 }
             } else {
-                // Il dettaglio tecnico rimane nel log mentre all'utente viene mostrato un messaggio generico
+                // Il dettaglio tecnico resta nel log mentre all'utente viene mostrato un messaggio generico
                 error_log('Errore durante il controllo dello username: ' . mysqli_stmt_error($check_stmt));
                 $errore_php = 'Errore durante la registrazione. Riprova più tardi.';
             }
@@ -97,11 +102,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_close($con_lettura);
 
         /*
-         * Solo se lo username è disponibile viene aperta una nuova connessione
-         * con registrator, utilizzato esclusivamente per l'inserimento in utenti
+         * Solo se lo username è disponibile viene aperta una connessione con registrator
+         * Questo utente è utilizzato esclusivamente per l'inserimento dei nuovi account
          */
         if (empty($errore_php)) {
+
+            // La password viene memorizzata come hash e non viene mai salvata in chiaro nel database
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+            // Gli account creati tramite il form sono sempre utenti standard
             $is_admin = 0;
 
             $con_registrazione = get_db_connection('registrator');
@@ -109,12 +118,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $insert_stmt = mysqli_prepare($con_registrazione, $insert_query);
 
             if ($insert_stmt) {
-                mysqli_stmt_bind_param($insert_stmt, 'sssssi', $nome, $cognome, $indirizzo, $username, $password_hash, $is_admin);
+                mysqli_stmt_bind_param(
+                    $insert_stmt,
+                    'sssssi',
+                    $nome,
+                    $cognome,
+                    $indirizzo,
+                    $username,
+                    $password_hash,
+                    $is_admin
+                );
 
                 if (mysqli_stmt_execute($insert_stmt)) {
                     $successo_php = 'Registrazione completata con successo! Ora puoi accedere.';
 
-                    // Dopo una registrazione riuscita i campi testuali tornano vuoti
+                    // Dopo una registrazione riuscita i campi testuali vengono nuovamente svuotati
                     $nome = '';
                     $cognome = '';
                     $indirizzo = '';
@@ -141,64 +159,121 @@ require 'includes/header.php';
 <div class="auth-wrapper">
     <div class="auth-card auth-card-large">
         <div class="auth-header">
-            <h2>Crea un Account</h2>
+
+            <!-- Titolo principale della pagina di registrazione -->
+            <h1>Crea un Account</h1>
+
             <p>Unisciti al Parco delle Fusa per adottare o fare volontariato.</p>
         </div>
 
         <?php if (!empty($errore_php)) { ?>
-            <div class="auth-alert-danger"><?php echo htmlspecialchars($errore_php, ENT_QUOTES, 'UTF-8'); ?></div>
+            <div class="auth-alert-danger" role="alert">
+                <?php echo htmlspecialchars($errore_php, ENT_QUOTES, 'UTF-8'); ?>
+            </div>
         <?php } ?>
 
         <?php if (!empty($successo_php)) { ?>
-            <div class="auth-alert-success"><?php echo htmlspecialchars($successo_php, ENT_QUOTES, 'UTF-8'); ?><br><br><a href="<?php echo htmlspecialchars($link_login, ENT_QUOTES, 'UTF-8'); ?>">Vai al Login</a></div>
+            <div class="auth-alert-success" role="status">
+                <?php echo htmlspecialchars($successo_php, ENT_QUOTES, 'UTF-8'); ?>
+                <br><br>
+                <a href="<?php echo htmlspecialchars($link_login, ENT_QUOTES, 'UTF-8'); ?>">Vai al Login</a>
+            </div>
         <?php } ?>
 
-        <!-- Il form viene validato dal codice Vanilla JavaScript prima dell'invio al server -->
-        <form action="<?php echo htmlspecialchars($azione_form, ENT_QUOTES, 'UTF-8'); ?>" method="POST" id="form-registrazione">
+        <!-- novalidate lascia la validazione lato client al codice Vanilla JavaScript -->
+        <form
+            action="<?php echo htmlspecialchars($azione_form, ENT_QUOTES, 'UTF-8'); ?>"
+            method="POST"
+            id="form-registrazione"
+            novalidate
+        >
             <div class="form-row">
                 <div class="form-group">
                     <label for="nome">Nome</label>
-                    <input type="text" id="nome" name="nome" value="<?php echo htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'); ?>">
+                    <input
+                        type="text"
+                        id="nome"
+                        name="nome"
+                        value="<?php echo htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'); ?>"
+                    >
                     <span class="errore-js" id="err-nome"></span>
                 </div>
 
                 <div class="form-group">
                     <label for="cognome">Cognome</label>
-                    <input type="text" id="cognome" name="cognome" value="<?php echo htmlspecialchars($cognome, ENT_QUOTES, 'UTF-8'); ?>">
+                    <input
+                        type="text"
+                        id="cognome"
+                        name="cognome"
+                        value="<?php echo htmlspecialchars($cognome, ENT_QUOTES, 'UTF-8'); ?>"
+                    >
                     <span class="errore-js" id="err-cognome"></span>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="indirizzo">Indirizzo Email</label>
-                <input type="text" id="indirizzo" name="indirizzo" value="<?php echo htmlspecialchars($indirizzo, ENT_QUOTES, 'UTF-8'); ?>">
+                <label for="indirizzo">Indirizzo</label>
+                <input
+                    type="text"
+                    id="indirizzo"
+                    name="indirizzo"
+                    value="<?php echo htmlspecialchars($indirizzo, ENT_QUOTES, 'UTF-8'); ?>"
+                >
                 <span class="errore-js" id="err-indirizzo"></span>
             </div>
 
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?>">
-                <!-- La regola rimane visibile anche prima dell'eventuale errore -->
-                <span class="errore-js errore-js-info" id="err-username">Deve iniziare con una lettera.</span>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    value="<?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?>"
+                    aria-describedby="err-username"
+                >
+
+                <!-- La regola rimane disponibile anche prima dell'eventuale errore -->
+                <span class="errore-js errore-js-info" id="err-username">
+                    Deve iniziare con una lettera.
+                </span>
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password">
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    aria-describedby="err-password"
+                >
+
                 <!-- La password non viene mai reinserita automaticamente dopo un invio -->
-                <span class="errore-js errore-js-info" id="err-password">8-16 caratteri. Almeno una maiuscola, minuscola, un numero e un carattere speciale.</span>
+                <span class="errore-js errore-js-info" id="err-password">
+                    8-16 caratteri. Almeno una maiuscola, minuscola, un numero e un carattere speciale.
+                </span>
             </div>
 
             <div class="form-group">
                 <label for="conferma_password">Conferma Password</label>
-                <input type="password" id="conferma_password" name="conferma_password">
+                <input
+                    type="password"
+                    id="conferma_password"
+                    name="conferma_password"
+                >
                 <span class="errore-js" id="err-conferma_password"></span>
             </div>
 
             <div class="text-center mt-2">
                 <button type="submit" class="btn-solid-dark w-100">Registrati</button>
+
                 <p class="form-switch-text">Hai già un account?</p>
-                <a href="<?php echo htmlspecialchars($link_login, ENT_QUOTES, 'UTF-8'); ?>" class="btn-outline-dark">Accedi qui</a>
+
+                <a
+                    href="<?php echo htmlspecialchars($link_login, ENT_QUOTES, 'UTF-8'); ?>"
+                    class="btn-outline-dark"
+                >
+                    Accedi qui
+                </a>
             </div>
         </form>
     </div>
@@ -210,20 +285,29 @@ require 'includes/header.php';
  * Gli stessi vincoli principali vengono ricontrollati dal PHP dopo l'invio
  */
 document.getElementById('form-registrazione').addEventListener('submit', function(event) {
+    // let viene utilizzato perché il valore cambia se almeno uno dei controlli fallisce
     let formValido = true;
+
+    // L'elenco dei campi resta costante durante tutta la validazione
     const campi = ['nome', 'cognome', 'indirizzo', 'username', 'password', 'conferma_password'];
 
-    // Prima di ogni controllo vengono eliminati gli eventuali errori del tentativo precedente
+    /*
+     * Prima di ogni nuovo tentativo vengono rimossi gli errori precedenti
+     * Per username e password vengono invece ripristinate le indicazioni informative iniziali
+     */
     campi.forEach(function(id) {
         const input = document.getElementById(id);
         const errore = document.getElementById('err-' + id);
 
         input.classList.remove('input-error');
+        errore.classList.remove('testo-errore');
 
-        if (id !== 'username' && id !== 'password') {
-            errore.textContent = '';
+        if (id === 'username') {
+            errore.textContent = 'Deve iniziare con una lettera.';
+        } else if (id === 'password') {
+            errore.textContent = '8-16 caratteri. Almeno una maiuscola, minuscola, un numero e un carattere speciale.';
         } else {
-            errore.classList.remove('testo-errore');
+            errore.textContent = '';
         }
     });
 

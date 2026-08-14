@@ -5,10 +5,12 @@
  * prima di effettuare qualsiasi inserimento definitivo nel database
  */
 
+// Questa action non include l'header comune e inizializza quindi direttamente la sessione
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
+// La risposta dell'action viene sempre restituita al JavaScript in formato JSON
 header('Content-Type: application/json; charset=utf-8');
 
 // L'inserimento dei turni è consentito soltanto agli utenti autenticati
@@ -33,19 +35,24 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 require __DIR__ . '/../includes/db_config.php';
 
+// I dati ricevuti vengono recuperati prima di ripetere sul server tutti i controlli necessari
 $data_turno = isset($_POST['data_turno']) ? trim($_POST['data_turno']) : '';
 $fasce = isset($_POST['fasce']) ? $_POST['fasce'] : array();
 $utente_id = (int) $_SESSION['user_id'];
 
-// Il server accetta solamente le tre fasce realmente presenti nel form
+// Il server accetta solamente le tre fasce realmente previste dal form
 $fasce_consentite = array('09:00:00', '13:00:00', '17:00:00');
 $dati_validi = true;
 
+// Devono essere presenti una data e almeno una fascia oraria
 if ($data_turno === '' || !is_array($fasce) || count($fasce) === 0) {
     $dati_validi = false;
 }
 
-// Controllo del formato e dell'esistenza effettiva della data ricevuta
+/*
+ * Prima viene controllato il formato YYYY-MM-DD
+ * checkdate verifica inoltre che giorno, mese e anno costituiscano una data reale
+ */
 if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $data_turno)) {
     $dati_validi = false;
 } else {
@@ -59,12 +66,12 @@ if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $data_turno)) {
     }
 }
 
-// Anche modificando manualmente il form non è possibile prenotare date passate
+// Il controllo viene ripetuto lato server anche se il browser impedisce già la scelta di date precedenti
 if ($data_turno < date('Y-m-d', strtotime('+1 day'))) {
     $dati_validi = false;
 }
 
-// Un valore arbitrario inviato al posto delle fasce previste viene rifiutato dal server
+// Valori arbitrari inviati modificando manualmente il form vengono rifiutati
 if (is_array($fasce)) {
     foreach ($fasce as $orario) {
         if (!is_string($orario) || !in_array($orario, $fasce_consentite, true)) {
@@ -74,6 +81,7 @@ if (is_array($fasce)) {
     }
 }
 
+// I dati non validi non raggiungono mai le operazioni di scrittura sul database
 if (!$dati_validi) {
     echo json_encode(array(
         'status' => 'error',
@@ -83,12 +91,16 @@ if (!$dati_validi) {
     exit;
 }
 
-// Eventuali valori ripetuti vengono eliminati prima dei controlli sul database
+// Eventuali fasce ripetute vengono eliminate prima dei controlli sul database
 $fasce = array_values(array_unique($fasce));
 
 // L'inserimento richiede l'utente MySQL con privilegi di modifica
 $con = get_db_connection('modifier');
 
+/*
+ * Controllo disponibilità e inserimenti devono appartenere alla stessa operazione
+ * La transazione permette di confermare tutti i turni insieme oppure annullarli in caso di errore
+ */
 if (!mysqli_begin_transaction($con)) {
     error_log('Impossibile avviare la transazione dei turni');
 
@@ -102,12 +114,14 @@ if (!mysqli_begin_transaction($con)) {
     exit;
 }
 
+// Queste variabili raccolgono l'eventuale errore da restituire al JavaScript
 $errore_codice = '';
 $errore_messaggio = '';
 
 /*
- * Il primo controllo verifica quanti volontari risultano già registrati
- * La query viene preparata una volta e riutilizzata per tutte le fasce selezionate
+ * Viene ricontrollato il numero di volontari già presenti in ciascuna fascia
+ * La query viene preparata una sola volta e riutilizzata per tutte le fasce selezionate
+ * FOR UPDATE mantiene coinvolti nella transazione i record trovati durante il controllo definitivo
  */
 $query_limite = 'SELECT id
                  FROM turni_volontariato
@@ -128,6 +142,7 @@ if ($stmt_limite) {
     mysqli_stmt_bind_param($stmt_limite, 's', $datetime_controllo);
 
     foreach ($fasce as $orario) {
+        // Data e fascia vengono riunite nello stesso formato DATETIME utilizzato nel database
         $datetime_controllo = $data_turno . ' ' . $orario;
 
         if (!mysqli_stmt_execute($stmt_limite)) {
@@ -137,10 +152,15 @@ if ($stmt_limite) {
             break;
         }
 
+        /*
+         * Il risultato viene memorizzato per poterne contare le righe
+         * Ogni riga corrisponde a un volontario già registrato in quella fascia
+         */
         mysqli_stmt_store_result($stmt_limite);
         $numero_iscritti = mysqli_stmt_num_rows($stmt_limite);
         mysqli_stmt_free_result($stmt_limite);
 
+        // La consegna permette un massimo di due volontari per ciascuna fascia
         if ($numero_iscritti >= 2) {
             $errore_codice = 'LIMIT_EXCEEDED';
             $errore_messaggio = 'La fascia oraria selezionata è al completo.';
@@ -152,8 +172,8 @@ if ($stmt_limite) {
 }
 
 /*
- * Se il limite non è stato superato viene verificato che lo stesso utente
- * non abbia già registrato la medesima fascia nella stessa data
+ * Se tutte le fasce hanno ancora disponibilità viene controllato che lo stesso utente
+ * non abbia già registrato uno dei turni richiesti
  */
 if ($errore_codice === '') {
     $query_duplicato = 'SELECT id
@@ -169,6 +189,8 @@ if ($errore_codice === '') {
         error_log('Errore nella preparazione del controllo duplicati: ' . mysqli_error($con));
     } else {
         $datetime_controllo = '';
+
+        // L'ID dell'utente è intero mentre la data e l'ora vengono passate come stringa
         mysqli_stmt_bind_param($stmt_duplicato, 'is', $utente_id, $datetime_controllo);
 
         foreach ($fasce as $orario) {
@@ -209,6 +231,10 @@ if ($errore_codice === '') {
         $errore_messaggio = 'Si è verificato un errore durante il salvataggio.';
         error_log('Errore nella preparazione dell\'inserimento turno: ' . mysqli_error($con));
     } else {
+        /*
+         * Lo stesso prepared statement viene riutilizzato per tutte le fasce
+         * Cambia solamente il valore DATETIME prima di ogni esecuzione
+         */
         $datetime_inserimento = '';
         mysqli_stmt_bind_param($stmt_insert, 'is', $utente_id, $datetime_inserimento);
 
@@ -227,7 +253,7 @@ if ($errore_codice === '') {
     }
 }
 
-// Se anche una sola operazione non è valida nessun turno della richiesta viene salvato
+// Se anche una sola operazione fallisce vengono annullati tutti gli inserimenti della richiesta
 if ($errore_codice !== '') {
     mysqli_rollback($con);
     mysqli_close($con);
@@ -240,7 +266,7 @@ if ($errore_codice !== '') {
     exit;
 }
 
-// Tutti i controlli e tutti gli inserimenti sono riusciti
+// Solo dopo il completamento di tutti i controlli e inserimenti la transazione viene confermata
 if (!mysqli_commit($con)) {
     mysqli_rollback($con);
     error_log('Errore durante la conferma della registrazione dei turni');
@@ -256,6 +282,7 @@ if (!mysqli_commit($con)) {
 
 mysqli_close($con);
 
+// La risposta positiva viene intercettata dal JavaScript senza ricaricare la pagina
 echo json_encode(array(
     'status' => 'success',
     'message' => 'Turni registrati con successo.'

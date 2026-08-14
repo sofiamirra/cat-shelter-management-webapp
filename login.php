@@ -10,8 +10,8 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 /*
- * Il parametro ritorno permette di tornare alla pagina da cui è stato richiesto
- * l'accesso, ma vengono accettate solamente pagine previste dal sito
+ * Il parametro ritorno permette di tornare alla pagina da cui è stato richiesto l'accesso
+ * Vengono accettate solamente destinazioni previste dal sito
  */
 $pagina_ritorno = 'home.php';
 $pagine_consentite = array('ospiti.php', 'volontariato.php', 'area_personale.php');
@@ -20,7 +20,7 @@ if (isset($_GET['ritorno']) && in_array($_GET['ritorno'], $pagine_consentite, tr
     $pagina_ritorno = $_GET['ritorno'];
 }
 
-// Se l'utente è già autenticato viene inviato direttamente alla pagina prevista
+// Un utente già autenticato viene inviato direttamente alla pagina prevista
 if (isset($_SESSION['username'])) {
     header('Location: ' . $pagina_ritorno);
     exit;
@@ -31,12 +31,12 @@ require 'includes/db_config.php';
 $errore_php = '';
 
 /*
- * Lo username viene inizialmente recuperato dal cookie, se ancora presente
- * La password non viene invece mai memorizzata o precompilata
+ * Se il cookie esiste lo username viene utilizzato per precompilare il campo
+ * La password non viene invece mai memorizzata né reinserita automaticamente
  */
 $username_precompilato = isset($_COOKIE['remember_user']) ? $_COOKIE['remember_user'] : '';
 
-// Il parametro di ritorno viene mantenuto anche durante l'invio del form
+// Il parametro di ritorno viene mantenuto sia nel form sia nel collegamento alla registrazione
 $azione_form = 'login.php';
 $link_registrazione = 'registrazione.php';
 
@@ -45,7 +45,10 @@ if ($pagina_ritorno !== 'home.php') {
     $link_registrazione .= '?ritorno=' . $pagina_ritorno;
 }
 
-// Il server verifica nuovamente i dati anche se il form viene controllato in JavaScript
+/*
+ * Il server controlla nuovamente i dati ricevuti
+ * La validazione JavaScript impedisce soltanto l'invio immediato di campi vuoti
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = isset($_POST['username']) ? trim($_POST['username']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
@@ -57,12 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($username) || empty($password)) {
         $errore_php = 'Compila entrambi i campi per accedere.';
     } else {
-        // Per il login è sufficiente la connessione con privilegi di sola lettura
+
+        // L'autenticazione richiede soltanto la lettura dei dati dell'utente
         $con = get_db_connection('lecture');
 
         /*
-         * La query recupera l'hash della password e il tipo di utente
-         * Lo username viene passato tramite prepared statement
+         * La query recupera l'identificativo, l'hash della password e il ruolo dell'utente
+         * Lo username proveniente dal form viene associato tramite prepared statement
          */
         $query = 'SELECT id, password, is_admin FROM utenti WHERE username = ?';
         $stmt = mysqli_prepare($con, $query);
@@ -73,39 +77,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_bind_result($stmt, $id_db, $hash_db, $is_admin_db);
 
+                /*
+                 * password_verify confronta la password inserita con l'hash salvato durante la registrazione
+                 * La password in chiaro non viene mai recuperata dal database
+                 */
                 if (mysqli_stmt_fetch($stmt) && password_verify($password, (string) $hash_db)) {
-                    /*
-                     * Dopo l'autenticazione viene rigenerato l'identificativo della sessione
-                     * e vengono salvati i dati necessari nelle pagine successive
-                     */
-                    session_regenerate_id(true);
-                    $_SESSION['user_id'] = $id_db;
-                    $_SESSION['username'] = $username;
-                    $_SESSION['is_admin'] = $is_admin_db;
 
                     /*
-                     * Se richiesto, lo username dell'accesso riuscito viene conservato
-                     * per 72 ore. La password resta sempre esclusa dal cookie
+                     * Dopo un'autenticazione riuscita viene rigenerato l'ID della sessione
+                     * e vengono memorizzati i dati necessari alle pagine riservate
+                     */
+                    session_regenerate_id(true);
+
+                    $_SESSION['user_id'] = (int) $id_db;
+                    $_SESSION['username'] = $username;
+                    $_SESSION['is_admin'] = (int) $is_admin_db;
+
+                    /*
+                     * Se l'utente ha scelto "Ricordami", lo username viene conservato per 72 ore
+                     * Un nuovo accesso riuscito rinnova la scadenza mentre la password resta sempre esclusa
                      */
                     if ($ricordami) {
-                        setcookie('remember_user', $username, time() + (72 * 3600), '/');
+                        setcookie(
+                            'remember_user',
+                            $username,
+                            time() + (72 * 3600),
+                            '/'
+                        );
                     } elseif (isset($_COOKIE['remember_user'])) {
-                        // Se la casella non è selezionata viene eliminato un eventuale cookie precedente
-                        setcookie('remember_user', '', time() - 3600, '/');
+
+                        // Un accesso riuscito senza la scelta "Ricordami" elimina l'eventuale cookie precedente
+                        setcookie(
+                            'remember_user',
+                            '',
+                            time() - 3600,
+                            '/'
+                        );
                     }
 
                     mysqli_stmt_close($stmt);
                     mysqli_close($con);
 
-                    // L'accesso concluso con successo riporta l'utente alla pagina prevista
+                    // Dopo il login viene ripristinato il percorso da cui l'utente aveva richiesto l'accesso
                     header('Location: ' . $pagina_ritorno);
                     exit;
                 }
 
-                // Non viene specificato se sia errato lo username o la password
+                // Il messaggio rimane volutamente generico senza indicare quale credenziale sia errata
                 $errore_php = 'Credenziali non valide. Riprova.';
             } else {
-                // Il dettaglio tecnico viene scritto nel log e non mostrato all'utente
+
+                // Il dettaglio tecnico viene registrato nel log senza essere mostrato all'utente
                 error_log('Errore durante l\'esecuzione della query di login: ' . mysqli_stmt_error($stmt));
                 $errore_php = 'Credenziali non valide. Riprova.';
             }
@@ -127,38 +149,75 @@ require 'includes/header.php';
 <div class="auth-wrapper">
     <div class="auth-card">
         <div class="auth-header">
-            <h2>Bentornato</h2>
+
+            <!-- Titolo principale della pagina di login -->
+            <h1>Bentornato</h1>
+
             <p>Accedi per gestire adozioni e volontariato.</p>
         </div>
 
         <?php if (!empty($errore_php)) { ?>
-            <div class="auth-alert-danger"><?php echo htmlspecialchars($errore_php, ENT_QUOTES, 'UTF-8'); ?></div>
+            <div class="auth-alert-danger" role="alert">
+                <?php echo htmlspecialchars($errore_php, ENT_QUOTES, 'UTF-8'); ?>
+            </div>
         <?php } ?>
 
-        <!-- Il controllo lato client viene eseguito in Vanilla JavaScript -->
-        <form action="<?php echo htmlspecialchars($azione_form, ENT_QUOTES, 'UTF-8'); ?>" method="POST" id="form-login">
+        <!-- novalidate lascia il controllo lato client al codice Vanilla JavaScript -->
+        <form
+            action="<?php echo htmlspecialchars($azione_form, ENT_QUOTES, 'UTF-8'); ?>"
+            method="POST"
+            id="form-login"
+            novalidate
+        >
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username_precompilato, ENT_QUOTES, 'UTF-8'); ?>">
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    value="<?php echo htmlspecialchars($username_precompilato, ENT_QUOTES, 'UTF-8'); ?>"
+                    aria-describedby="err-username"
+                >
                 <span class="errore-js" id="err-username"></span>
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password">
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    aria-describedby="err-password"
+                >
                 <span class="errore-js" id="err-password"></span>
             </div>
 
-            <!-- Il cookie memorizza soltanto lo username e scade dopo 72 ore -->
+            <!-- Il cookie memorizza soltanto lo username e scade 72 ore dopo l'ultimo accesso riuscito che rinnova la scelta -->
             <div class="form-group checkbox-group">
-                <input type="checkbox" id="ricordami" name="ricordami" <?php if (!empty($_COOKIE['remember_user'])) { echo 'checked'; } ?>>
+                <input
+                    type="checkbox"
+                    id="ricordami"
+                    name="ricordami"
+                    <?php if (!empty($_COOKIE['remember_user'])) { echo 'checked'; } ?>
+                >
                 <label for="ricordami" class="checkbox-label">Ricordami</label>
             </div>
-            <span class="cookie-disclaimer">Selezionando la casella acconsenti all'uso di un cookie per ricordare il tuo username per 72 ore.</span>
+
+            <span class="cookie-disclaimer">
+                Selezionando la casella acconsenti all'uso di un cookie per ricordare il tuo username per 72 ore.
+            </span>
+
             <div class="text-center mt-2">
                 <button type="submit" class="btn-solid-dark w-100">Accedi</button>
+
                 <p class="form-switch-text">Non hai ancora un account?</p>
-                <a href="<?php echo htmlspecialchars($link_registrazione, ENT_QUOTES, 'UTF-8'); ?>" class="btn-outline-dark">Registrati ora</a>
+
+                <a
+                    href="<?php echo htmlspecialchars($link_registrazione, ENT_QUOTES, 'UTF-8'); ?>"
+                    class="btn-outline-dark"
+                >
+                    Registrati ora
+                </a>
             </div>
         </form>
     </div>
@@ -167,17 +226,19 @@ require 'includes/header.php';
 <script>
 /*
  * Validazione lato client del form di login
- * Il controllo impedisce l'invio quando username o password sono vuoti
+ * Il PHP ripete comunque il controllo prima di procedere con l'autenticazione
  */
 document.getElementById('form-login').addEventListener('submit', function(event) {
+    // let viene utilizzato perché il valore cambia se almeno un controllo fallisce
     let formValido = true;
 
+    // I riferimenti agli elementi non vengono riassegnati durante la validazione
     const inputUser = document.getElementById('username');
     const inputPass = document.getElementById('password');
     const errUser = document.getElementById('err-username');
     const errPass = document.getElementById('err-password');
 
-    // Vengono rimossi gli eventuali errori prodotti da un tentativo precedente
+    // Prima di ogni tentativo vengono rimossi gli eventuali errori precedenti
     errUser.textContent = '';
     errPass.textContent = '';
     inputUser.classList.remove('input-error');
@@ -195,7 +256,7 @@ document.getElementById('form-login').addEventListener('submit', function(event)
         formValido = false;
     }
 
-    // Il form viene inviato al PHP solamente quando entrambi i campi sono compilati
+    // Soltanto un form che supera entrambi i controlli viene inviato al PHP
     if (!formValido) {
         event.preventDefault();
     }

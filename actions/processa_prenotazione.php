@@ -5,6 +5,7 @@
  * Le operazioni sul database vengono eseguite all'interno di una transazione
  */
 
+// Questa action non include l'header, quindi deve inizializzare direttamente la sessione
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
@@ -23,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+// I valori mancanti vengono sostituiti con stringhe vuote per poter applicare successivamente gli stessi controlli
 $data_visita = isset($_POST['data_visita']) ? trim($_POST['data_visita']) : '';
 $ora_visita = isset($_POST['ora_visita']) ? trim($_POST['ora_visita']) : '';
 $gatti_json = isset($_POST['id_gatti_selezionati']) ? $_POST['id_gatti_selezionati'] : '';
@@ -30,6 +32,8 @@ $utente_id = (int) $_SESSION['user_id'];
 
 // Il JSON prodotto dal JavaScript viene riconvertito nell'array degli ID dei gatti
 $gatti_selezionati = json_decode($gatti_json, true);
+
+// Il flag viene impostato a false se almeno uno dei controlli lato server non viene superato
 $dati_validi = true;
 
 /*
@@ -70,6 +74,7 @@ if (!preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d$/', $ora_visita)) {
 if (!is_array($gatti_selezionati) || count($gatti_selezionati) === 0) {
     $dati_validi = false;
 } else {
+
     // Ogni identificativo proveniente dal campo hidden deve essere un intero positivo
     foreach ($gatti_selezionati as $gatto_id) {
         if (!is_int($gatto_id) || $gatto_id <= 0) {
@@ -79,6 +84,7 @@ if (!is_array($gatti_selezionati) || count($gatti_selezionati) === 0) {
     }
 }
 
+// I dati non validi non raggiungono mai le operazioni di scrittura sul database
 if (!$dati_validi) {
     header('Location: ../ospiti.php?status=error');
     exit;
@@ -90,9 +96,13 @@ $gatti_selezionati = array_values(array_unique($gatti_selezionati));
 // Data e ora vengono riunite nel formato utilizzato dal campo DATETIME del database
 $data_ora_visita = $data_visita . ' ' . $ora_visita . ':00';
 
-// La prenotazione modifica il database e richiede quindi l'utente modifier
+// La prenotazione modifica il database e richiede quindi l'utente con privilegi di modifica
 $con = get_db_connection('modifier');
 
+/*
+ * La prenotazione coinvolge più tabelle
+ * La transazione permette di confermare tutti gli inserimenti insieme oppure annullarli in caso di errore
+ */
 if (!mysqli_begin_transaction($con)) {
     error_log('Impossibile avviare la transazione della prenotazione');
     mysqli_close($con);
@@ -100,6 +110,7 @@ if (!mysqli_begin_transaction($con)) {
     exit;
 }
 
+// Il flag determina quale messaggio verrà successivamente mostrato dalla pagina Ospiti
 $prenotazione_riuscita = false;
 
 try {
@@ -114,6 +125,7 @@ try {
         throw new Exception('Preparazione inserimento prenotazione non riuscita');
     }
 
+    // i indica l'intero dell'utente mentre s indica la stringa contenente data e ora
     mysqli_stmt_bind_param($stmt_prenotazione, 'is', $utente_id, $data_ora_visita);
 
     if (!mysqli_stmt_execute($stmt_prenotazione)) {
@@ -122,6 +134,7 @@ try {
         throw new Exception('Inserimento prenotazione non riuscito: ' . $errore_stmt);
     }
 
+    // Viene recuperato l'ID generato automaticamente per la nuova prenotazione
     $prenotazione_id = mysqli_insert_id($con);
     mysqli_stmt_close($stmt_prenotazione);
 
@@ -140,6 +153,10 @@ try {
         throw new Exception('Preparazione associazione gatti non riuscita');
     }
 
+    /*
+     * Entrambi i parametri sono interi
+     * gatto_id_corrente viene aggiornato nel ciclo senza dover preparare nuovamente lo statement
+     */
     $gatto_id_corrente = 0;
     mysqli_stmt_bind_param($stmt_visita, 'ii', $prenotazione_id, $gatto_id_corrente);
 
@@ -162,11 +179,15 @@ try {
 
     $prenotazione_riuscita = true;
 } catch (Exception $e) {
+
     // Qualunque errore annulla sia la visita sia le associazioni eventualmente già inserite
     mysqli_rollback($con);
+
+    // Il dettaglio tecnico viene conservato nel log senza essere mostrato direttamente all'utente
     error_log('Errore durante la prenotazione della visita: ' . $e->getMessage());
 }
 
+// La connessione viene chiusa dopo la conclusione o l'annullamento della transazione
 mysqli_close($con);
 
 // L'esito viene mostrato dalla pagina Ospiti attraverso il relativo banner

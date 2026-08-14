@@ -4,7 +4,7 @@
  * Le credenziali cambiano in base ai privilegi necessari alla pagina
  */
 
-// Gli errori MySQLi vengono controllati direttamente nel codice
+// Gli errori MySQLi vengono gestiti esplicitamente nei diversi punti del codice
 mysqli_report(MYSQLI_REPORT_OFF);
 
 function get_db_connection($role = 'lecture')
@@ -14,7 +14,10 @@ function get_db_connection($role = 'lecture')
     $db_name = 'gattile_db';
     $port = 8889;
 
-    // Selezione dell'utente MySQL in base alle operazioni richieste
+    /*
+     * Ogni operazione utilizza l'utente con i privilegi minimi necessari
+     * Un ruolo non riconosciuto ricade sul profilo di sola lettura
+     */
     switch ($role) {
         case 'modifier':
             // Utente con privilegi di lettura e modifica
@@ -23,7 +26,7 @@ function get_db_connection($role = 'lecture')
             break;
 
         case 'registrator':
-            // Utente dedicato all'inserimento dei nuovi utenti
+            // Utente dedicato esclusivamente alla registrazione dei nuovi utenti
             $user = 'registrator';
             $password = 'ToB31nsert?';
             break;
@@ -36,11 +39,11 @@ function get_db_connection($role = 'lecture')
             break;
     }
 
-    // Apertura della connessione con le credenziali selezionate
     $con = mysqli_connect($host, $user, $password, $db_name, $port);
 
     if (!$con) {
-        // Il dettaglio tecnico viene registrato nel log del server
+
+        // Il dettaglio tecnico viene registrato nel log mentre all'utente resta un messaggio generico
         error_log(
             'Errore di connessione MySQL per l\'utente '
             . $user
@@ -51,7 +54,7 @@ function get_db_connection($role = 'lecture')
         die('Impossibile connettersi al database');
     }
 
-    // Imposta UTF-8 completo per la corretta gestione dei dati testuali
+    // UTF-8 completo mantiene corretta la gestione dei caratteri memorizzati nel database
     if (!mysqli_set_charset($con, 'utf8mb4')) {
         error_log(
             'Errore durante l\'impostazione della codifica: '

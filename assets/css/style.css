@@ -1,6 +1,10 @@
 /*
  * Foglio di stile globale del progetto
- * Gestisce grafica, layout delle pagine e adattamento ai diversi dispositivi
+ * Gestisce grafica, layout, stati interattivi e adattamento ai diversi dispositivi
+ *
+ * Il progetto utilizza un unico CSS condiviso per mantenere coerenza tra le pagine
+ * I colori sono scritti direttamente in esadecimale, senza variabili CSS personalizzate
+ * Le dimensioni principali usano rem per seguire meglio le impostazioni di testo del browser
  *
  * Verde principale: #1A3629
  * Verde scuro: #0B251C
@@ -13,7 +17,11 @@
 
 /* Impostazioni generali */
 
-* {
+/*
+ * box-sizing: border-box rende più prevedibili larghezze e padding
+ * Il reset di margin e padding evita differenze iniziali tra i browser
+ */
+ * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -47,6 +55,10 @@ textarea {
 
 /* Focus visibile durante la navigazione tramite tastiera */
 
+/*
+ * :focus-visible mostra l'indicatore soprattutto durante l'uso da tastiera
+ * Il marrone è coerente con la palette e rimane visibile sui fondi chiari del sito
+ */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -60,6 +72,10 @@ summary:focus-visible {
 
 /* Classi di supporto */
 
+/*
+ * Queste classi vengono riutilizzate in più pagine per evitare CSS inline
+ * Le utility restano volutamente semplici e limitate a proprietà ricorrenti
+ */
 .page-wrapper {
     padding: 4rem 2rem 5rem;
     width: 100%;
@@ -102,6 +118,10 @@ summary:focus-visible {
 
 /* Intestazioni delle sezioni */
 
+/*
+ * section-header viene usato sia con h1 sia con h2
+ * Il livello del titolo dipende dalla gerarchia semantica della singola pagina
+ */
 .section-header {
     text-align: center;
     margin-bottom: 3.5rem;
@@ -483,6 +503,10 @@ summary:focus-visible {
     user-select: none;
 }
 
+/*
+ * Il marcatore nativo di details viene nascosto perché la freccia personalizzata
+ * viene disegnata più sotto con ::after mantenendo comunque summary come controllo nativo
+ */
 .account-summary::-webkit-details-marker {
     display: none;
 }
@@ -504,6 +528,10 @@ summary:focus-visible {
     transform: rotate(180deg);
 }
 
+/*
+ * Il menu viene posizionato rispetto ad account-menu, che ha position: relative
+ * In questo modo l'apertura non modifica l'altezza dell'header
+ */
 .account-dropdown {
     position: absolute;
     top: calc(100% + 0.8rem);
@@ -548,6 +576,10 @@ summary:focus-visible {
 
 /* Login e registrazione */
 
+/*
+ * Le due pagine condividono la stessa struttura a card
+ * Flex centra il contenuto senza dover fissare altezze o posizioni assolute
+ */
 .auth-wrapper {
     background-color: #F5F5F0;
     min-height: 75vh;
@@ -576,7 +608,7 @@ summary:focus-visible {
     margin-bottom: 2rem;
 }
 
-.auth-header h2 {
+.auth-header h1 {
     color: #1A3629;
     font-size: 1.8rem;
     font-weight: 700;
@@ -612,6 +644,10 @@ summary:focus-visible {
     background-color: #FAFAFA;
 }
 
+/*
+ * Durante il focus il bordo diventa marrone
+ * L'indicazione resta coerente con il focus globale senza introdurre colori diversi
+ */
 .auth-card input:focus {
     outline: none;
     border-color: #9C8A7B;
@@ -884,6 +920,7 @@ summary:focus-visible {
     min-width: 0;
 }
 
+/* object-fit: cover riempie il riquadro mantenendo le proporzioni dell'immagine */
 .home-emergency-section .emergency-image img {
     display: block;
     width: 100%;
@@ -912,6 +949,10 @@ summary:focus-visible {
     margin-bottom: 1.5rem;
 }
 
+/*
+ * La griglia dei partner parte da quattro colonne e viene ridotta dalle media query
+ * justify-items centra ogni logo nella propria cella
+ */
 .partners-logos {
     width: 100%;
     max-width: 880px;
@@ -940,6 +981,10 @@ summary:focus-visible {
 
 /* Card dei gatti e componente React */
 
+/*
+ * La griglia è condivisa dalla Home e dalla galleria React
+ * auto-fit permette alle card di occupare lo spazio disponibile senza fissare il numero di colonne
+ */
 .gatti-grid-2 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 350px));
@@ -977,6 +1022,10 @@ summary:focus-visible {
     justify-content: center;
 }
 
+/*
+ * object-fit: contain mantiene visibile l'intero placeholder senza deformarlo
+ * object-position lo appoggia visivamente verso il fondo della card
+ */
 .card-img-wrapper img {
     width: 100%;
     height: 90%;
@@ -1005,6 +1054,7 @@ summary:focus-visible {
     flex-grow: 1;
 }
 
+.card-body h2,
 .card-body h3 {
     font-size: 1.5rem;
     color: #1A3629;
@@ -1047,6 +1097,15 @@ summary:focus-visible {
     cursor: pointer;
 }
 
+/*
+ * Le card React degli utenti autenticati ricevono tabIndex e role="button"
+ * Essendo article e non button nativi, serve una regola specifica per rendere visibile il focus da tastiera
+ */
+.card-cliccabile:focus-visible {
+    outline: 3px solid #9C8A7B;
+    outline-offset: 3px;
+}
+
 .react-container {
     width: 100%;
 }
@@ -1054,6 +1113,10 @@ summary:focus-visible {
 
 /* Ricerca e ordinamento della galleria */
 
+/*
+ * I controlli React rimangono fluidi grazie a flex-wrap
+ * Su schermi più piccoli la media query li dispone poi in colonna
+ */
 .filtri-ricerca {
     max-width: 800px;
     margin: 0 auto 4rem;
@@ -1105,6 +1168,10 @@ summary:focus-visible {
 
 /* Prenotazione delle visite */
 
+/*
+ * Il wrapper viene riutilizzato anche dal form amministrativo di inserimento
+ * In questo modo form diversi mantengono stessa larghezza, bordi e spaziature
+ */
 .prenotazione-wrapper {
     max-width: 800px;
     margin: 0 auto 2rem;
@@ -1133,6 +1200,10 @@ summary:focus-visible {
     text-align: center;
 }
 
+/*
+ * CSS Grid è usato per affiancare i campi correlati
+ * A 48rem la media query passa automaticamente a una sola colonna
+ */
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1158,6 +1229,10 @@ summary:focus-visible {
     box-shadow: 0 0 0 3px rgba(156, 138, 123, 0.12);
 }
 
+/*
+ * Le cifre tabulari occupano la stessa larghezza e mantengono più stabile la lettura dell'orario
+ * È una scelta tipografica, non modifica il valore del campo
+ */
 .input-data-large[type="time"] {
     font-variant-numeric: tabular-nums;
     letter-spacing: 0;
@@ -1231,6 +1306,16 @@ summary:focus-visible {
     position: relative;
 }
 
+/*
+ * Il titolo è semanticamente h1 ma mantiene la stessa resa del precedente h2
+ * La modifica evita quindi cambiamenti grafici dopo la correzione della gerarchia dei titoli
+ */
+.inserimento-gatto-wrapper > h1 {
+    color: #1A1A1A;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
 .back-admin-link,
 .back-admin-link:link,
 .back-admin-link:visited {
@@ -1301,6 +1386,16 @@ summary:focus-visible {
     opacity: 0;
     width: 0;
     height: 0;
+}
+
+/*
+ * Le checkbox restano semanticamente presenti ma sono nascoste graficamente
+ * Il focus viene quindi trasferito visivamente sul testo adiacente per la navigazione da tastiera
+ */
+.fascia-oraria-label input[type="checkbox"]:focus-visible + span {
+    outline: 3px solid #9C8A7B;
+    outline-offset: 4px;
+    border-radius: 4px;
 }
 
 .fascia-oraria-label input[type="checkbox"]:checked + span {
@@ -1468,6 +1563,10 @@ summary:focus-visible {
 
 /* Area personale */
 
+/*
+ * La pagina usa una griglia a due colonne su desktop
+ * Le card restano indipendenti in altezza grazie ad align-items: start
+ */
 .area-personale-wrapper {
     max-width: 1150px;
 }
@@ -1499,7 +1598,7 @@ summary:focus-visible {
     margin-bottom: 1.5rem;
 }
 
-.dashboard-section-header h3 {
+.dashboard-section-header h2 {
     color: #1A3629;
     font-size: 1.4rem;
     margin-bottom: 0.4rem;
@@ -1517,6 +1616,10 @@ summary:focus-visible {
     gap: 0.85rem;
 }
 
+/*
+ * grid-template-areas separa contenuto e pulsante senza posizionamenti assoluti
+ * Su smartphone le aree vengono ridefinite in verticale mantenendo lo stesso HTML
+ */
 .dashboard-item {
     background-color: #F5F5F0;
     border: 1px solid #EAE6DF;
@@ -1538,7 +1641,7 @@ summary:focus-visible {
     margin: 0;
 }
 
-.dashboard-item-header h4 {
+.dashboard-item-header h3 {
     color: #1A1A1A;
     font-size: 1.05rem;
     margin-bottom: 0.15rem;
@@ -1600,6 +1703,10 @@ summary:focus-visible {
 
 /* Pannello amministratore */
 
+/*
+ * Le sezioni amministrative usano gli stessi principi responsive dell'area personale
+ * Il CSS agisce solo sulla presentazione: il controllo dei privilegi rimane nel PHP
+ */
 .admin-page-wrapper {
     max-width: 1150px;
 }
@@ -1629,7 +1736,7 @@ summary:focus-visible {
     margin-bottom: 0;
 }
 
-.admin-card-ospiti .admin-card-header h3 {
+.admin-card-ospiti .admin-card-header h2 {
     text-align: center;
     margin-bottom: 0.8rem;
 }
@@ -1673,7 +1780,7 @@ summary:focus-visible {
     margin-bottom: 1.5rem;
 }
 
-.admin-card-header h3 {
+.admin-card-header h2 {
     color: #1A3629;
     font-size: 1.35rem;
     margin-bottom: 0.35rem;
@@ -1718,6 +1825,7 @@ summary:focus-visible {
     border-bottom: 1px solid #D4C5B9;
 }
 
+/* Il primo separatore non necessita dello spazio superiore previsto tra gruppi successivi */
 .admin-date-divider:first-child {
     margin-top: 0;
 }
@@ -1769,6 +1877,10 @@ summary:focus-visible {
     border-radius: 9px;
 }
 
+/*
+ * Lo storico usa details e summary nativi
+ * L'apertura e la chiusura funzionano quindi anche senza JavaScript
+ */
 .admin-history {
     margin-top: 1.5rem;
     border-top: 1px solid #E8E5E1;
@@ -1814,6 +1926,10 @@ summary:focus-visible {
 
 /* Pagina Sostienici */
 
+/*
+ * scroll-margin-top lascia spazio sopra la sezione quando viene raggiunta tramite un'ancora
+ * evitando che il titolo risulti troppo vicino al margine superiore della finestra
+ */
 .scroll-anchor {
     scroll-margin-top: 4rem;
 }
@@ -1941,6 +2057,10 @@ summary:focus-visible {
     background-color: rgba(26, 54, 41, 0.1);
 }
 
+/*
+ * L'icona di copia viene costruita con CSS usando un elemento e il suo ::before
+ * così non serve aggiungere un'ulteriore immagine solo per questo piccolo controllo
+ */
 .copy-icon {
     position: relative;
     width: 14px;
@@ -1990,6 +2110,9 @@ summary:focus-visible {
     width: 100%;
 }
 
+/*
+ * auto-fit e minmax rendono i piani flessibili senza fissare manualmente il numero di colonne
+ */
 .tier-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -2159,6 +2282,10 @@ summary:focus-visible {
 
 /* FAQ */
 
+/*
+ * Anche la FAQ utilizza details e summary nativi
+ * Il triangolo è solo un indicatore grafico aggiunto con pseudo-elemento
+ */
 .faq-accordion {
     max-width: 800px;
     margin: 0 auto;
@@ -2185,7 +2312,6 @@ summary:focus-visible {
     list-style: none;
     position: relative;
     padding-right: 2rem;
-    outline: none;
 }
 
 .faq-accordion summary::after {
@@ -2310,6 +2436,10 @@ summary:focus-visible {
     padding-left: 5px;
 }
 
+/*
+ * nth-child centra soltanto la seconda colonna del footer su desktop
+ * Nella media query tablet il margine viene poi annullato quando le colonne diventano verticali
+ */
 .footer-container .footer-col:nth-child(2) {
     margin: 0 auto;
 }
@@ -2438,6 +2568,10 @@ summary:focus-visible {
 
 /* Schermi intermedi */
 
+/*
+ * Primo breakpoint dedicato soprattutto all'header
+ * Il menu può andare su una seconda riga prima di arrivare alle dimensioni tablet
+ */
 @media screen and (max-width: 68rem) {
     .header-container {
         flex-wrap: wrap;
@@ -2474,6 +2608,10 @@ summary:focus-visible {
 
 /* Tablet e smartphone */
 
+/*
+ * A 48rem i layout principali passano progressivamente a una colonna
+ * Le larghezze restano fluide per evitare scorrimento orizzontale
+ */
 @media screen and (max-width: 48rem) {
     .page-wrapper {
         padding: 3rem 1.25rem 4rem;
@@ -2684,6 +2822,10 @@ summary:focus-visible {
 
 /* Smartphone con larghezza ridotta */
 
+/*
+ * Il secondo breakpoint riduce spaziature e dimensioni dove necessario
+ * senza creare una versione separata della pagina
+ */
 @media screen and (max-width: 36rem) {
     .home-hero-text h1 {
         font-size: 2rem;
@@ -2701,11 +2843,11 @@ summary:focus-visible {
     .home-emergency-section .emergency-text {
         padding: 2.5rem 1.25rem;
     }
-    
+
     .home-emergency-section .emergency-title {
         font-size: 1.7rem;
     }
-    
+
     .home-emergency-section .emergency-item {
         gap: 1rem;
     }
@@ -2831,6 +2973,10 @@ summary:focus-visible {
 
 /* Riduzione delle animazioni */
 
+/*
+ * prefers-reduced-motion rispetta la preferenza impostata nel sistema operativo
+ * In questa modalità vengono eliminati movimenti e transizioni non indispensabili
+ */
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
@@ -2847,6 +2993,10 @@ summary:focus-visible {
 
 /* Versione destinata alla stampa */
 
+/*
+ * La stampa privilegia i contenuti: navigazione, pulsanti e controlli interattivi vengono nascosti
+ * Le card perdono le ombre e break-inside riduce il rischio di spezzarle tra due pagine
+ */
 @media print {
     body {
         background: #FFFFFF;
