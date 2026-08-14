@@ -13,9 +13,10 @@ require 'includes/header.php';
 <div class="page-wrapper volontariato-intro-wrapper">
     <header class="section-header volontariato-header">
         <h1>Diventa Volontario</h1>
+
+        <!-- Il divisore è puramente decorativo, quindi viene escluso dalle tecnologie assistive -->
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
-            <!-- Il divisore è puramente decorativo, quindi viene escluso dalle tecnologie assistive -->
             <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
             <span class="line"></span>
         </div>
@@ -43,6 +44,7 @@ require 'includes/header.php';
     <div class="ruoli-container">
         <header class="section-header volontariato-header volontariato-header-mansioni">
             <h2>Le Mansioni del Volontario</h2>
+
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
                 <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
@@ -51,28 +53,34 @@ require 'includes/header.php';
         </header>
 
         <div class="ruoli-grid">
+
             <!-- Ogni mansione è rappresentata come article perché costituisce un contenuto autonomo con titolo e descrizione -->
             <article class="ruolo-card">
+
                 <!-- Le icone sono decorative perché ogni mansione è già identificata dal relativo h3 -->
                 <img src="assets/img/icona_mattina.png" alt="" class="icon-png-large">
+
                 <h3>Turno del Mattino</h3>
                 <p>Aiutaci a iniziare la giornata dei felini preparando il cibo e sistemando gli spazi.</p>
             </article>
 
             <article class="ruolo-card">
                 <img src="assets/img/icona_sera.png" alt="" class="icon-png-large">
+
                 <h3>Turno della Sera</h3>
                 <p>Assicura ai mici una serena buonanotte. Rifornirai il cibo secco e gli dedicherai qualche coccola serale.</p>
             </article>
 
             <article class="ruolo-card">
                 <img src="assets/img/icona_gioco.png" alt="" class="icon-png-large">
+
                 <h3>Socializzazione</h3>
                 <p>Disponibilità nella fascia pomeridiana per favorire la socializzazione dei mici più timorosi e diffidenti.</p>
             </article>
 
             <article class="ruolo-card">
                 <img src="assets/img/icona_eventi.png" alt="" class="icon-png-large">
+
                 <h3>Gestione Eventi</h3>
                 <p>Cerchiamo aiuto per la gestione degli eventi sul territorio, per i mercatini solidali e le raccolte fondi.</p>
             </article>
@@ -84,36 +92,42 @@ require 'includes/header.php';
 <div id="prenota" class="page-wrapper volontariato-form-wrapper section-padding">
     <header class="section-header volontariato-header">
         <h2>Prenota il tuo Turno</h2>
+
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
             <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
             <span class="line"></span>
         </div>
+
         <p class="header-subtitle">Il tuo tempo è il regalo più prezioso. Seleziona una data per scoprire le fasce orarie disponibili. Accettiamo un massimo di 2 volontari per turno.</p>
     </header>
 
     <!-- aria-live="polite" permette di annunciare i messaggi prodotti dalle richieste asincrone senza interrompere bruscamente la lettura -->
     <div id="messaggio-esito" class="d-none alert-wrapper mb-4" aria-live="polite"></div>
 
-    <!-- Il form viene mostrato soltanto se lo username è presente nella sessione dell'utente autenticato -->    
+    <!-- Il form viene mostrato soltanto se lo username è presente nella sessione dell'utente autenticato -->
     <?php if (isset($_SESSION['username'])): ?>
         <div class="prenotazione-wrapper volontariato-prenotazione-box">
+
             <!-- novalidate lascia al Vanilla JavaScript i controlli lato client; il submit viene intercettato e inviato al backend tramite fetch -->
             <form action="actions/processa_volontariato.php" method="POST" id="form-volontariato" novalidate>
+
                 <div class="form-group">
+
                     <!-- La data viene scelta prima delle fasce perché serve per interrogare il server sulla disponibilità -->
                     <label for="data_turno" class="form-label-title">Seleziona la data del turno:</label>
                     <input type="date" id="data_turno" name="data_turno" class="input-data-large input-data-full-width">
                 </div>
 
+                <!-- fieldset raggruppa le checkbox correlate e legend ne fornisce il titolo -->
                 <fieldset class="form-group" id="sezione-fasce">
-                    <!-- fieldset raggruppa le checkbox correlate e legend ne fornisce il titolo -->
                     <legend class="form-label-title mt-2">Fasce orarie disponibili (selezionane una o più):</legend>
 
+                    <!-- Le fasce partono disabilitate e vengono abilitate dal JavaScript solo dopo la verifica della disponibilità sul server -->
                     <div class="fasce-orarie-container" id="contenitore-orari">
+
                         <!-- Ogni checkbox è contenuta nel proprio label, quindi il testo della fascia è direttamente associato al controllo -->
                         <label class="fascia-oraria-label" id="label-mattina">
-                            <!-- Le fasce partono disabilitate e vengono abilitate dal JavaScript solo dopo la verifica della disponibilità sul server -->
                             <input type="checkbox" name="fasce[]" value="09:00:00" class="chk-fascia" disabled>
                             <span>Mattina (09 - 13)</span>
                         </label>
@@ -135,7 +149,7 @@ require 'includes/header.php';
             </form>
         </div>
 
-    <!-- Il visitatore non autenticato può leggere la pagina ma deve accedere per prenotare i turni -->    
+    <!-- Il visitatore non autenticato può leggere la pagina ma deve accedere per prenotare i turni -->
     <?php else: ?>
         <div class="alert-wrapper mb-4 text-center">
             <div class="auth-alert-success">
@@ -157,10 +171,14 @@ require 'includes/header.php';
 
 // La logica viene inizializzata quando gli elementi HTML della pagina sono stati caricati nel DOM
 document.addEventListener('DOMContentLoaded', function() {
+
     // I riferimenti agli elementi del DOM sono const perché vengono assegnati una volta e non vengono successivamente riassegnati
     const dataInput = document.getElementById('data_turno');
     const btnInvia = document.getElementById('btn-invia-turno');
-    const checkboxes = document.querySelectorAll('.chk-fascia'); // querySelectorAll recupera tutte le checkbox delle fasce e restituisce una NodeList
+
+    // querySelectorAll recupera tutte le checkbox delle fasce e restituisce una NodeList
+    const checkboxes = document.querySelectorAll('.chk-fascia');
+
     const form = document.getElementById('form-volontariato');
     const msgBox = document.getElementById('messaggio-esito');
 
@@ -184,10 +202,11 @@ document.addEventListener('DOMContentLoaded', function() {
     dataInput.min = dataMinima;
 
     /*
-    * Controlla se esiste almeno una checkbox selezionata e non disabilitata
-    * Il pulsante di submit viene abilitato solo in quel caso
-    */
+     * Controlla se esiste almeno una checkbox selezionata e non disabilitata
+     * Il pulsante di submit viene abilitato solo in quel caso
+     */
     function aggiornaPulsante() {
+
         // Array.from converte la NodeList in un array e some verifica se almeno un elemento soddisfa la condizione
         const almenoUnaSelezionata = Array.from(checkboxes).some(function(checkbox) {
             return checkbox.checked && !checkbox.disabled;
@@ -196,12 +215,17 @@ document.addEventListener('DOMContentLoaded', function() {
         btnInvia.disabled = !almenoUnaSelezionata;
     }
 
-    // Ripristina tutte le fasce prima di verificare una nuova data
+    /*
+     * Ripristina tutte le fasce prima di verificare una nuova data
+     * Le checkbox tornano non selezionate e disabilitate
+     */
     function resetFasce() {
+
         // forEach applica il reset a tutte le checkbox del gruppo
         checkboxes.forEach(function(checkbox) {
             checkbox.checked = false;
             checkbox.disabled = true;
+
             // parentElement è il label che contiene la checkbox e su cui vengono applicate le classi grafiche
             checkbox.parentElement.classList.remove('pieno', 'selezionato');
         });
@@ -210,35 +234,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /*
-    * Nasconde il banner precedente e ne svuota il contenuto
-    * prima di mostrare l'esito di una nuova operazione
-    */
+     * Nasconde il banner precedente e ne svuota il contenuto
+     * prima di mostrare l'esito di una nuova operazione
+     */
     function nascondiMessaggio() {
         msgBox.classList.add('d-none');
         msgBox.innerHTML = '';
     }
 
     /*
-    * Costruisce dinamicamente il banner di successo o errore
-    * creando gli elementi nel DOM e collegando il pulsante di chiusura con addEventListener
-    */
+     * Costruisce dinamicamente il banner di successo o errore
+     * creando gli elementi nel DOM e collegando il pulsante di chiusura con addEventListener
+     */
     function mostraMessaggio(tipo, messaggio) {
+
+        // tipo determina quale stile applicare, mentre messaggio contiene il testo restituito dal backend
+
         // Il contenitore viene svuotato prima di costruire il nuovo messaggio
         msgBox.innerHTML = '';
 
         // createElement crea nuovi nodi HTML che verranno poi inseriti nel DOM
         const alert = document.createElement('div');
-        
+
         // L'operatore ternario assegna la classe di successo oppure quella di errore in base al tipo ricevuto
         alert.className = tipo === 'success'
             ? 'auth-alert-success alert-dismissible'
             : 'auth-alert-danger alert-dismissible';
 
-        // Il testo principale viene evidenziato semanticamente con strong    
+        // Il testo principale viene evidenziato semanticamente con strong
         const testoPrincipale = document.createElement('strong');
 
         if (tipo === 'success') {
-            // tipo determina lo stile del banner, mentre messaggio contiene il testo restituito dal backend
             testoPrincipale.className = 'messaggio-successo-titolo';
 
             // L'icona di conferma è decorativa perché il messaggio testuale comunica già l'esito
@@ -247,13 +273,14 @@ document.addEventListener('DOMContentLoaded', function() {
             iconaSuccesso.alt = '';
             iconaSuccesso.className = 'icona-successo';
 
-            // appendChild inserisce progressivamente i nodi creati all'interno del banner    
+            // appendChild inserisce progressivamente i nodi creati all'interno del banner
             testoPrincipale.appendChild(iconaSuccesso);
-            testoPrincipale.appendChild(document.createTextNode(' ' + messaggio));
-            alert.appendChild(testoPrincipale);
-            alert.appendChild(document.createElement('br'));
 
             // createTextNode inserisce il messaggio come testo invece di interpretarlo come markup HTML
+            testoPrincipale.appendChild(document.createTextNode(' ' + messaggio));
+
+            alert.appendChild(testoPrincipale);
+            alert.appendChild(document.createElement('br'));
             alert.appendChild(document.createTextNode('Ti aspettiamo alla struttura, dove verrai istruito dagli altri volontari. A presto!'));
         } else {
             testoPrincipale.textContent = 'Errore:';
@@ -265,9 +292,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const btnChiudi = document.createElement('button');
         btnChiudi.type = 'button';
         btnChiudi.className = 'btn-close-alert';
+
         // aria-label fornisce un nome accessibile al pulsante che visivamente contiene solo il simbolo ×
         btnChiudi.setAttribute('aria-label', 'Chiudi');
-        btnChiudi.textContent = '×'; // Il simbolo di chiusura viene inserito come semplice testo
+
+        // Il simbolo di chiusura viene inserito come semplice testo
+        btnChiudi.textContent = '×';
 
         btnChiudi.addEventListener('click', function() {
             msgBox.classList.add('d-none');
@@ -279,10 +309,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /*
-    * Interroga l'API PHP per la data scelta e riceve in JSON il numero di iscritti per ciascuna fascia
-    * Le fasce che hanno già raggiunto due volontari restano disabilitate
-    */
+     * Interroga l'API PHP per la data scelta e riceve in JSON il numero di iscritti per ciascuna fascia
+     * Le fasce che hanno già raggiunto due volontari restano disabilitate
+     */
     function verificaDisponibilita(dataScelta, nascondiEsito) {
+
         // nascondiEsito decide se rimuovere il messaggio precedente prima della nuova verifica
         if (nascondiEsito) {
             nascondiMessaggio();
@@ -295,27 +326,32 @@ document.addEventListener('DOMContentLoaded', function() {
         // encodeURIComponent prepara il valore perché possa essere inserito correttamente nella URL
         fetch('actions/api_verifica_turni.php?data=' + encodeURIComponent(dataScelta))
             .then(function(response) {
-                if (!response.ok) { // response.ok verifica che la risposta HTTP sia andata a buon fine
+
+                // response.ok verifica che la risposta HTTP sia andata a buon fine
+                if (!response.ok) {
                     throw new Error('Errore nella risposta del server');
                 }
-                
+
                 // La risposta JSON del PHP viene convertita in un oggetto JavaScript
                 return response.json();
             })
             .then(function(risposta) {
+
+                // Anche con una risposta HTTP valida viene controllato lo stato applicativo restituito dal backend
                 if (risposta.status !== 'success') {
-                    // Anche con una risposta HTTP valida viene controllato lo stato applicativo restituito dal backend
                     throw new Error('Impossibile verificare i turni');
                 }
 
                 checkboxes.forEach(function(checkbox) {
+
                     // Il value della checkbox coincide con la chiave usata dal JSON per quella fascia oraria
                     const fascia = checkbox.value;
 
                     // Se il backend non restituisce un conteggio per la fascia viene usato 0 come valore di default
                     const iscritti = risposta.data[fascia] || 0;
+
+                    // La traccia consente al massimo due volontari per fascia, quindi una fascia piena resta disabilitata
                     if (iscritti >= 2) {
-                        // La traccia consente al massimo due volontari per fascia, quindi una fascia piena resta disabilitata
                         checkbox.disabled = true;
                         checkbox.parentElement.classList.add('pieno');
                     } else {
@@ -326,6 +362,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 aggiornaPulsante();
             })
             .catch(function(error) {
+
                 /*
                  * Se la disponibilità non può essere verificata le fasce restano disabilitate
                  * In questo modo non si permette un invio senza il controllo preventivo richiesto
@@ -350,9 +387,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     /*
-    * Ogni checkbox aggiorna la propria evidenziazione grafica
-    * e ricalcola se il pulsante di conferma può essere abilitato
-    */
+     * Ogni checkbox aggiorna la propria evidenziazione grafica
+     * e ricalcola se il pulsante di conferma può essere abilitato
+     */
     checkboxes.forEach(function(checkbox) {
         checkbox.addEventListener('change', function() {
             if (checkbox.checked) {
@@ -370,11 +407,12 @@ document.addEventListener('DOMContentLoaded', function() {
      * Il PHP ripeterà comunque in modo indipendente tutti i controlli importanti
      */
     form.addEventListener('submit', function(event) {
+
         // preventDefault blocca l'invio HTML tradizionale perché i dati vengono inviati tramite fetch senza cambiare pagina
         event.preventDefault();
 
+        // filter mantiene soltanto le fasce effettivamente selezionate e ancora abilitate
         const fasceSelezionate = Array.from(checkboxes).filter(function(checkbox) {
-            // filter mantiene soltanto le fasce effettivamente selezionate e ancora abilitate
             return checkbox.checked && !checkbox.disabled;
         });
 
@@ -400,20 +438,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error('Errore nella risposta del server');
             }
 
+            // Anche la risposta del salvataggio viene convertita dal formato JSON a un oggetto JavaScript
             return response.json();
         })
         .then(function(risposta) {
             if (risposta.status === 'success') {
+
                 // In caso di successo viene mostrata la conferma e il form viene riportato allo stato iniziale
                 mostraMessaggio('success', risposta.message);
-                // reset svuota i controlli del form, mentre resetFasce ripristina anche gli stati gestiti dal JavaScript    
+
+                // reset svuota i controlli del form, mentre resetFasce ripristina anche gli stati gestiti dal JavaScript
                 form.reset();
                 resetFasce();
             } else {
+
                 /*
-                * LIMIT_EXCEEDED identifica il caso in cui nel frattempo la fascia ha raggiunto due volontari
-                * Dopo l'errore la disponibilità viene interrogata nuovamente per aggiornare subito l'interfaccia
-                */
+                 * LIMIT_EXCEEDED identifica il caso in cui nel frattempo la fascia ha raggiunto due volontari
+                 * Dopo l'errore la disponibilità viene interrogata nuovamente per aggiornare subito l'interfaccia
+                 */
                 mostraMessaggio('error', risposta.message);
 
                 if (risposta.code === 'LIMIT_EXCEEDED' && dataInput.value !== '') {
@@ -424,12 +466,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(function(error) {
+
             // Gli errori di rete o di risposta vengono registrati in console e tradotti in un messaggio comprensibile per l'utente
             console.error('Errore durante il salvataggio del turno:', error);
             mostraMessaggio('error', 'Impossibile contattare il server. Riprova più tardi.');
             aggiornaPulsante();
         })
         .finally(function() {
+
             // finally viene eseguito sia dopo il successo sia dopo l'errore e ripristina il testo originale del pulsante
             btnInvia.textContent = 'Conferma Disponibilità';
         });

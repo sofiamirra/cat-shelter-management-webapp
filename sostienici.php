@@ -12,17 +12,20 @@ require 'includes/header.php';
 <div class="page-wrapper sostienici-page-wrapper">
     <header class="section-header sostienici-main-header">
         <h1>Sostieni il Parco delle Fusa</h1>
+
         <!-- Il divisore ha funzione solo decorativa: aria-hidden lo esclude dalle tecnologie assistive -->
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
             <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
             <span class="line"></span>
         </div>
+
         <p class="header-subtitle">Il nostro gattile si sostiene solo grazie al cuore di persone come te. Aiutaci a garantire pappe, cure mediche e un rifugio caldo ai mici sfortunati.</p>
     </header>
 
     <!-- Sezione raggiungibile direttamente dai collegamenti della Home tramite l'id dell'ancora -->
     <section id="adozioni-cuore" class="scroll-anchor sostienici-cuore-section">
+
         <!-- Il contenitore raccoglie il testo informativo e le coordinate necessarie per effettuare la donazione -->
         <div class="content-split">
             <div class="split-text">
@@ -32,16 +35,21 @@ require 'includes/header.php';
 
             <div class="split-box info-bancarie-box">
                 <h3>Coordinate per la donazione</h3>
+
                 <p><strong>Intestato a:</strong> Parco delle Fusa - Torino</p>
                 <p><strong>Causale:</strong> Erogazione liberale - Adozione del Cuore</p>
+
                 <!-- L'IBAN viene mostrato come testo non modificabile e può essere copiato tramite il pulsante associato -->
                 <div class="iban-copy-wrapper">
                     <div class="iban-code" id="iban-donazione">IT12 A345 6789 0123 4567 8901 234</div>
+
                     <!-- Il pulsante usa aria-label perché l'icona grafica da sola non fornisce un nome accessibile -->
                     <button type="button" class="btn-copia-iban" id="btn-copia-iban" aria-label="Copia IBAN">
+
                         <!-- L'icona è solo grafica perché la funzione del pulsante è già descritta da aria-label -->
                         <span class="copy-icon" aria-hidden="true"></span>
                     </button>
+
                     <!-- aria-live="polite" annuncia l'esito della copia alle tecnologie assistive senza interrompere bruscamente la lettura in corso -->
                     <span class="copy-feedback" id="copy-feedback" aria-live="polite"></span>
                 </div>
@@ -60,21 +68,28 @@ require 'includes/header.php';
     <div class="ruoli-container">
         <header class="section-header">
             <h2>Adozioni a Distanza</h2>
+
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
                 <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
                 <span class="line"></span>
             </div>
+
             <p class="header-subtitle">Non puoi portare un micio a casa? Diventa il suo angelo custode fino all'adozione scegliendo uno dei nostri piani di supporto mensile.</p>
         </header>
 
         <div class="tier-grid">
+
             <!-- Ogni piano viene rappresentato come article perché costituisce un contenuto autonomo con titolo, prezzo e caratteristiche -->
             <article class="tier-card">
+
                 <!-- Le medaglie sono decorative perché il livello del piano è già indicato dal titolo della card -->
                 <img src="assets/img/icona_bronzo.png" alt="" class="tier-icon-img">
+
                 <h3>Adozione Bronzo</h3>
+
                 <div class="tier-price">10€ <span>/ mese</span></div>
+
                 <!-- Le caratteristiche del piano vengono organizzate come lista perché rappresentano elementi dello stesso insieme -->
                 <ul class="tier-features">
                     <li>Contributo per cibo e lettiera quotidiana</li>
@@ -85,8 +100,11 @@ require 'includes/header.php';
 
             <article class="tier-card premium-tier">
                 <img src="assets/img/icona_argento.png" alt="" class="tier-icon-img">
+
                 <h3>Adozione Argento</h3>
+
                 <div class="tier-price">30€ <span>/ mese</span></div>
+
                 <ul class="tier-features">
                     <li>Contributo per cibo, vaccini e antiparassitari</li>
                     <li>Attestato digitale e foto aggiornata ogni mese</li>
@@ -96,8 +114,11 @@ require 'includes/header.php';
 
             <article class="tier-card">
                 <img src="assets/img/icona_oro.png" alt="" class="tier-icon-img">
+
                 <h3>Adozione Oro</h3>
+
                 <div class="tier-price">50€ <span>/ mese</span></div>
+
                 <ul class="tier-features">
                     <li>Contributo per cibo, lettiera e cure veterinarie</li>
                     <li>Tutti i vantaggi inclusi nell'adozione Argento</li>
@@ -121,45 +142,56 @@ require 'includes/header.php';
     <div class="ruoli-container">
         <header class="section-header">
             <h2>Donazioni Materiali</h2>
+
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
                 <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
                 <span class="line"></span>
             </div>
+
             <p class="header-subtitle">Vuoi aiutare il rifugio senza adottare? Dona cibo, coperte, farmaci o accessori e contribuisci alle necessità quotidiane dei nostri ospiti.</p>
         </header>
 
         <div class="donazioni-orizzontali">
+
             <!-- Il banner raccoglie luogo, orari e recapiti utili per consegnare le donazioni materiali -->
             <div class="contact-banner">
                 <div class="contact-banner-item">
+
                     <!-- Le icone sono decorative perché ciascun blocco contiene già un'etichetta testuale -->
                     <img src="assets/img/icona_posizione_scura.png" alt="" class="contact-icon-img">
+
                     <h3>Punto di Raccolta</h3>
                     <p>I volontari ritirano i vostri aiuti in<br>Strada Val Salice 123, Torino</p>
                 </div>
 
                 <div class="contact-banner-item">
                     <img src="assets/img/icona_orari.png" alt="" class="contact-icon-img">
+
                     <h3>Orari di Ritiro</h3>
                     <p>Tutti i giorni, 16:00 - 18:00<br>(senza appuntamento)</p>
                 </div>
 
                 <div class="contact-banner-item">
                     <img src="assets/img/icona_telefono_scuro.png" alt="" class="contact-icon-img">
+
                     <h3>Contatti</h3>
-                    <p><a href="tel:+390111234567" class="phone-link">+39 011 123 4567</a><br><a href="mailto:info@parcodellefusa.it" class="contact-link">info@parcodellefusa.it</a></p>
+                    <p>
+                        <a href="tel:+390111234567" class="phone-link">+39 011 123 4567</a><br>
+                        <a href="mailto:info@parcodellefusa.it" class="contact-link">info@parcodellefusa.it</a>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- F.A.Q. -->
+<!-- Sezione delle domande frequenti -->
 <section class="scroll-anchor section-padding sostienici-section-white">
     <div class="ruoli-container">
         <header class="section-header">
             <h2>F.A.Q. - Domande Frequenti</h2>
+
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
                 <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
@@ -167,8 +199,9 @@ require 'includes/header.php';
             </div>
         </header>
 
-        <!-- details e summary forniscono l'apertura delle FAQ direttamente tramite HTML, senza richiedere JavaScript -->
+        <!-- details e summary forniscono l'espansione delle FAQ direttamente tramite HTML senza richiedere JavaScript -->
         <div class="faq-accordion">
+
             <!-- summary è la parte visibile e attivabile, mentre il contenuto di details viene mostrato quando l'elemento è aperto -->
             <details>
                 <summary>Come mi preparo all'arrivo del micio a casa?</summary>

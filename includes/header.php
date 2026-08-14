@@ -1,6 +1,6 @@
 <?php
 /*
- * Intestazione comune del sito
+ * Intestazione comune del sito.
  * Gestisce la sessione, la navigazione principale e lo stato dell'utente
  */
 
@@ -9,10 +9,11 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Lo stato amministratore determina la presenza delle funzioni riservate
+// La variabile serve a mostrare il collegamento al pannello solo agli amministratori
+// L'autorizzazione viene comunque verificata nuovamente nelle pagine riservate
 $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
 
-// Percorso di base utilizzato per la favicon del progetto
+// Ricava la cartella in cui si trova il progetto per costruire il percorso della favicon
 $base_path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 ?>
 <!DOCTYPE html>
@@ -26,9 +27,10 @@ $base_path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
     <title>Il Parco delle Fusa - Gattile</title>
 
     <!-- Icona identificativa del sito -->
+    <!-- Il percorso della favicon viene costruito rispetto alla cartella del progetto -->
     <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($base_path, ENT_QUOTES, 'UTF-8'); ?>/assets/img/favoriteicon_parco.png?v=31">
 
-    <!-- Preconnect per i font esterni -->
+    <!-- Prepara la connessione ai server da cui viene caricato il font Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -59,9 +61,10 @@ $base_path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 
         <!-- Area relativa allo stato di autenticazione -->
         <div class="user-area">
+            <!-- La presenza dello username in sessione distingue l'utente autenticato dal visitatore -->
             <?php if (isset($_SESSION['username'])): ?>
 
-                <!-- Avatar e username aprono le funzioni associate all'account -->
+                <!-- Avatar e username aprono una tendina espandibile con le funzioni associate all'account -->
                 <details class="account-menu">
                     <summary class="account-summary">
                         <img src="assets/img/icona_utente.png" alt="" class="icona-utente">
@@ -69,9 +72,11 @@ $base_path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
                     </summary>
 
                     <div class="account-dropdown">
+                        <!-- Tutti gli utenti autenticati accedono alle proprie attività -->
                         <a href="area_personale.php">Le Mie Attività</a>
 
                         <?php if ($is_admin): ?>
+                            <!-- Il collegamento amministrativo viene mostrato solo agli account autorizzati -->
                             <a href="admin.php">Pannello Amministratore</a>
                         <?php endif; ?>
                     </div>
@@ -81,7 +86,7 @@ $base_path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
                 <a href="logout.php" class="btn-outline">Logout</a>
 
             <?php else: ?>
-
+                <!-- Se lo username non è presente in sessione viene mostrato lo stato non autenticato -->
                 <span class="status-testo">Non loggato</span>
                 <a href="login.php" class="btn-outline">Area Riservata</a>
 

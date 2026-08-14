@@ -14,12 +14,14 @@ require 'includes/header.php';
     <!-- Intestazione principale della pagina, seguita dalle sezioni dedicate alla prenotazione e alla galleria -->
     <header class="section-header">
         <h1>I Nostri Ospiti</h1>
+
         <!-- Il divisore è puramente decorativo, quindi viene escluso dalle tecnologie assistive -->
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
             <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
             <span class="line"></span>
         </div>
+
         <p class="header-subtitle">Scopri i felini in cerca di casa. Usa i filtri per esplorare la galleria e conoscere le loro storie per trovare il micio più adatto a te.</p>
     </header>
 
@@ -29,12 +31,13 @@ require 'includes/header.php';
             <div class="auth-alert-success alert-dismissible">
                 <strong class="messaggio-successo-titolo"><img src="assets/img/icona_spunta_successo.png" alt="" class="icona-successo"> Prenotazione confermata!</strong><br>
                 Ti aspettiamo in struttura. I dettagli sono stati salvati correttamente.
+
                 <!-- aria-label descrive la funzione del pulsante perché il simbolo × da solo non è sufficientemente informativo -->
                 <button type="button" class="btn-close-alert" id="btn-chiudi-feedback" aria-label="Chiudi">&times;</button>
             </div>
         </div>
-        
-        <?php elseif (isset($_GET['status']) && $_GET['status'] === 'error'): ?>
+
+    <?php elseif (isset($_GET['status']) && $_GET['status'] === 'error'): ?>
         <!-- Se il backend reindirizza con status=error viene mostrato un messaggio generico senza esporre dettagli tecnici -->
         <div class="alert-wrapper mb-4" id="banner-feedback">
             <div class="auth-alert-danger alert-dismissible">
@@ -72,6 +75,7 @@ require 'includes/header.php';
                 <div class="form-group mt-2">
                     <!-- La lista viene aggiornata dinamicamente con i gatti ricevuti dal componente React -->
                     <p class="form-label-title">Gatti selezionati per l'incontro:</p>
+
                     <ul class="lista-selezionati" id="ui-lista-gatti">
                         <li class="nessun-gatto-selezionato">Nessun gatto selezionato al momento. Clicca sulle card in basso.</li>
                     </ul>
@@ -146,7 +150,7 @@ if (formPrenotazione) {
     domani.setDate(domani.getDate() + 1);
 
     const anno = domani.getFullYear();
-    
+
     // Mese e giorno vengono convertiti in stringhe a due cifre per ottenere il formato YYYY-MM-DD richiesto dall'input date
     const mese = String(domani.getMonth() + 1).padStart(2, '0');
     const giorno = String(domani.getDate()).padStart(2, '0');
@@ -158,9 +162,9 @@ if (formPrenotazione) {
     inputOra.max = '17:30';
 
     /*
-    * React emette l'evento personalizzato aggiornamentoGattiScelti sul document
-    * event.detail contiene l'array dei gatti selezionati e permette al Vanilla JavaScript di riceverlo
-    */
+     * React emette l'evento personalizzato aggiornamentoGattiScelti sul document
+     * event.detail contiene l'array dei gatti selezionati e permette al Vanilla JavaScript di riceverlo
+     */
     document.addEventListener('aggiornamentoGattiScelti', function(event) {
         // Il ternario usa detail se contiene davvero un array, altrimenti imposta un array vuoto come stato sicuro
         const gattiSelezionati = Array.isArray(event.detail) ? event.detail : [];
@@ -186,7 +190,7 @@ if (formPrenotazione) {
         // forEach percorre tutti i gatti selezionati per costruire la lista visibile e raccoglierne gli ID
         gattiSelezionati.forEach(function(gatto) {
             const elementoLista = document.createElement('li');
-            
+
             // Se la razza non è disponibile viene mostrato il valore alternativo "Meticcio"
             const razza = gatto.razza ? gatto.razza : 'Meticcio';
 

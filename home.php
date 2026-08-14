@@ -1,17 +1,18 @@
 <?php
 /*
- * Pagina iniziale del sito
+ * Pagina iniziale del sito.
  * Presenta il rifugio, il percorso di adozione e le principali modalità di sostegno.
  * Gli ultimi due gatti arrivati vengono recuperati dal database in sola lettura.
  */
 
+// Inclusioni singole e lineari, si preferisce require per evitare penalizzazioni sulle performance
 require 'includes/db_config.php';
 require 'includes/header.php';
 ?>
 
 <!-- Presentazione del rifugio -->
-<section class="home-hero" aria-label="Introduzione al Gattile">
-    <article class="home-hero-text">
+<section class="home-hero">
+    <div class="home-hero-text">
         <h1>Un Rifugio d’Amore<br>per Gatti Bisognosi</h1>
         <p>
             Il Parco delle Fusa è un rifugio dedicato all'accoglienza e alla riabilitazione dei felini in difficoltà sul territorio. La nostra missione è garantire loro cure mediche, un ambiente sicuro e tanto amore in attesa di un'adozione. Lavoriamo ogni giorno per trasformare un passato di abbandono in un futuro sereno presso una nuova famiglia definitiva.
@@ -21,7 +22,7 @@ require 'includes/header.php';
             <a href="ospiti.php" class="btn-solid-dark">Conosci i Nostri Ospiti</a>
             <a href="volontariato.php" class="btn-outline-dark">Diventa Volontario</a>
         </div>
-    </article>
+</div>
 
     <figure class="home-hero-image">
         <img src="assets/img/gatto_home.png" alt="La struttura del gattile Il Parco delle Fusa con i felini ospiti">
@@ -29,11 +30,13 @@ require 'includes/header.php';
 </section>
 
 <!-- Processo di adozione -->
-<section class="adoption-steps-wrapper section-padding" aria-label="Step di Adozione">
+<!-- La section possiede già un titolo visibile, quindi non è necessario duplicarne il nome con aria-label -->
+<section class="adoption-steps-wrapper section-padding">
     <div class="adoption-steps">
         <header class="section-header">
             <h2>Scopri Come Adottare</h2>
 
+            <!-- Il divisore è decorativo: aria-hidden lo esclude dai lettori di schermo -->
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
                 <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
@@ -43,9 +46,9 @@ require 'includes/header.php';
             <p class="header-subtitle">Pochi semplici passi per accogliere un felino in famiglia.</p>
         </header>
 
-        <!-- I tre passaggi vengono raccolti in un unico contenitore beige -->
         <div class="adoption-steps-box">
             <div class="adoption-grid">
+                <!-- Ogni passaggio è un contenuto autonomo con titolo e descrizione, quindi viene rappresentato con article -->
                 <article class="step">
                     <div class="step-icon">
                         <img src="assets/img/icona_innamorati.png" alt="">
@@ -75,7 +78,7 @@ require 'includes/header.php';
 </section>
 
 <!-- Ultimi due gatti registrati -->
-<section class="home-arrivals-section section-padding" aria-label="Ultimi gatti arrivati">
+<section class="home-arrivals-section section-padding">
     <header class="section-header">
         <h2>Gli Ultimi Arrivati</h2>
 
@@ -90,7 +93,7 @@ require 'includes/header.php';
 
     <div class="gatti-grid-2">
         <?php
-        // La home utilizza l'utente con privilegi di sola lettura per estrazione sicura
+        // La Home deve soltanto leggere i gatti, quindi usa l'utente MySQL lecture con privilegi di sola lettura
         $con = get_db_connection('lecture');
 
         // La query seleziona i due gatti con data di arrivo più recente
@@ -99,12 +102,14 @@ require 'includes/header.php';
                   ORDER BY data_arrivo DESC
                   LIMIT 2";
 
-        // Preparazione dello statement come misura standard contro vulnerabilità
+        // La query viene eseguita tramite un prepared statement MySQLi, come nelle altre operazioni sul database
         $stmt = mysqli_prepare($con, $query);
 
         if ($stmt) {
+            // Se la preparazione è riuscita, lo statement viene eseguito sul database
             mysqli_stmt_execute($stmt);
-        
+            
+            // Le colonne della SELECT vengono associate alle variabili PHP nello stesso ordine della query
             mysqli_stmt_bind_result(
                 $stmt,
                 $nome,
@@ -113,17 +118,20 @@ require 'includes/header.php';
                 $razza,
                 $colore_mantello
             );
-        
+
+            // Il flag permette di mostrare un messaggio alternativo se la query non restituisce righe        
             $gatti_trovati = false;
-        
+            
+            // Ogni fetch carica nelle variabili associate una nuova riga del risultato
             while (mysqli_stmt_fetch($stmt)) {
                 $gatti_trovati = true;
         
-                // I dati testuali provenienti dal database vengono codificati prima dell'output
-                // per neutralizzare potenziali attacchi XSS
+                // I valori testuali vengono codificati prima di inserirli nell'HTML
+                // per evitare che eventuale markup o script venga interpretato dal browser e prevenire XSS
                 $nome_mostrato = htmlspecialchars((string) $nome, ENT_QUOTES, 'UTF-8');
                 $colore_mostrato = htmlspecialchars((string) $colore_mantello, ENT_QUOTES, 'UTF-8');
-        
+                
+                // Per eventuali schede prive di razza viene mostrato un valore default
                 if (!empty($razza)) {
                     $razza_mostrata = htmlspecialchars((string) $razza, ENT_QUOTES, 'UTF-8');
                 } else {
@@ -139,11 +147,14 @@ require 'includes/header.php';
                     $sesso_esteso = 'Non specificato';
                 }
                 ?>
-        
+
+                <!-- Ogni scheda rappresenta un singolo gatto come contenuto autonomo -->
                 <article class="card-gatto-premium">
+                    <!-- La figure raggruppa l'immagine associata alla scheda del gatto -->
                     <figure class="card-img-wrapper">
                         <span class="badge-nuovo">Appena Accolto</span>
-                        <img src="assets/img/placeholder_gatto.png" alt="Foto di <?php echo $nome_mostrato; ?>">
+                        <!-- Il placeholder è uguale per tutti i gatti e non aggiunge informazioni alla scheda, quindi alt vuoto -->
+                        <img src="assets/img/placeholder_gatto.png" alt="">
                     </figure>
         
                     <div class="card-body">
@@ -161,17 +172,19 @@ require 'includes/header.php';
                 <?php
             }
 
+            // Se il ciclo non ha trovato righe viene mostrato un messaggio al posto delle card
             if (!$gatti_trovati) {
                 echo '<p class="text-center w-100">Al momento non ci sono nuovi ospiti registrati.</p>';
             }
 
             mysqli_stmt_close($stmt);
         } else {
-            // Il dettaglio dell'errore resta disponibile nel log del server
+            // Se la query non può essere preparata, il dettaglio tecnico resta nel log
+            // mentre all'utente viene mostrato un messaggio generico
             error_log('Errore nella preparazione della query della home: ' . mysqli_error($con));
             echo '<p class="text-center w-100">Al momento non ci sono nuovi ospiti registrati.</p>';
         }
-
+        // Terminata la lettura, la connessione al database viene chiusa
         mysqli_close($con);
         ?>
     </div>
@@ -182,7 +195,7 @@ require 'includes/header.php';
 </section>
 
 <!-- Adozioni speciali e donazioni -->
-<section class="ruoli-volontariato home-special-section section-padding" aria-label="Supporto al gattile">
+<section class="ruoli-volontariato home-special-section section-padding">
     <div class="ruoli-container">
 
         <header class="section-header">
@@ -224,17 +237,18 @@ require 'includes/header.php';
 </section>
 
 <!-- Informazioni per emergenze e ritrovamenti -->
-<section class="home-emergency-section section-padding" aria-label="Cosa fare in caso di emergenza">
+<section class="home-emergency-section section-padding">
     <div class="emergency-container">
 
         <div class="emergency-text">
-            <h3 class="emergency-title">Animale in Difficoltà?</h3>
+            <h2 class="emergency-title">Animale in Difficoltà?</h2>
             <p class="emergency-subtitle">Ecco chi contattare per soccorrere un micio bisognoso.</p>
 
             <div class="emergency-item">
                 <img src="assets/img/icona_ambulanza.png" alt="" class="icon-png-small">
                 <div class="emergency-item-content">
-                    <h4>Soccorso Gatto Ferito o Malato</h4>
+                    <h3>Soccorso Gatto Ferito o Malato</h3>
+                    <!-- I collegamenti istituzionali si aprono in una nuova scheda mantenendo disponibile la Home -->
                     <p>Consulta le <a href="https://www.comune.torino.it/schede-informative/ritrovamenti-cani-gatti-sul-territorio-della-citta-torino" class="emergency-link" target="_blank" rel="noopener">indicazioni ufficiali del Comune.</a></p>
                 </div>
             </div>
@@ -242,7 +256,7 @@ require 'includes/header.php';
             <div class="emergency-item">
                 <img src="assets/img/icona_scudo.png" alt="" class="icon-png-small">
                 <div class="emergency-item-content">
-                    <h4>Avvistamento Gatto sul Territorio</h4>
+                    <h3>Avvistamento Gatto sul Territorio</h3>
                     <p>Verifica se il gatto <a href="https://www.comune.torino.it/schede-informative/colonie-feline" class="emergency-link" target="_blank" rel="noopener">appartiene a una colonia felina.</a></p>
                 </div>
             </div>
@@ -250,7 +264,7 @@ require 'includes/header.php';
             <div class="emergency-item">
                 <img src="assets/img/icona_selvatici.png" alt="" class="icon-png-small">
                 <div class="emergency-item-content">
-                    <h4>Richiesta di Accoglienza al Rifugio</h4>
+                    <h3>Richiesta di Accoglienza al Rifugio</h3>
                     <p>Contattaci prima di arrivare: <a href="tel:+390111234567" class="emergency-link">+39 011 123 4567</a></p>
                 </div>
             </div>
@@ -264,14 +278,16 @@ require 'includes/header.php';
 </section>
 
 <!-- Partner che sostengono il rifugio -->
-<aside class="home-partners-strip" aria-label="Partner del rifugio">
-    <p class="partners-label">CON IL SUPPORTO DI</p>
+<!-- Informazioni complementari rispetto al contenuto principale, quindi vengono raccolti in aside -->
+<aside class="home-partners-strip">
+<aside class="home-partners-strip">
+    <h2 class="partners-label">CON IL SUPPORTO DI</h2>
 
     <div class="partners-logos">
-        <img src="assets/img/sponsor_monge.png" alt="Logo del partner 1" class="sponsor-logo">
-        <img src="assets/img/sponsor_lindocat.png" alt="Logo del partner 2" class="sponsor-logo">
-        <img src="assets/img/sponsor_candioli.png" alt="Logo del partner 3" class="sponsor-logo">
-        <img src="assets/img/sponsor_isolatesori.png" alt="Logo del partner 4" class="sponsor-logo">
+        <img src="assets/img/sponsor_monge.png" alt="Monge" class="sponsor-logo">
+        <img src="assets/img/sponsor_lindocat.png" alt="Lindocat" class="sponsor-logo">
+        <img src="assets/img/sponsor_candioli.png" alt="Candioli" class="sponsor-logo">
+        <img src="assets/img/sponsor_isolatesori.png" alt="L'Isola dei Tesori" class="sponsor-logo">
     </div>
 </aside>
 

@@ -1,7 +1,7 @@
 <?php
 /*
  * Piè di pagina comune del sito
- * Chiude il tag principale del documento e organizza le informazioni di supporto. 
+ * Chiude il main aperto nell'header e contiene contatti, collegamenti e note conclusive
  */
 ?>
 </main>
@@ -13,12 +13,13 @@
         <!-- Informazioni e recapiti del gattile -->
         <section class="footer-col">
             <h2>Il Parco delle Fusa</h2>
-
+            
             <p>Doniamo una seconda occasione ai felini in difficoltà. Un ambiente sicuro, cure mediche e tanto amore in attesa di una famiglia.</p>
             
-            <!-- I recapiti vengono raggruppati semanticamente come informazioni di contatto -->
+            <!-- I recapiti del rifugio vengono raggruppati nell'elemento semantico address -->
             <address>
                 <ul class="footer-contact">
+                    <!-- Per le immagini decorative viene utilizzato un attributo alt vuoto -->
                     <li><img src="assets/img/icona_posizione_footer.png" alt="" class="footer-contact-icon"> Strada Val Salice 123, 10131 Torino (TO)</li>
                     <li><img src="assets/img/icona_email_footer.png" alt="" class="footer-contact-icon"> <a href="mailto:info@parcodellefusa.it">info@parcodellefusa.it</a></li>
                     <li><img src="assets/img/icona_telefono_footer.png" alt="" class="footer-contact-icon"> <a href="tel:+390111234567">+39 011 123 4567</a></li>
@@ -37,7 +38,7 @@
                 <li><a href="sostienici.php">Sostienici</a></li>
             </ul>
 
-            <!-- Icone come contenuto informativo per indisponibilità URL reali -->
+            <!-- Icone social mostrate come informazioni visive perché non sono disponibili profili reali -->
             <div class="footer-social">
                 <img src="assets/img/icona_instagram.png" alt="Instagram">
                 <img src="assets/img/icona_facebook.png" alt="Facebook">
@@ -49,6 +50,7 @@
             <h2>Note Legali</h2>
 
             <!-- I PDF vengono aperti in una nuova scheda senza interrompere la navigazione del sito -->
+            <!-- target="_blank" apre i documenti in una nuova scheda, noopener impedisce l'accesso alla finestra originale -->
             <ul class="footer-note-list">
                 <li><a href="assets/docs/privacy_policy.pdf" target="_blank" rel="noopener">Privacy Policy</a></li>
                 <li><a href="assets/docs/cookie_policy.pdf" target="_blank" rel="noopener">Cookie Policy</a></li>
@@ -63,7 +65,7 @@
     <div class="footer-bottom">
         <div class="footer-bottom-content">
             <p>&copy; 2026 Il Parco delle Fusa. Tutti i diritti riservati.</p>
-            <p class="academic-credit">Progetto accademico per il corso di <strong>Progettazione di Applicazioni Internet 2026</strong> - Politecnico di Torino.</p>
+            <p class="academic-credit">Progetto accademico per il corso di <strong>Progettazione di Applicazioni Internet</strong> - Politecnico di Torino.</p>
         </div>
     </div>
 </footer>
