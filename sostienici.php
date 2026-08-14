@@ -4,17 +4,15 @@
  * Presenta adozioni del cuore, adozioni a distanza, donazioni materiali e FAQ
  */
 
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
-
+// La sessione viene inizializzata dall'header comune prima di generare l'HTML della pagina
 require 'includes/header.php';
 ?>
 
-<!-- Introduzione e Adozioni del Cuore -->
+<!-- Intestazione principale della pagina e introduzione alle modalità di sostegno -->
 <div class="page-wrapper sostienici-page-wrapper">
     <header class="section-header sostienici-main-header">
-        <h2>Sostieni il Parco delle Fusa</h2>
+        <h1>Sostieni il Parco delle Fusa</h1>
+        <!-- Il divisore ha funzione solo decorativa: aria-hidden lo esclude dalle tecnologie assistive -->
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
             <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
@@ -23,8 +21,9 @@ require 'includes/header.php';
         <p class="header-subtitle">Il nostro gattile si sostiene solo grazie al cuore di persone come te. Aiutaci a garantire pappe, cure mediche e un rifugio caldo ai mici sfortunati.</p>
     </header>
 
-    <!-- Adozioni del Cuore -->
+    <!-- Sezione raggiungibile direttamente dai collegamenti della Home tramite l'id dell'ancora -->
     <section id="adozioni-cuore" class="scroll-anchor sostienici-cuore-section">
+        <!-- Il contenitore raccoglie il testo informativo e le coordinate necessarie per effettuare la donazione -->
         <div class="content-split">
             <div class="split-text">
                 <h2 class="split-title">Adozioni del Cuore</h2>
@@ -32,14 +31,18 @@ require 'includes/header.php';
             </div>
 
             <div class="split-box info-bancarie-box">
-                <h4>Coordinate per la donazione</h4>
+                <h3>Coordinate per la donazione</h3>
                 <p><strong>Intestato a:</strong> Parco delle Fusa - Torino</p>
                 <p><strong>Causale:</strong> Erogazione liberale - Adozione del Cuore</p>
+                <!-- L'IBAN viene mostrato come testo non modificabile e può essere copiato tramite il pulsante associato -->
                 <div class="iban-copy-wrapper">
                     <div class="iban-code" id="iban-donazione">IT12 A345 6789 0123 4567 8901 234</div>
+                    <!-- Il pulsante usa aria-label perché l'icona grafica da sola non fornisce un nome accessibile -->
                     <button type="button" class="btn-copia-iban" id="btn-copia-iban" aria-label="Copia IBAN">
+                        <!-- L'icona è solo grafica perché la funzione del pulsante è già descritta da aria-label -->
                         <span class="copy-icon" aria-hidden="true"></span>
                     </button>
+                    <!-- aria-live="polite" annuncia l'esito della copia alle tecnologie assistive senza interrompere bruscamente la lettura in corso -->
                     <span class="copy-feedback" id="copy-feedback" aria-live="polite"></span>
                 </div>
 
@@ -52,7 +55,7 @@ require 'includes/header.php';
     </section>
 </div>
 
-<!-- Adozioni a Distanza -->
+<!-- Sezione delle adozioni a distanza raggiungibile direttamente tramite l'id dell'ancora -->
 <section id="adozioni-distanza" class="scroll-anchor section-padding sostienici-section-white">
     <div class="ruoli-container">
         <header class="section-header">
@@ -66,10 +69,13 @@ require 'includes/header.php';
         </header>
 
         <div class="tier-grid">
+            <!-- Ogni piano viene rappresentato come article perché costituisce un contenuto autonomo con titolo, prezzo e caratteristiche -->
             <article class="tier-card">
-                <img src="assets/img/icona_bronzo.png" alt="Medaglia Bronzo" class="tier-icon-img">
+                <!-- Le medaglie sono decorative perché il livello del piano è già indicato dal titolo della card -->
+                <img src="assets/img/icona_bronzo.png" alt="" class="tier-icon-img">
                 <h3>Adozione Bronzo</h3>
                 <div class="tier-price">10€ <span>/ mese</span></div>
+                <!-- Le caratteristiche del piano vengono organizzate come lista perché rappresentano elementi dello stesso insieme -->
                 <ul class="tier-features">
                     <li>Contributo per cibo e lettiera quotidiana</li>
                     <li>Attestato digitale di adozione a distanza</li>
@@ -78,7 +84,7 @@ require 'includes/header.php';
             </article>
 
             <article class="tier-card premium-tier">
-                <img src="assets/img/icona_argento.png" alt="Medaglia Argento" class="tier-icon-img">
+                <img src="assets/img/icona_argento.png" alt="" class="tier-icon-img">
                 <h3>Adozione Argento</h3>
                 <div class="tier-price">30€ <span>/ mese</span></div>
                 <ul class="tier-features">
@@ -89,7 +95,7 @@ require 'includes/header.php';
             </article>
 
             <article class="tier-card">
-                <img src="assets/img/icona_oro.png" alt="Medaglia Oro" class="tier-icon-img">
+                <img src="assets/img/icona_oro.png" alt="" class="tier-icon-img">
                 <h3>Adozione Oro</h3>
                 <div class="tier-price">50€ <span>/ mese</span></div>
                 <ul class="tier-features">
@@ -100,16 +106,17 @@ require 'includes/header.php';
             </article>
         </div>
 
-        <div class="tier-footer-text">
+        <!-- Testo conclusivo con il contatto necessario per attivare il piano scelto -->
+        <p class="tier-footer-text">
             Per attivare un piano, scrivi a
             <a href="mailto:adozioni@parcodellefusa.it" class="tier-footer-link">adozioni@parcodellefusa.it</a>
             <br>
             indicando il micio scelto tra quelli selezionati per l’adozione a distanza.
-        </div>
+        </p>
     </div>
 </section>
 
-<!-- Donazioni Materiali -->
+<!-- Sezione delle donazioni materiali raggiungibile direttamente tramite l'id dell'ancora -->
 <section id="donazioni" class="scroll-anchor section-padding sostienici-section-beige">
     <div class="ruoli-container">
         <header class="section-header">
@@ -123,23 +130,25 @@ require 'includes/header.php';
         </header>
 
         <div class="donazioni-orizzontali">
+            <!-- Il banner raccoglie luogo, orari e recapiti utili per consegnare le donazioni materiali -->
             <div class="contact-banner">
                 <div class="contact-banner-item">
+                    <!-- Le icone sono decorative perché ciascun blocco contiene già un'etichetta testuale -->
                     <img src="assets/img/icona_posizione_scura.png" alt="" class="contact-icon-img">
-                    <strong>Punto di Raccolta</strong>
-                    <span>I volontari ritirano i vostri aiuti in<br>Strada Val Salice 123, Torino</span>
+                    <h3>Punto di Raccolta</h3>
+                    <p>I volontari ritirano i vostri aiuti in<br>Strada Val Salice 123, Torino</p>
                 </div>
 
                 <div class="contact-banner-item">
                     <img src="assets/img/icona_orari.png" alt="" class="contact-icon-img">
-                    <strong>Orari di Ritiro</strong>
-                    <span>Tutti i giorni, 16:00 - 18:00<br>(senza appuntamento)</span>
+                    <h3>Orari di Ritiro</h3>
+                    <p>Tutti i giorni, 16:00 - 18:00<br>(senza appuntamento)</p>
                 </div>
 
                 <div class="contact-banner-item">
                     <img src="assets/img/icona_telefono_scuro.png" alt="" class="contact-icon-img">
-                    <strong>Contatti</strong>
-                    <span><a href="tel:+390111234567" class="phone-link">+39 011 123 4567</a><br><a href="mailto:info@parcodellefusa.it" class="contact-link">info@parcodellefusa.it</a></span>
+                    <h3>Contatti</h3>
+                    <p><a href="tel:+390111234567" class="phone-link">+39 011 123 4567</a><br><a href="mailto:info@parcodellefusa.it" class="contact-link">info@parcodellefusa.it</a></p>
                 </div>
             </div>
         </div>
@@ -158,7 +167,9 @@ require 'includes/header.php';
             </div>
         </header>
 
+        <!-- details e summary forniscono l'apertura delle FAQ direttamente tramite HTML, senza richiedere JavaScript -->
         <div class="faq-accordion">
+            <!-- summary è la parte visibile e attivabile, mentre il contenuto di details viene mostrato quando l'elemento è aperto -->
             <details>
                 <summary>Come mi preparo all'arrivo del micio a casa?</summary>
                 <p>Prepara una stanza sicura e tranquilla, con lettiera, ciotole distanti dalla lettiera, tiragraffi e nascondigli. Lascia che il gatto esplori gradualmente la casa, rispettando i suoi tempi e permettendogli di ambientarsi senza forzature.</p>
@@ -189,24 +200,44 @@ require 'includes/header.php';
 
 <script>
 /*
- * Copia l'IBAN negli appunti eliminando gli spazi utilizzati per la visualizzazione
- * Dopo la copia viene mostrato un breve messaggio di conferma
+ * Funzione Vanilla JavaScript per la copia dell'IBAN
+ * Recupera il valore mostrato nella pagina, rimuove gli spazi e lo copia negli appunti
+ * Il risultato dell'operazione viene comunicato nel contenitore aria-live
  */
+
+// Il riferimento al pulsante viene dichiarato const perché viene assegnato una volta e non viene successivamente riassegnato
 const btnCopiaIban = document.getElementById('btn-copia-iban');
 
+// Il listener viene collegato soltanto se il pulsante è effettivamente presente nella pagina
 if (btnCopiaIban) {
+
+    // Al click viene eseguita la procedura di lettura e copia dell'IBAN
     btnCopiaIban.addEventListener('click', function() {
+
+        // textContent legge l'IBAN mostrato nella pagina e la regex /\s+/g rimuove tutti gli spazi prima della copia
         const iban = document.getElementById('iban-donazione').textContent.replace(/\s+/g, '');
+
+        // Recupera il contenitore in cui verrà mostrato l'esito dell'operazione
         const feedback = document.getElementById('copy-feedback');
 
+        /*
+         * La Clipboard API prova a scrivere l'IBAN negli appunti
+         * writeText restituisce una Promise, quindi successo ed errore vengono gestiti con then e catch
+         */
         navigator.clipboard.writeText(iban)
             .then(function() {
+
+                // Se la copia riesce viene mostrato il messaggio di conferma
                 feedback.textContent = 'Copiato!';
+
+                // Il messaggio viene cancellato automaticamente dopo 1,8 secondi
                 setTimeout(function() {
                     feedback.textContent = '';
                 }, 1800);
             })
             .catch(function() {
+
+                // Se il browser non permette la copia viene mostrato un messaggio di errore
                 feedback.textContent = 'Copia non riuscita';
             });
     });

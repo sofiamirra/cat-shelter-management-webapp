@@ -5,41 +5,40 @@
  * di scegliere uno o più turni tra quelli che non hanno raggiunto il limite
  */
 
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
-
+// La sessione viene inizializzata dall'header comune prima di generare l'HTML della pagina
 require 'includes/header.php';
 ?>
 
-<!-- Presentazione del volontariato -->
+<!-- Intestazione principale della pagina dedicata al volontariato -->
 <div class="page-wrapper volontariato-intro-wrapper">
     <header class="section-header volontariato-header">
-        <h2>Diventa Volontario</h2>
+        <h1>Diventa Volontario</h1>
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
+            <!-- Il divisore è puramente decorativo, quindi viene escluso dalle tecnologie assistive -->
             <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
             <span class="line"></span>
         </div>
     </header>
 
-    <!-- La classe aggiuntiva sostituisce il precedente stile CSS inline -->
+    <!-- Contenuto introduttivo con testo informativo e immagine rappresentativa del volontariato -->
     <div class="volontariato-intro-content section-padding volontariato-intro-compatta">
         <div class="volontariato-intro-text">
             <p>Il Parco delle Fusa ha bisogno di persone appassionate per garantire il benessere quotidiano dei nostri ospiti felini. Diventare volontario significa donare una parte del proprio tempo per migliorare la vita dei gatti in attesa di adozione. Non serve esperienza pregressa, ma solo tanta affidabilità, costanza e un amore incondizionato per gli animali.</p>
 
             <div class="volontariato-btn-wrapper">
+                <!-- Il collegamento interno porta direttamente alla sezione del form tramite l'id prenota -->
                 <a href="#prenota" class="btn-solid-dark">Prenota il tuo Turno</a>
             </div>
         </div>
 
         <div class="volontariato-intro-image">
-            <img src="assets/img/gatto_volontariato.png" alt="Volontario con gatto">
+            <img src="assets/img/gatto_volontariato.png" alt="Volontario del rifugio con un gatto">
         </div>
     </div>
 </div>
 
-<!-- Mansioni principali -->
+<!-- Sezione dedicata alle principali attività svolte dai volontari -->
 <section class="ruoli-volontariato section-padding">
     <div class="ruoli-container">
         <header class="section-header volontariato-header volontariato-header-mansioni">
@@ -52,26 +51,28 @@ require 'includes/header.php';
         </header>
 
         <div class="ruoli-grid">
+            <!-- Ogni mansione è rappresentata come article perché costituisce un contenuto autonomo con titolo e descrizione -->
             <article class="ruolo-card">
-                <img src="assets/img/icona_mattina.png" alt="Turno del mattino" class="icon-png-large">
+                <!-- Le icone sono decorative perché ogni mansione è già identificata dal relativo h3 -->
+                <img src="assets/img/icona_mattina.png" alt="" class="icon-png-large">
                 <h3>Turno del Mattino</h3>
                 <p>Aiutaci a iniziare la giornata dei felini preparando il cibo e sistemando gli spazi.</p>
             </article>
 
             <article class="ruolo-card">
-                <img src="assets/img/icona_sera.png" alt="Turno della sera" class="icon-png-large">
+                <img src="assets/img/icona_sera.png" alt="" class="icon-png-large">
                 <h3>Turno della Sera</h3>
                 <p>Assicura ai mici una serena buonanotte. Rifornirai il cibo secco e gli dedicherai qualche coccola serale.</p>
             </article>
 
             <article class="ruolo-card">
-                <img src="assets/img/icona_gioco.png" alt="Socializzazione" class="icon-png-large">
+                <img src="assets/img/icona_gioco.png" alt="" class="icon-png-large">
                 <h3>Socializzazione</h3>
                 <p>Disponibilità nella fascia pomeridiana per favorire la socializzazione dei mici più timorosi e diffidenti.</p>
             </article>
 
             <article class="ruolo-card">
-                <img src="assets/img/icona_eventi.png" alt="Gestione eventi" class="icon-png-large">
+                <img src="assets/img/icona_eventi.png" alt="" class="icon-png-large">
                 <h3>Gestione Eventi</h3>
                 <p>Cerchiamo aiuto per la gestione degli eventi sul territorio, per i mercatini solidali e le raccolte fondi.</p>
             </article>
@@ -79,10 +80,8 @@ require 'includes/header.php';
     </div>
 </section>
 
-<!-- Prenotazione dei turni -->
-<div id="prenota"></div>
-
-<div class="page-wrapper volontariato-form-wrapper section-padding">
+<!-- Sezione raggiungibile dal collegamento "Prenota il tuo Turno" tramite l'id prenota -->
+<div id="prenota" class="page-wrapper volontariato-form-wrapper section-padding">
     <header class="section-header volontariato-header">
         <h2>Prenota il tuo Turno</h2>
         <div class="paw-divider" aria-hidden="true">
@@ -93,23 +92,28 @@ require 'includes/header.php';
         <p class="header-subtitle">Il tuo tempo è il regalo più prezioso. Seleziona una data per scoprire le fasce orarie disponibili. Accettiamo un massimo di 2 volontari per turno.</p>
     </header>
 
-    <!-- I messaggi prodotti dalla comunicazione asincrona vengono inseriti qui -->
+    <!-- aria-live="polite" permette di annunciare i messaggi prodotti dalle richieste asincrone senza interrompere bruscamente la lettura -->
     <div id="messaggio-esito" class="d-none alert-wrapper mb-4" aria-live="polite"></div>
 
+    <!-- Il form viene mostrato soltanto se lo username è presente nella sessione dell'utente autenticato -->    
     <?php if (isset($_SESSION['username'])): ?>
         <div class="prenotazione-wrapper volontariato-prenotazione-box">
-            <!-- JavaScript intercetta il submit e invia i dati al backend tramite fetch -->
+            <!-- novalidate lascia al Vanilla JavaScript i controlli lato client; il submit viene intercettato e inviato al backend tramite fetch -->
             <form action="actions/processa_volontariato.php" method="POST" id="form-volontariato" novalidate>
                 <div class="form-group">
+                    <!-- La data viene scelta prima delle fasce perché serve per interrogare il server sulla disponibilità -->
                     <label for="data_turno" class="form-label-title">Seleziona la data del turno:</label>
                     <input type="date" id="data_turno" name="data_turno" class="input-data-large input-data-full-width">
                 </div>
 
-                <div class="form-group" id="sezione-fasce">
-                    <p class="form-label-title mt-2">Fasce orarie disponibili (selezionane una o più):</p>
+                <fieldset class="form-group" id="sezione-fasce">
+                    <!-- fieldset raggruppa le checkbox correlate e legend ne fornisce il titolo -->
+                    <legend class="form-label-title mt-2">Fasce orarie disponibili (selezionane una o più):</legend>
 
                     <div class="fasce-orarie-container" id="contenitore-orari">
+                        <!-- Ogni checkbox è contenuta nel proprio label, quindi il testo della fascia è direttamente associato al controllo -->
                         <label class="fascia-oraria-label" id="label-mattina">
+                            <!-- Le fasce partono disabilitate e vengono abilitate dal JavaScript solo dopo la verifica della disponibilità sul server -->
                             <input type="checkbox" name="fasce[]" value="09:00:00" class="chk-fascia" disabled>
                             <span>Mattina (09 - 13)</span>
                         </label>
@@ -124,11 +128,14 @@ require 'includes/header.php';
                             <span>Sera (17 - 21)</span>
                         </label>
                     </div>
-                </div>
+                </fieldset>
 
+                <!-- Il pulsante parte disabilitato e viene attivato solo quando è selezionata almeno una fascia ancora disponibile -->
                 <button type="submit" class="btn-solid-dark w-100 mt-2" id="btn-invia-turno" disabled>Conferma Disponibilità</button>
             </form>
         </div>
+
+    <!-- Il visitatore non autenticato può leggere la pagina ma deve accedere per prenotare i turni -->    
     <?php else: ?>
         <div class="alert-wrapper mb-4 text-center">
             <div class="auth-alert-success">
@@ -139,16 +146,21 @@ require 'includes/header.php';
     <?php endif; ?>
 </div>
 
+<!-- Lo script del form viene generato solo per gli utenti autenticati, perché per gli altri il form non esiste nel DOM -->
 <?php if (isset($_SESSION['username'])): ?>
 <script>
 /*
  * Gestione Vanilla JavaScript del form di volontariato
- * Prima dell'invio viene interrogato il server per conoscere i posti disponibili
+ * Lo script imposta la data minima, verifica in modo asincrono la disponibilità dei turni
+ * aggiorna lo stato delle checkbox e invia il form al backend tramite fetch
  */
+
+// La logica viene inizializzata quando gli elementi HTML della pagina sono stati caricati nel DOM
 document.addEventListener('DOMContentLoaded', function() {
+    // I riferimenti agli elementi del DOM sono const perché vengono assegnati una volta e non vengono successivamente riassegnati
     const dataInput = document.getElementById('data_turno');
     const btnInvia = document.getElementById('btn-invia-turno');
-    const checkboxes = document.querySelectorAll('.chk-fascia');
+    const checkboxes = document.querySelectorAll('.chk-fascia'); // querySelectorAll recupera tutte le checkbox delle fasce e restituisce una NodeList
     const form = document.getElementById('form-volontariato');
     const msgBox = document.getElementById('messaggio-esito');
 
@@ -156,18 +168,27 @@ document.addEventListener('DOMContentLoaded', function() {
      * La data minima viene costruita utilizzando la data locale
      * in modo da evitare differenze dovute alla conversione del fuso orario
      */
+
+    // L'oggetto Date è dichiarato const perché il riferimento non cambia, mentre setDate ne aggiorna il valore interno
     const domani = new Date();
     domani.setDate(domani.getDate() + 1);
 
     const anno = domani.getFullYear();
+
+    // Mese e giorno vengono convertiti in stringhe a due cifre per costruire il formato YYYY-MM-DD dell'input date
     const mese = String(domani.getMonth() + 1).padStart(2, '0');
     const giorno = String(domani.getDate()).padStart(2, '0');
     const dataMinima = anno + '-' + mese + '-' + giorno;
 
+    // Il limite minimo viene applicato anche all'input HTML per impedire la scelta di date precedenti
     dataInput.min = dataMinima;
 
-    // Il pulsante è disponibile solamente quando almeno una fascia valida è selezionata
+    /*
+    * Controlla se esiste almeno una checkbox selezionata e non disabilitata
+    * Il pulsante di submit viene abilitato solo in quel caso
+    */
     function aggiornaPulsante() {
+        // Array.from converte la NodeList in un array e some verifica se almeno un elemento soddisfa la condizione
         const almenoUnaSelezionata = Array.from(checkboxes).some(function(checkbox) {
             return checkbox.checked && !checkbox.disabled;
         });
@@ -177,46 +198,62 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Ripristina tutte le fasce prima di verificare una nuova data
     function resetFasce() {
+        // forEach applica il reset a tutte le checkbox del gruppo
         checkboxes.forEach(function(checkbox) {
             checkbox.checked = false;
             checkbox.disabled = true;
+            // parentElement è il label che contiene la checkbox e su cui vengono applicate le classi grafiche
             checkbox.parentElement.classList.remove('pieno', 'selezionato');
         });
 
         aggiornaPulsante();
     }
 
-    // Nasconde il messaggio precedente senza rimuovere il contenitore dalla pagina
+    /*
+    * Nasconde il banner precedente e ne svuota il contenuto
+    * prima di mostrare l'esito di una nuova operazione
+    */
     function nascondiMessaggio() {
         msgBox.classList.add('d-none');
         msgBox.innerHTML = '';
     }
 
     /*
-     * Crea il messaggio di conferma o di errore senza utilizzare eventi
-     * JavaScript direttamente negli attributi HTML
-     */
+    * Costruisce dinamicamente il banner di successo o errore
+    * creando gli elementi nel DOM e collegando il pulsante di chiusura con addEventListener
+    */
     function mostraMessaggio(tipo, messaggio) {
+        // Il contenitore viene svuotato prima di costruire il nuovo messaggio
         msgBox.innerHTML = '';
 
+        // createElement crea nuovi nodi HTML che verranno poi inseriti nel DOM
         const alert = document.createElement('div');
+        
+        // L'operatore ternario assegna la classe di successo oppure quella di errore in base al tipo ricevuto
         alert.className = tipo === 'success'
             ? 'auth-alert-success alert-dismissible'
             : 'auth-alert-danger alert-dismissible';
 
+        // Il testo principale viene evidenziato semanticamente con strong    
         const testoPrincipale = document.createElement('strong');
 
         if (tipo === 'success') {
+            // tipo determina lo stile del banner, mentre messaggio contiene il testo restituito dal backend
             testoPrincipale.className = 'messaggio-successo-titolo';
+
+            // L'icona di conferma è decorativa perché il messaggio testuale comunica già l'esito
             const iconaSuccesso = document.createElement('img');
             iconaSuccesso.src = 'assets/img/icona_spunta_successo.png';
             iconaSuccesso.alt = '';
             iconaSuccesso.className = 'icona-successo';
 
+            // appendChild inserisce progressivamente i nodi creati all'interno del banner    
             testoPrincipale.appendChild(iconaSuccesso);
             testoPrincipale.appendChild(document.createTextNode(' ' + messaggio));
             alert.appendChild(testoPrincipale);
             alert.appendChild(document.createElement('br'));
+
+            // createTextNode inserisce il messaggio come testo invece di interpretarlo come markup HTML
             alert.appendChild(document.createTextNode('Ti aspettiamo alla struttura, dove verrai istruito dagli altri volontari. A presto!'));
         } else {
             testoPrincipale.textContent = 'Errore:';
@@ -224,11 +261,13 @@ document.addEventListener('DOMContentLoaded', function() {
             alert.appendChild(document.createTextNode(' ' + messaggio));
         }
 
+        // Il pulsante di chiusura viene creato via DOM perché anche il banner è generato dinamicamente
         const btnChiudi = document.createElement('button');
         btnChiudi.type = 'button';
         btnChiudi.className = 'btn-close-alert';
+        // aria-label fornisce un nome accessibile al pulsante che visivamente contiene solo il simbolo ×
         btnChiudi.setAttribute('aria-label', 'Chiudi');
-        btnChiudi.innerHTML = '&times;';
+        btnChiudi.textContent = '×'; // Il simbolo di chiusura viene inserito come semplice testo
 
         btnChiudi.addEventListener('click', function() {
             msgBox.classList.add('d-none');
@@ -240,34 +279,43 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /*
-     * Per ogni data selezionata il server restituisce il numero di iscritti
-     * Le fasce con due volontari vengono mantenute disabilitate
-     */
+    * Interroga l'API PHP per la data scelta e riceve in JSON il numero di iscritti per ciascuna fascia
+    * Le fasce che hanno già raggiunto due volontari restano disabilitate
+    */
     function verificaDisponibilita(dataScelta, nascondiEsito) {
+        // nascondiEsito decide se rimuovere il messaggio precedente prima della nuova verifica
         if (nascondiEsito) {
             nascondiMessaggio();
         }
 
+        // Prima della nuova risposta tutte le fasce vengono riportate allo stato sicuro disabilitato
         resetFasce();
 
+        // fetch esegue una richiesta asincrona all'API passando la data come parametro GET
+        // encodeURIComponent prepara il valore perché possa essere inserito correttamente nella URL
         fetch('actions/api_verifica_turni.php?data=' + encodeURIComponent(dataScelta))
             .then(function(response) {
-                if (!response.ok) {
+                if (!response.ok) { // response.ok verifica che la risposta HTTP sia andata a buon fine
                     throw new Error('Errore nella risposta del server');
                 }
-
+                
+                // La risposta JSON del PHP viene convertita in un oggetto JavaScript
                 return response.json();
             })
             .then(function(risposta) {
                 if (risposta.status !== 'success') {
+                    // Anche con una risposta HTTP valida viene controllato lo stato applicativo restituito dal backend
                     throw new Error('Impossibile verificare i turni');
                 }
 
                 checkboxes.forEach(function(checkbox) {
+                    // Il value della checkbox coincide con la chiave usata dal JSON per quella fascia oraria
                     const fascia = checkbox.value;
-                    const iscritti = risposta.data[fascia] || 0;
 
+                    // Se il backend non restituisce un conteggio per la fascia viene usato 0 come valore di default
+                    const iscritti = risposta.data[fascia] || 0;
                     if (iscritti >= 2) {
+                        // La traccia consente al massimo due volontari per fascia, quindi una fascia piena resta disabilitata
                         checkbox.disabled = true;
                         checkbox.parentElement.classList.add('pieno');
                     } else {
@@ -288,9 +336,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    // Ogni cambio di data avvia una nuova verifica delle fasce disponibili
     dataInput.addEventListener('change', function() {
         const dataScelta = dataInput.value;
 
+        // Una data vuota o precedente al minimo non deve produrre richieste al server
         if (dataScelta === '' || dataScelta < dataMinima) {
             resetFasce();
             return;
@@ -299,7 +349,10 @@ document.addEventListener('DOMContentLoaded', function() {
         verificaDisponibilita(dataScelta, true);
     });
 
-    // La classe selezionato verrà utilizzata anche dal CSS per evidenziare la fascia scelta
+    /*
+    * Ogni checkbox aggiorna la propria evidenziazione grafica
+    * e ricalcola se il pulsante di conferma può essere abilitato
+    */
     checkboxes.forEach(function(checkbox) {
         checkbox.addEventListener('change', function() {
             if (checkbox.checked) {
@@ -317,21 +370,27 @@ document.addEventListener('DOMContentLoaded', function() {
      * Il PHP ripeterà comunque in modo indipendente tutti i controlli importanti
      */
     form.addEventListener('submit', function(event) {
+        // preventDefault blocca l'invio HTML tradizionale perché i dati vengono inviati tramite fetch senza cambiare pagina
         event.preventDefault();
 
         const fasceSelezionate = Array.from(checkboxes).filter(function(checkbox) {
+            // filter mantiene soltanto le fasce effettivamente selezionate e ancora abilitate
             return checkbox.checked && !checkbox.disabled;
         });
 
+        // Se data o selezione non sono valide la funzione termina senza contattare il backend
         if (dataInput.value === '' || dataInput.value < dataMinima || fasceSelezionate.length === 0) {
             return;
         }
 
+        // FormData raccoglie automaticamente i valori del form, comprese tutte le checkbox fasce[] selezionate
         const formData = new FormData(form);
 
+        // Durante la richiesta il pulsante viene disabilitato per evitare invii ripetuti
         btnInvia.disabled = true;
         btnInvia.textContent = 'Elaborazione in corso...';
 
+        // La seconda fetch invia i dati del form al backend tramite metodo POST
         fetch('actions/processa_volontariato.php', {
             method: 'POST',
             body: formData
@@ -345,15 +404,16 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(function(risposta) {
             if (risposta.status === 'success') {
+                // In caso di successo viene mostrata la conferma e il form viene riportato allo stato iniziale
                 mostraMessaggio('success', risposta.message);
-
+                // reset svuota i controlli del form, mentre resetFasce ripristina anche gli stati gestiti dal JavaScript    
                 form.reset();
                 resetFasce();
             } else {
                 /*
-                 * Il codice LIMIT_EXCEEDED viene intercettato esplicitamente
-                 * Dopo l'errore la disponibilità viene interrogata di nuovo
-                 */
+                * LIMIT_EXCEEDED identifica il caso in cui nel frattempo la fascia ha raggiunto due volontari
+                * Dopo l'errore la disponibilità viene interrogata nuovamente per aggiornare subito l'interfaccia
+                */
                 mostraMessaggio('error', risposta.message);
 
                 if (risposta.code === 'LIMIT_EXCEEDED' && dataInput.value !== '') {
@@ -364,11 +424,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(function(error) {
+            // Gli errori di rete o di risposta vengono registrati in console e tradotti in un messaggio comprensibile per l'utente
             console.error('Errore durante il salvataggio del turno:', error);
             mostraMessaggio('error', 'Impossibile contattare il server. Riprova più tardi.');
             aggiornaPulsante();
         })
         .finally(function() {
+            // finally viene eseguito sia dopo il successo sia dopo l'errore e ripristina il testo originale del pulsante
             btnInvia.textContent = 'Conferma Disponibilità';
         });
     });
