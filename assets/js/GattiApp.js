@@ -196,9 +196,7 @@ function GattiApp() {
                                 className={classiCard}
                                 onClick={IS_LOGGED_IN ? () => gestisciSelezione(gatto) : undefined}
                                 onKeyDown={IS_LOGGED_IN ? event => gestisciTastiera(event, gatto) : undefined}
-                                role={IS_LOGGED_IN ? 'button' : undefined}
                                 tabIndex={IS_LOGGED_IN ? 0 : undefined}
-                                aria-pressed={IS_LOGGED_IN ? isSelezionato : undefined}
                             >
                                 <div className="card-img-wrapper">
 

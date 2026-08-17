@@ -54,7 +54,7 @@ function get_db_connection($role = 'lecture')
         die('Impossibile connettersi al database');
     }
 
-    // UTF-8 completo mantiene corretta la gestione dei caratteri memorizzati nel database
+    // Imposta la codifica della connessione al database (UTF-8 completo)
     if (!mysqli_set_charset($con, 'utf8mb4')) {
         error_log(
             'Errore durante l\'impostazione della codifica: '

@@ -166,8 +166,8 @@ if (formPrenotazione) {
      * event.detail contiene l'array dei gatti selezionati e permette al Vanilla JavaScript di riceverlo
      */
     document.addEventListener('aggiornamentoGattiScelti', function(event) {
-        // Il ternario usa detail se contiene davvero un array, altrimenti imposta un array vuoto come stato sicuro
-        const gattiSelezionati = Array.isArray(event.detail) ? event.detail : [];
+        // event.detail contiene l'array dei gatti selezionati ricevuto dal componente React
+        const gattiSelezionati = event.detail;
 
         // La lista viene svuotata prima di ricostruirla in base alla nuova selezione
         listaGatti.innerHTML = '';
@@ -195,7 +195,7 @@ if (formPrenotazione) {
             const razza = gatto.razza ? gatto.razza : 'Meticcio';
 
             // textContent inserisce i dati come testo nella lista senza interpretarli come HTML
-            elementoLista.textContent = '🐾 ' + gatto.nome + ' (Razza: ' + razza + ')';
+            elementoLista.textContent = gatto.nome + ' (Razza: ' + razza + ')';
             listaGatti.appendChild(elementoLista);
             idGatti.push(gatto.id);
         });

@@ -67,7 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errore_php = 'Le password non coincidono.';
     } elseif (!preg_match('/^[a-zA-Z]/', $username)) {
         $errore_php = "L'username deve iniziare con una lettera.";
-    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s])\S{8,16}$/', $password)) {
+    } elseif (
+        strlen($password) < 8 ||
+        strlen($password) > 16 ||
+        !preg_match('/[a-z]/', $password) ||
+        !preg_match('/[A-Z]/', $password) ||
+        !preg_match('/[0-9]/', $password) ||
+        !preg_match('/[^A-Za-z0-9\s]/', $password) ||
+        preg_match('/\s/', $password)
+    ) {
         $errore_php = 'La password non rispetta i requisiti minimi di sicurezza.';
     } else {
         /*
@@ -335,14 +343,22 @@ document.getElementById('form-registrazione').addEventListener('submit', functio
 
     // La password deve rispettare lunghezza e composizione richieste dalla consegna
     const password = document.getElementById('password');
-    const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s])\S{8,16}$/;
 
-    if (!regexPassword.test(password.value)) {
+    const passwordValida =
+        password.value.length >= 8 &&
+        password.value.length <= 16 &&
+        /[a-z]/.test(password.value) &&
+        /[A-Z]/.test(password.value) &&
+        /[0-9]/.test(password.value) &&
+        /[^A-Za-z0-9\s]/.test(password.value) &&
+        !/\s/.test(password.value);
+
+    if (!passwordValida) {
         document.getElementById('err-password').textContent = 'La password non rispetta i requisiti di sicurezza.';
         document.getElementById('err-password').classList.add('testo-errore');
         password.classList.add('input-error');
         formValido = false;
-    }
+}
 
     // Il secondo inserimento della password deve essere presente e coincidere con il primo
     const conferma = document.getElementById('conferma_password');

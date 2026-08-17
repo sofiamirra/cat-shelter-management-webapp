@@ -48,7 +48,7 @@ if (!$data_valida || $data_richiesta < date('Y-m-d', strtotime('+1 day'))) {
     exit;
 }
 
-require __DIR__ . '/../includes/db_config.php';
+require '../includes/db_config.php';
 
 /*
  * Le tre fasce vengono inizializzate a zero
@@ -110,7 +110,7 @@ while (mysqli_stmt_fetch($stmt)) {
     $totale = (int) $totale_iscritti;
 
     // Vengono accettati soltanto gli orari previsti dal form
-    if (array_key_exists($orario, $conteggio_fasce)) {
+    if (isset($conteggio_fasce[$orario])) {
         $conteggio_fasce[$orario] = $totale;
     }
 }

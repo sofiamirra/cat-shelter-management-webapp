@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-require __DIR__ . '/../includes/db_config.php';
+require '../includes/db_config.php';
 
 // I dati ricevuti vengono recuperati prima di ripetere sul server tutti i controlli necessari
 $data_turno = isset($_POST['data_turno']) ? trim($_POST['data_turno']) : '';
@@ -97,36 +97,17 @@ $fasce = array_values(array_unique($fasce));
 // L'inserimento richiede l'utente MySQL con privilegi di modifica
 $con = get_db_connection('modifier');
 
-/*
- * Controllo disponibilità e inserimenti devono appartenere alla stessa operazione
- * La transazione permette di confermare tutti i turni insieme oppure annullarli in caso di errore
- */
-if (!mysqli_begin_transaction($con)) {
-    error_log('Impossibile avviare la transazione dei turni');
-
-    mysqli_close($con);
-
-    echo json_encode(array(
-        'status' => 'error',
-        'code' => 'SYSTEM_ERROR',
-        'message' => 'Si è verificato un errore durante il salvataggio.'
-    ));
-    exit;
-}
-
 // Queste variabili raccolgono l'eventuale errore da restituire al JavaScript
 $errore_codice = '';
 $errore_messaggio = '';
 
 /*
- * Viene ricontrollato il numero di volontari già presenti in ciascuna fascia
- * La query viene preparata una sola volta e riutilizzata per tutte le fasce selezionate
- * FOR UPDATE mantiene coinvolti nella transazione i record trovati durante il controllo definitivo
+ * Il server ricontrolla quanti volontari sono già presenti
+ * in ciascuna delle fasce selezionate
  */
-$query_limite = 'SELECT id
+$query_limite = 'SELECT COUNT(*)
                  FROM turni_volontariato
-                 WHERE fascia_oraria = ?
-                 FOR UPDATE';
+                 WHERE fascia_oraria = ?';
 
 $stmt_limite = mysqli_prepare($con, $query_limite);
 
@@ -134,11 +115,10 @@ if (!$stmt_limite) {
     $errore_codice = 'SYSTEM_ERROR';
     $errore_messaggio = 'Si è verificato un errore durante il salvataggio.';
     error_log('Errore nella preparazione del controllo limite: ' . mysqli_error($con));
-}
+} else {
+    $datetime_controllo = '';
+    $numero_iscritti = 0;
 
-$datetime_controllo = '';
-
-if ($stmt_limite) {
     mysqli_stmt_bind_param($stmt_limite, 's', $datetime_controllo);
 
     foreach ($fasce as $orario) {
@@ -152,16 +132,17 @@ if ($stmt_limite) {
             break;
         }
 
-        /*
-         * Il risultato viene memorizzato per poterne contare le righe
-         * Ogni riga corrisponde a un volontario già registrato in quella fascia
-         */
-        mysqli_stmt_store_result($stmt_limite);
-        $numero_iscritti = mysqli_stmt_num_rows($stmt_limite);
-        mysqli_stmt_free_result($stmt_limite);
+        mysqli_stmt_bind_result($stmt_limite, $numero_iscritti);
+
+        if (!mysqli_stmt_fetch($stmt_limite)) {
+            $errore_codice = 'SYSTEM_ERROR';
+            $errore_messaggio = 'Si è verificato un errore durante il salvataggio.';
+            error_log('Errore durante la lettura del numero di volontari');
+            break;
+        }
 
         // La consegna permette un massimo di due volontari per ciascuna fascia
-        if ($numero_iscritti >= 2) {
+        if ((int) $numero_iscritti >= 2) {
             $errore_codice = 'LIMIT_EXCEEDED';
             $errore_messaggio = 'La fascia oraria selezionata è al completo.';
             break;
@@ -172,14 +153,13 @@ if ($stmt_limite) {
 }
 
 /*
- * Se tutte le fasce hanno ancora disponibilità viene controllato che lo stesso utente
- * non abbia già registrato uno dei turni richiesti
+ * Se le fasce hanno ancora disponibilità viene verificato
+ * che lo stesso utente non abbia già prenotato uno dei turni richiesti
  */
 if ($errore_codice === '') {
-    $query_duplicato = 'SELECT id
+    $query_duplicato = 'SELECT COUNT(*)
                         FROM turni_volontariato
-                        WHERE utente_id = ? AND fascia_oraria = ?
-                        LIMIT 1';
+                        WHERE utente_id = ? AND fascia_oraria = ?';
 
     $stmt_duplicato = mysqli_prepare($con, $query_duplicato);
 
@@ -189,8 +169,8 @@ if ($errore_codice === '') {
         error_log('Errore nella preparazione del controllo duplicati: ' . mysqli_error($con));
     } else {
         $datetime_controllo = '';
+        $numero_duplicati = 0;
 
-        // L'ID dell'utente è intero mentre la data e l'ora vengono passate come stringa
         mysqli_stmt_bind_param($stmt_duplicato, 'is', $utente_id, $datetime_controllo);
 
         foreach ($fasce as $orario) {
@@ -203,11 +183,16 @@ if ($errore_codice === '') {
                 break;
             }
 
-            mysqli_stmt_store_result($stmt_duplicato);
-            $gia_prenotato = mysqli_stmt_num_rows($stmt_duplicato) > 0;
-            mysqli_stmt_free_result($stmt_duplicato);
+            mysqli_stmt_bind_result($stmt_duplicato, $numero_duplicati);
 
-            if ($gia_prenotato) {
+            if (!mysqli_stmt_fetch($stmt_duplicato)) {
+                $errore_codice = 'SYSTEM_ERROR';
+                $errore_messaggio = 'Si è verificato un errore durante il salvataggio.';
+                error_log('Errore durante la lettura dei turni già prenotati');
+                break;
+            }
+
+            if ((int) $numero_duplicati > 0) {
                 $errore_codice = 'ALREADY_BOOKED';
                 $errore_messaggio = 'Hai già prenotato uno o più turni selezionati per questa data.';
                 break;
@@ -218,42 +203,61 @@ if ($errore_codice === '') {
     }
 }
 
-/*
- * Gli inserimenti vengono effettuati soltanto dopo che tutte le fasce
- * hanno superato sia il controllo del limite sia quello sui duplicati
- */
-if ($errore_codice === '') {
-    $query_insert = 'INSERT INTO turni_volontariato (utente_id, fascia_oraria) VALUES (?, ?)';
-    $stmt_insert = mysqli_prepare($con, $query_insert);
+// Se uno dei controlli non è superato non viene effettuato alcun inserimento
+if ($errore_codice !== '') {
+    mysqli_close($con);
 
-    if (!$stmt_insert) {
-        $errore_codice = 'SYSTEM_ERROR';
-        $errore_messaggio = 'Si è verificato un errore durante il salvataggio.';
-        error_log('Errore nella preparazione dell\'inserimento turno: ' . mysqli_error($con));
-    } else {
-        /*
-         * Lo stesso prepared statement viene riutilizzato per tutte le fasce
-         * Cambia solamente il valore DATETIME prima di ogni esecuzione
-         */
-        $datetime_inserimento = '';
-        mysqli_stmt_bind_param($stmt_insert, 'is', $utente_id, $datetime_inserimento);
-
-        foreach ($fasce as $orario) {
-            $datetime_inserimento = $data_turno . ' ' . $orario;
-
-            if (!mysqli_stmt_execute($stmt_insert)) {
-                $errore_codice = 'SYSTEM_ERROR';
-                $errore_messaggio = 'Si è verificato un errore durante il salvataggio.';
-                error_log('Errore durante l\'inserimento del turno: ' . mysqli_stmt_error($stmt_insert));
-                break;
-            }
-        }
-
-        mysqli_stmt_close($stmt_insert);
-    }
+    echo json_encode(array(
+        'status' => 'error',
+        'code' => $errore_codice,
+        'message' => $errore_messaggio
+    ));
+    exit;
 }
 
-// Se anche una sola operazione fallisce vengono annullati tutti gli inserimenti della richiesta
+/*
+ * La transazione rende unico il salvataggio delle fasce selezionate
+ * Se un inserimento fallisce vengono annullati anche quelli precedenti della stessa richiesta
+ */
+if (!mysqli_begin_transaction($con)) {
+    error_log('Impossibile avviare la transazione dei turni');
+    mysqli_close($con);
+
+    echo json_encode(array(
+        'status' => 'error',
+        'code' => 'SYSTEM_ERROR',
+        'message' => 'Si è verificato un errore durante il salvataggio.'
+    ));
+    exit;
+}
+
+$query_insert = 'INSERT INTO turni_volontariato (utente_id, fascia_oraria) VALUES (?, ?)';
+$stmt_insert = mysqli_prepare($con, $query_insert);
+
+if (!$stmt_insert) {
+    $errore_codice = 'SYSTEM_ERROR';
+    $errore_messaggio = 'Si è verificato un errore durante il salvataggio.';
+    error_log('Errore nella preparazione dell\'inserimento turno: ' . mysqli_error($con));
+} else {
+    $datetime_inserimento = '';
+
+    mysqli_stmt_bind_param($stmt_insert, 'is', $utente_id, $datetime_inserimento);
+
+    foreach ($fasce as $orario) {
+        $datetime_inserimento = $data_turno . ' ' . $orario;
+
+        if (!mysqli_stmt_execute($stmt_insert)) {
+            $errore_codice = 'SYSTEM_ERROR';
+            $errore_messaggio = 'Si è verificato un errore durante il salvataggio.';
+            error_log('Errore durante l\'inserimento del turno: ' . mysqli_stmt_error($stmt_insert));
+            break;
+        }
+    }
+
+    mysqli_stmt_close($stmt_insert);
+}
+
+// Se un inserimento fallisce vengono annullati tutti i turni della richiesta
 if ($errore_codice !== '') {
     mysqli_rollback($con);
     mysqli_close($con);
@@ -266,7 +270,7 @@ if ($errore_codice !== '') {
     exit;
 }
 
-// Solo dopo il completamento di tutti i controlli e inserimenti la transazione viene confermata
+// Tutti gli inserimenti sono riusciti e vengono confermati
 if (!mysqli_commit($con)) {
     mysqli_rollback($con);
     error_log('Errore durante la conferma della registrazione dei turni');

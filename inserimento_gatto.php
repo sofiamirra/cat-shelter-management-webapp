@@ -83,22 +83,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $messaggio_server = 'Il valore selezionato per il sesso non è valido.';
     }
 
-    // L'età deve essere un numero intero compreso nell'intervallo previsto
+    // L'età deve essere un numero intero maggiore o uguale a zero
     if (
         !$errore_server &&
-        (!preg_match('/^\d+$/', $eta_input) || $eta < 0 || $eta > 25)
+        (!preg_match('/^\d+$/', $eta_input) || $eta < 0)
     ) {
         $errore_server = true;
-        $messaggio_server = 'L\'età deve essere compresa tra 0 e 25 anni.';
+        $messaggio_server = 'L\'età deve essere un numero intero maggiore o uguale a 0.';
     }
 
-    // Il peso deve essere numerico e rispettare l'intervallo previsto
+    // Il peso deve essere numerico e maggiore di zero
     if (
         !$errore_server &&
-        (!is_numeric($peso_input) || $peso < 0.1 || $peso > 15)
+        (!is_numeric($peso_input) || $peso < 0.1)
     ) {
         $errore_server = true;
-        $messaggio_server = 'Il peso deve essere compreso tra 0.1 e 15 kg.';
+        $messaggio_server = 'Il peso deve essere almeno 0.1 kg.';
     }
 
     // La lunghezza del pelo deve corrispondere a uno dei valori realmente presenti nel form
@@ -185,14 +185,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Il dettaglio tecnico dell'errore resta nel log e non viene mostrato direttamente all'utente
                 error_log('Errore durante l\'inserimento del gatto: ' . mysqli_stmt_error($stmt));
                 $errore_server = true;
-                $messaggio_server = 'Errore di persistenza durante il salvataggio nel database.';
+                $messaggio_server = 'Errore durante il salvataggio. Riprova più tardi.';
             }
 
             mysqli_stmt_close($stmt);
         } else {
             error_log('Errore nella preparazione dell\'inserimento gatto: ' . mysqli_error($con));
             $errore_server = true;
-            $messaggio_server = 'Errore di persistenza durante il salvataggio nel database.';
+            $messaggio_server = 'Errore durante il salvataggio. Riprova più tardi.';
         }
 
         mysqli_close($con);
@@ -248,7 +248,6 @@ require 'includes/header.php';
                     name="eta"
                     class="input-data-large"
                     min="0"
-                    max="25"
                     step="1"
                     value="<?php echo htmlspecialchars($eta_input, ENT_QUOTES, 'UTF-8'); ?>"
                     aria-describedby="err-eta"
@@ -281,7 +280,6 @@ require 'includes/header.php';
                     name="peso"
                     class="input-data-large"
                     min="0.1"
-                    max="15"
                     step="0.1"
                     value="<?php echo htmlspecialchars($peso_input, ENT_QUOTES, 'UTF-8'); ?>"
                     aria-describedby="err-peso"
@@ -451,17 +449,16 @@ document.getElementById('form-inserimento').addEventListener('submit', function(
         formValido = false;
     }
 
-    // L'età deve essere un intero compreso nell'intervallo previsto
+    // L'età deve essere un intero maggiore o uguale a zero
     if (inputEta.value === '') {
         errEta.textContent = 'Inserisci l\'età stimata.';
         inputEta.classList.add('input-error');
         formValido = false;
     } else if (
         !Number.isInteger(Number(inputEta.value)) ||
-        Number(inputEta.value) < 0 ||
-        Number(inputEta.value) > 25
+        Number(inputEta.value) < 0
     ) {
-        errEta.textContent = 'L\'età deve essere compresa tra 0 e 25 anni.';
+        errEta.textContent = 'L\'età deve essere un numero intero maggiore o uguale a 0.';
         inputEta.classList.add('input-error');
         formValido = false;
     }
@@ -472,16 +469,13 @@ document.getElementById('form-inserimento').addEventListener('submit', function(
         formValido = false;
     }
 
-    // Il peso viene convertito in numero prima di confrontarlo con i limiti ammessi
+    // Il peso viene convertito in numero prima di controllarne il valore
     if (inputPeso.value === '') {
         errPeso.textContent = 'Inserisci il peso.';
         inputPeso.classList.add('input-error');
         formValido = false;
-    } else if (
-        Number(inputPeso.value) < 0.1 ||
-        Number(inputPeso.value) > 15
-    ) {
-        errPeso.textContent = 'Il peso deve essere compreso tra 0.1 e 15 kg.';
+    } else if (Number(inputPeso.value) < 0.1) {
+        errPeso.textContent = 'Il peso deve essere almeno 0.1 kg.';
         inputPeso.classList.add('input-error');
         formValido = false;
     }

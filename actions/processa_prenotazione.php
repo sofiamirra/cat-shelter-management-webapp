@@ -16,7 +16,7 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['user_id'])) {
     exit;
 }
 
-require __DIR__ . '/../includes/db_config.php';
+require '../includes/db_config.php';
 
 // L'action accetta soltanto dati inviati attraverso il form della pagina Ospiti
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -112,79 +112,87 @@ if (!mysqli_begin_transaction($con)) {
 
 // Il flag determina quale messaggio verrà successivamente mostrato dalla pagina Ospiti
 $prenotazione_riuscita = false;
+$errore_transazione = false;
+$prenotazione_id = 0;
 
-try {
-    /*
-     * Prima viene creato un solo record per la visita
-     * L'ID generato verrà poi utilizzato per associare tutti i gatti scelti
-     */
-    $query_prenotazione = 'INSERT INTO prenotazioni_visite (utente_id, data_ora) VALUES (?, ?)';
-    $stmt_prenotazione = mysqli_prepare($con, $query_prenotazione);
+/*
+ * Prima viene creato un solo record per la visita
+ * L'ID generato verrà poi utilizzato per associare tutti i gatti scelti
+ */
+$query_prenotazione = 'INSERT INTO prenotazioni_visite (utente_id, data_ora) VALUES (?, ?)';
+$stmt_prenotazione = mysqli_prepare($con, $query_prenotazione);
 
-    if (!$stmt_prenotazione) {
-        throw new Exception('Preparazione inserimento prenotazione non riuscita');
-    }
+if (!$stmt_prenotazione) {
+    error_log('Errore nella preparazione della prenotazione: ' . mysqli_error($con));
+    $errore_transazione = true;
+} else {
 
     // i indica l'intero dell'utente mentre s indica la stringa contenente data e ora
     mysqli_stmt_bind_param($stmt_prenotazione, 'is', $utente_id, $data_ora_visita);
 
     if (!mysqli_stmt_execute($stmt_prenotazione)) {
-        $errore_stmt = mysqli_stmt_error($stmt_prenotazione);
-        mysqli_stmt_close($stmt_prenotazione);
-        throw new Exception('Inserimento prenotazione non riuscito: ' . $errore_stmt);
+        error_log('Errore durante l\'inserimento della prenotazione: ' . mysqli_stmt_error($stmt_prenotazione));
+        $errore_transazione = true;
+    } else {
+
+        // Viene recuperato l'ID generato automaticamente per la nuova prenotazione
+        $prenotazione_id = mysqli_insert_id($con);
+
+        if ($prenotazione_id <= 0) {
+            error_log('Identificativo della prenotazione non disponibile');
+            $errore_transazione = true;
+        }
     }
 
-    // Viene recuperato l'ID generato automaticamente per la nuova prenotazione
-    $prenotazione_id = mysqli_insert_id($con);
     mysqli_stmt_close($stmt_prenotazione);
+}
 
-    if ($prenotazione_id <= 0) {
-        throw new Exception('Identificativo della prenotazione non disponibile');
-    }
-
-    /*
-     * Lo stesso prepared statement viene riutilizzato per tutti i gatti selezionati
-     * Cambia soltanto il valore di gatto_id ad ogni esecuzione
-     */
+/*
+ * Se la visita è stata creata correttamente vengono associati
+ * tutti i gatti selezionati dall'utente
+ */
+if (!$errore_transazione) {
     $query_visita = 'INSERT INTO visita_gatti (prenotazione_id, gatto_id) VALUES (?, ?)';
     $stmt_visita = mysqli_prepare($con, $query_visita);
 
     if (!$stmt_visita) {
-        throw new Exception('Preparazione associazione gatti non riuscita');
-    }
+        error_log('Errore nella preparazione dell\'associazione dei gatti: ' . mysqli_error($con));
+        $errore_transazione = true;
+    } else {
 
-    /*
-     * Entrambi i parametri sono interi
-     * gatto_id_corrente viene aggiornato nel ciclo senza dover preparare nuovamente lo statement
-     */
-    $gatto_id_corrente = 0;
-    mysqli_stmt_bind_param($stmt_visita, 'ii', $prenotazione_id, $gatto_id_corrente);
+        /*
+         * Entrambi i parametri sono interi
+         * gatto_id_corrente viene aggiornato nel ciclo riutilizzando lo stesso statement
+         */
+        $gatto_id_corrente = 0;
+        mysqli_stmt_bind_param($stmt_visita, 'ii', $prenotazione_id, $gatto_id_corrente);
 
-    foreach ($gatti_selezionati as $gatto_id) {
-        $gatto_id_corrente = $gatto_id;
+        foreach ($gatti_selezionati as $gatto_id) {
+            $gatto_id_corrente = $gatto_id;
 
-        if (!mysqli_stmt_execute($stmt_visita)) {
-            $errore_stmt = mysqli_stmt_error($stmt_visita);
-            mysqli_stmt_close($stmt_visita);
-            throw new Exception('Associazione del gatto non riuscita: ' . $errore_stmt);
+            if (!mysqli_stmt_execute($stmt_visita)) {
+                error_log('Errore durante l\'associazione del gatto: ' . mysqli_stmt_error($stmt_visita));
+                $errore_transazione = true;
+                break;
+            }
         }
-    }
 
-    mysqli_stmt_close($stmt_visita);
+        mysqli_stmt_close($stmt_visita);
+    }
+}
+
+// In caso di errore tutti gli inserimenti della prenotazione vengono annullati
+if ($errore_transazione) {
+    mysqli_rollback($con);
+} else {
 
     // Solo dopo tutti gli inserimenti la transazione viene resa definitiva
-    if (!mysqli_commit($con)) {
-        throw new Exception('Conferma della transazione non riuscita');
+    if (mysqli_commit($con)) {
+        $prenotazione_riuscita = true;
+    } else {
+        error_log('Errore durante la conferma della prenotazione');
+        mysqli_rollback($con);
     }
-
-    $prenotazione_riuscita = true;
-} catch (Exception $e) {
-
-    // Qualunque errore annulla sia la visita sia le associazioni eventualmente già inserite
-    mysqli_rollback($con);
-
-    // Il dettaglio tecnico viene conservato nel log senza essere mostrato direttamente all'utente
-    error_log('Errore durante la prenotazione della visita: ' . $e->getMessage());
 }
 
 // La connessione viene chiusa dopo la conclusione o l'annullamento della transazione

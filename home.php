@@ -12,8 +12,8 @@ require 'includes/header.php';
 ?>
 
 <!-- Presentazione principale del rifugio -->
-<section class="home-hero">
-    <div class="home-hero-text">
+<section class="home-intro">
+    <div class="home-intro-text">
 
         <!-- Unico h1 della pagina: identifica il contenuto principale della Home -->
         <h1>Un Rifugio d’Amore<br>per Gatti Bisognosi</h1>
@@ -23,14 +23,14 @@ require 'includes/header.php';
         </p>
 
         <!-- Collegamenti alle due principali possibilità di interazione offerte dal sito -->
-        <div class="home-hero-buttons">
+        <div class="home-intro-buttons">
             <a href="ospiti.php" class="btn-solid-dark">Conosci i Nostri Ospiti</a>
             <a href="volontariato.php" class="btn-outline-dark">Diventa Volontario</a>
         </div>
     </div>
 
     <!-- figure raggruppa l'immagine principale associata alla presentazione del rifugio -->
-    <figure class="home-hero-image">
+    <figure class="home-intro-image">
         <img src="assets/img/gatto_home.png" alt="La struttura del gattile Il Parco delle Fusa con i felini ospiti">
     </figure>
 </section>
@@ -116,34 +116,18 @@ require 'includes/header.php';
                   ORDER BY data_arrivo DESC
                   LIMIT 2";
 
-        /*
-         * La query non contiene input esterno né valori segnaposto da associare con bind_param
-         * Il prepared statement mantiene comunque lo stesso flusso MySQLi utilizzato nelle altre operazioni sul database
-         */
-        $stmt = mysqli_prepare($con, $query);
+        // La query non contiene dati forniti dall'utente, quindi può essere eseguita direttamente
+        $result = mysqli_query($con, $query);
 
-        // Il resto della lettura viene eseguito soltanto se la preparazione dello statement è riuscita
-        if ($stmt) {
+        if ($result) {
 
-            // Esegue sul database lo statement precedentemente preparato
-            mysqli_stmt_execute($stmt);
-
-            // Le colonne della SELECT vengono associate alle variabili PHP rispettando lo stesso ordine della query
-            mysqli_stmt_bind_result(
-                $stmt,
-                $nome,
-                $sesso,
-                $eta,
-                $razza,
-                $colore_mantello
-            );
-
-            // Il flag permette di distinguere il caso in cui la query non restituisce alcun gatto
-            $gatti_trovati = false;
-
-            // Ogni fetch carica nelle variabili associate una nuova riga del risultato
-            while (mysqli_stmt_fetch($stmt)) {
-                $gatti_trovati = true;
+            // Ogni fetch restituisce una riga del risultato come array associativo
+            while ($gatto = mysqli_fetch_assoc($result)) {
+                $nome = $gatto['nome'];
+                $sesso = $gatto['sesso'];
+                $eta = $gatto['eta'];
+                $razza = $gatto['razza'];
+                $colore_mantello = $gatto['colore_mantello'];
 
                 /*
                  * I valori testuali vengono codificati prima dell'output HTML
@@ -198,21 +182,21 @@ require 'includes/header.php';
                 <?php
             }
 
-            // Se il ciclo non ha trovato righe viene mostrato un messaggio al posto delle card
-            if (!$gatti_trovati) {
+            // Se il risultato non contiene righe viene mostrato un messaggio al posto delle card
+            if (mysqli_num_rows($result) === 0) {
                 echo '<p class="text-center w-100">Al momento non ci sono nuovi ospiti registrati.</p>';
             }
 
-            // Terminata la lettura dei risultati, lo statement non è più necessario
-            mysqli_stmt_close($stmt);
+            // Terminata la lettura, il result set non è più necessario
+            mysqli_free_result($result);
         } else {
 
             /*
-             * Se la query non può essere preparata il dettaglio tecnico viene scritto nel log
-             * mentre all'utente viene mostrato soltanto un messaggio generico
+             * Il dettaglio tecnico viene scritto nel log
+             * mentre all'utente viene mostrato un messaggio semplice e comprensibile
              */
-            error_log('Errore nella preparazione della query della home: ' . mysqli_error($con));
-            echo '<p class="text-center w-100">Al momento non ci sono nuovi ospiti registrati.</p>';
+            error_log('Errore durante il recupero dei gatti della home: ' . mysqli_error($con));
+            echo '<p class="text-center w-100">Non è stato possibile caricare i nuovi ospiti. Riprova più tardi.</p>';
         }
 
         // Terminata la lettura, la connessione al database viene chiusa
@@ -226,7 +210,7 @@ require 'includes/header.php';
     </div>
 </section>
 
-<!-- Modalità alternative per sostenere il rifugio senza procedere con un'adozione tradizionale -->
+<!-- Modalità alternative per sostenere il rifugio senza procedere con un'adozione fisica -->
 <section class="ruoli-volontariato home-special-section section-padding">
     <div class="ruoli-container">
 
@@ -253,7 +237,7 @@ require 'includes/header.php';
                 <h3>Adozioni del Cuore</h3>
                 <p>Sostieni cure e terapie per gatti con disabilità o patologie, aiutandoli a ricevere l'assistenza necessaria.</p>
 
-                <!-- Il fragment identifier porta direttamente alla sezione corrispondente di sostienici.php -->
+                <!-- Il collegamento porta direttamente alla sezione corrispondente di sostienici.php -->
                 <a href="sostienici.php#adozioni-cuore" class="scopri-link">
                     Scopri di più <span class="freccia" aria-hidden="true">&rarr;</span>
                 </a>

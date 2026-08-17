@@ -129,13 +129,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Il dettaglio tecnico viene registrato nel log senza essere mostrato all'utente
                 error_log('Errore durante l\'esecuzione della query di login: ' . mysqli_stmt_error($stmt));
-                $errore_php = 'Credenziali non valide. Riprova.';
+                $errore_php = 'Errore durante l\'accesso. Riprova più tardi.';
             }
 
             mysqli_stmt_close($stmt);
         } else {
             error_log('Errore nella preparazione della query di login: ' . mysqli_error($con));
-            $errore_php = 'Credenziali non valide. Riprova.';
+            $errore_php = 'Errore durante l\'accesso. Riprova più tardi.';
         }
 
         mysqli_close($con);

@@ -13,8 +13,6 @@ if (session_status() === PHP_SESSION_NONE) {
 // L'autorizzazione viene comunque verificata nuovamente nelle pagine riservate
 $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
 
-// Ricava la cartella in cui si trova il progetto per costruire il percorso della favicon
-$base_path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -26,12 +24,10 @@ $base_path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 
     <title>Il Parco delle Fusa - Gattile</title>
 
-    <!-- Il percorso della favicon viene costruito rispetto alla cartella in cui si trova il progetto -->
-    <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($base_path, ENT_QUOTES, 'UTF-8'); ?>/assets/img/favoriteicon_parco.png?v=31">
+    <!-- Favicon del sito -->
+    <link rel="icon" type="image/png" href="assets/img/favoriteicon_parco.png">
 
-    <!-- Prepara la connessione ai server da cui viene caricato il font Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Foglio di stile esterno per il font Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <!-- Foglio di stile globale condiviso da tutte le pagine -->

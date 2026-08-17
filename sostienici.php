@@ -241,40 +241,36 @@ require 'includes/header.php';
 // Il riferimento al pulsante viene dichiarato const perché viene assegnato una volta e non viene successivamente riassegnato
 const btnCopiaIban = document.getElementById('btn-copia-iban');
 
-// Il listener viene collegato soltanto se il pulsante è effettivamente presente nella pagina
-if (btnCopiaIban) {
+// Al click viene eseguita la procedura di lettura e copia dell'IBAN
+btnCopiaIban.addEventListener('click', function() {
 
-    // Al click viene eseguita la procedura di lettura e copia dell'IBAN
-    btnCopiaIban.addEventListener('click', function() {
+    // textContent legge l'IBAN mostrato nella pagina e la regex /\s+/g rimuove tutti gli spazi prima della copia
+    const iban = document.getElementById('iban-donazione').textContent.replace(/\s+/g, '');
 
-        // textContent legge l'IBAN mostrato nella pagina e la regex /\s+/g rimuove tutti gli spazi prima della copia
-        const iban = document.getElementById('iban-donazione').textContent.replace(/\s+/g, '');
+    // Recupera il contenitore in cui verrà mostrato l'esito dell'operazione
+    const feedback = document.getElementById('copy-feedback');
 
-        // Recupera il contenitore in cui verrà mostrato l'esito dell'operazione
-        const feedback = document.getElementById('copy-feedback');
+    /*
+    * La Clipboard API prova a scrivere l'IBAN negli appunti
+    * writeText restituisce una Promise, quindi successo ed errore vengono gestiti con then e catch
+    */
+    navigator.clipboard.writeText(iban)
+        .then(function() {
 
-        /*
-         * La Clipboard API prova a scrivere l'IBAN negli appunti
-         * writeText restituisce una Promise, quindi successo ed errore vengono gestiti con then e catch
-         */
-        navigator.clipboard.writeText(iban)
-            .then(function() {
+            // Se la copia riesce viene mostrato il messaggio di conferma
+            feedback.textContent = 'Copiato!';
 
-                // Se la copia riesce viene mostrato il messaggio di conferma
-                feedback.textContent = 'Copiato!';
+            // Il messaggio viene cancellato automaticamente dopo 1,8 secondi
+            setTimeout(function() {
+                feedback.textContent = '';
+            }, 1800);
+        })
+        .catch(function() {
 
-                // Il messaggio viene cancellato automaticamente dopo 1,8 secondi
-                setTimeout(function() {
-                    feedback.textContent = '';
-                }, 1800);
-            })
-            .catch(function() {
-
-                // Se il browser non permette la copia viene mostrato un messaggio di errore
-                feedback.textContent = 'Copia non riuscita';
-            });
-    });
-}
+            // Se il browser non permette la copia viene mostrato un messaggio di errore
+            feedback.textContent = 'Copia non riuscita';
+        });
+});
 </script>
 
 <?php require 'includes/footer.php'; ?>

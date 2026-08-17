@@ -31,7 +31,7 @@ if ($turno_id <= 0) {
     exit;
 }
 
-require __DIR__ . '/../includes/db_config.php';
+require '../includes/db_config.php';
 
 // La cancellazione modifica il database e utilizza quindi l'utente modifier
 $con = get_db_connection('modifier');

@@ -48,59 +48,42 @@ $query_visite = 'SELECT pv.id, pv.data_ora, u.username, g.nome
                   LEFT JOIN gatti AS g ON g.id = vg.gatto_id
                   ORDER BY pv.data_ora ASC, pv.id ASC, g.nome ASC';
 
-/*
- * La query non contiene input esterno e quindi non richiede bind_param
- * Lo statement mantiene lo stesso flusso MySQLi utilizzato nelle altre letture del progetto
- */
-$stmt_visite = mysqli_prepare($con, $query_visite);
+// La query non contiene dati forniti dall'utente, quindi può essere eseguita direttamente
+$result_visite = mysqli_query($con, $query_visite);
 
-if ($stmt_visite) {
-    if (mysqli_stmt_execute($stmt_visite)) {
+if ($result_visite) {
 
-        // Le colonne della SELECT vengono associate alle variabili nello stesso ordine della query
-        mysqli_stmt_bind_result(
-            $stmt_visite,
-            $visita_id,
-            $visita_data_ora,
-            $visita_username,
-            $visita_nome_gatto
-        );
+    /*
+     * L'id della prenotazione viene utilizzato come chiave temporanea
+     * Una visita con più gatti rimane così una sola attività con più nomi associati
+     */
+    $visite_indicizzate = array();
 
-        /*
-         * L'id della prenotazione viene utilizzato come chiave temporanea
-         * Una visita con più gatti rimane così una sola attività con più nomi associati
-         */
-        $visite_indicizzate = array();
+    while ($riga = mysqli_fetch_assoc($result_visite)) {
+        $id_corrente = (int) $riga['id'];
 
-        while (mysqli_stmt_fetch($stmt_visite)) {
-            $id_corrente = (int) $visita_id;
-
-            // La struttura principale della visita viene creata soltanto alla prima riga con lo stesso id
-            if (!isset($visite_indicizzate[$id_corrente])) {
-                $visite_indicizzate[$id_corrente] = array(
-                    'id' => $id_corrente,
-                    'data_ora' => (string) $visita_data_ora,
-                    'username' => (string) $visita_username,
-                    'gatti' => array()
-                );
-            }
-
-            // Con la LEFT JOIN il nome può essere NULL se non esistono gatti associati alla visita
-            if ($visita_nome_gatto !== null && $visita_nome_gatto !== '') {
-                $visite_indicizzate[$id_corrente]['gatti'][] = (string) $visita_nome_gatto;
-            }
+        // La struttura principale della visita viene creata soltanto alla prima riga con lo stesso id
+        if (!isset($visite_indicizzate[$id_corrente])) {
+            $visite_indicizzate[$id_corrente] = array(
+                'id' => $id_corrente,
+                'data_ora' => (string) $riga['data_ora'],
+                'username' => (string) $riga['username'],
+                'gatti' => array()
+            );
         }
 
-        // Vengono rimossi gli indici temporanei basati sugli id prima della visualizzazione
-        $visite = array_values($visite_indicizzate);
-    } else {
-        error_log('Errore durante il recupero delle visite amministrative: ' . mysqli_stmt_error($stmt_visite));
-        $errore_admin = true;
+        // Con la LEFT JOIN il nome può essere NULL se non esistono gatti associati alla visita
+        if ($riga['nome'] !== null && $riga['nome'] !== '') {
+            $visite_indicizzate[$id_corrente]['gatti'][] = (string) $riga['nome'];
+        }
     }
 
-    mysqli_stmt_close($stmt_visite);
+    // Vengono rimossi gli indici temporanei basati sugli id prima della visualizzazione
+    $visite = array_values($visite_indicizzate);
+
+    mysqli_free_result($result_visite);
 } else {
-    error_log('Errore nella preparazione delle visite amministrative: ' . mysqli_error($con));
+    error_log('Errore durante il recupero delle visite amministrative: ' . mysqli_error($con));
     $errore_admin = true;
 }
 
@@ -113,33 +96,22 @@ $query_turni = 'SELECT tv.id, tv.fascia_oraria, u.username
                 JOIN utenti AS u ON u.id = tv.utente_id
                 ORDER BY tv.fascia_oraria ASC';
 
-$stmt_turni = mysqli_prepare($con, $query_turni);
+$result_turni = mysqli_query($con, $query_turni);
 
-if ($stmt_turni) {
-    if (mysqli_stmt_execute($stmt_turni)) {
-        mysqli_stmt_bind_result(
-            $stmt_turni,
-            $turno_id,
-            $turno_fascia,
-            $turno_username
+if ($result_turni) {
+
+    // Ogni riga viene trasformata nell'elemento utilizzato successivamente dal pannello
+    while ($riga = mysqli_fetch_assoc($result_turni)) {
+        $turni[] = array(
+            'id' => (int) $riga['id'],
+            'fascia_oraria' => (string) $riga['fascia_oraria'],
+            'username' => (string) $riga['username']
         );
-
-        // Ogni riga viene trasformata nell'elemento utilizzato successivamente dal pannello
-        while (mysqli_stmt_fetch($stmt_turni)) {
-            $turni[] = array(
-                'id' => (int) $turno_id,
-                'fascia_oraria' => (string) $turno_fascia,
-                'username' => (string) $turno_username
-            );
-        }
-    } else {
-        error_log('Errore durante il recupero dei turni amministrativi: ' . mysqli_stmt_error($stmt_turni));
-        $errore_admin = true;
     }
 
-    mysqli_stmt_close($stmt_turni);
+    mysqli_free_result($result_turni);
 } else {
-    error_log('Errore nella preparazione dei turni amministrativi: ' . mysqli_error($con));
+    error_log('Errore durante il recupero dei turni amministrativi: ' . mysqli_error($con));
     $errore_admin = true;
 }
 
