@@ -167,8 +167,8 @@ require 'includes/header.php';
     </header>
 
     <?php if ($errore_admin): ?>
-        <div class="alert-wrapper mb-2">
-            <div class="auth-alert-danger" role="alert">
+        <div class="alert-wrapper">
+            <div class="alert-danger" role="alert">
                 Non è stato possibile caricare tutte le informazioni. Riprova più tardi.
             </div>
         </div>
@@ -176,9 +176,9 @@ require 'includes/header.php';
 
     <!-- Collegamento alla funzione amministrativa per l'inserimento di nuovi ospiti -->
     <section class="admin-dashboard-card admin-card-ospiti">
-        <span class="admin-card-badge admin-card-badge-ospiti">Gatti</span>
+        <span class="admin-card-badge">Gatti</span>
 
-        <div class="admin-card-header admin-card-header-centered">
+        <div class="admin-card-header">
             <div>
                 <h2>Gestione Ospiti</h2>
                 <p>Registra la scheda di un nuovo gatto accolto nella struttura.</p>

@@ -147,37 +147,37 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
 
     <!-- Feedback delle operazioni effettuate dalla pagina personale -->
     <?php if ($status === 'visita_eliminata'): ?>
-        <div class="alert-wrapper mb-2">
-            <div class="auth-alert-success" role="status">
+        <div class="alert-wrapper">
+            <div class="alert-success" role="status">
                 <strong>Visita annullata correttamente.</strong>
             </div>
         </div>
 
     <?php elseif ($status === 'turno_eliminato'): ?>
-        <div class="alert-wrapper mb-2">
-            <div class="auth-alert-success" role="status">
+        <div class="alert-wrapper">
+            <div class="alert-success" role="status">
                 <strong>Turno di volontariato annullato correttamente.</strong>
             </div>
         </div>
 
     <?php elseif ($status === 'non_disponibile'): ?>
-        <div class="alert-wrapper mb-2">
-            <div class="auth-alert-danger" role="alert">
+        <div class="alert-wrapper">
+            <div class="alert-danger" role="alert">
                 La prenotazione richiesta non è più disponibile oppure non appartiene al tuo account.
             </div>
         </div>
 
     <?php elseif ($status === 'errore'): ?>
-        <div class="alert-wrapper mb-2">
-            <div class="auth-alert-danger" role="alert">
+        <div class="alert-wrapper">
+            <div class="alert-danger" role="alert">
                 Si è verificato un errore durante l'operazione. Riprova più tardi.
             </div>
         </div>
     <?php endif; ?>
 
     <?php if ($errore_caricamento): ?>
-        <div class="alert-wrapper mb-2">
-            <div class="auth-alert-danger" role="alert">
+        <div class="alert-wrapper">
+            <div class="alert-danger" role="alert">
                 Non è stato possibile caricare tutte le attività. Riprova più tardi.
             </div>
         </div>

@@ -1,27 +1,10 @@
 /*
  * Foglio di stile globale del progetto
  * Gestisce grafica, layout, stati interattivi e adattamento ai diversi dispositivi
- *
- * Il progetto utilizza un unico CSS condiviso per mantenere coerenza tra le pagine
- * I colori sono scritti direttamente in esadecimale, senza variabili CSS personalizzate
- * Le dimensioni principali usano rem per seguire meglio le impostazioni di testo del browser
- *
- * Verde principale: #1A3629
- * Verde scuro: #0B251C
- * Beige chiaro: #F5F5F0
- * Beige secondario: #D4C5B9
- * Verde chiaro: #8AD9A5
- * Testo principale: #1A1A1A
  */
-
 
 /* Impostazioni generali */
-
-/*
- * box-sizing: border-box rende più prevedibili larghezze e padding
- * Il reset di margin e padding evita differenze iniziali tra i browser
- */
- * {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -32,12 +15,12 @@ html {
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #F5F5F0;
-    color: #1A1A1A;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    background-color: #F5F5F0;
+    color: #1A1A1A;
+    font-family: "Poppins", sans-serif;
 }
 
 main {
@@ -49,16 +32,14 @@ button,
 input,
 select,
 textarea {
-    font-family: inherit;
+    font: inherit;
 }
 
+img {
+    max-width: 100%;
+}
 
-/* Focus visibile durante la navigazione tramite tastiera */
-
-/*
- * :focus-visible mostra l'indicatore soprattutto durante l'uso da tastiera
- * Il marrone è coerente con la palette e rimane visibile sui fondi chiari del sito
- */
+/* Il focus resta sempre visibile durante la navigazione da tastiera */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -69,15 +50,14 @@ summary:focus-visible {
     outline-offset: 3px;
 }
 
-
-/* Classi di supporto */
-
-/*
- * Queste classi vengono riutilizzate in più pagine per evitare CSS inline
- * Le utility restano volutamente semplici e limitate a proprietà ricorrenti
- */
 .page-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 4rem 2rem 5rem;
+}
+
+.section-container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -87,65 +67,35 @@ summary:focus-visible {
     padding: 5rem 2rem;
 }
 
-.text-center {
-    text-align: center;
-}
-
-.mt-1 {
-    margin-top: 1rem;
-}
-
-.mt-2 {
-    margin-top: 2rem;
-}
-
-.mb-2 {
-    margin-bottom: 2rem;
-}
-
-.mb-4 {
-    margin-bottom: 4rem;
-}
-
-.w-100 {
-    width: 100%;
-}
-
 .d-none {
     display: none !important;
 }
 
-
-/* Intestazioni delle sezioni */
-
-/*
- * section-header viene usato sia con h1 sia con h2
- * Il livello del titolo dipende dalla gerarchia semantica della singola pagina
- */
+/* Intestazioni condivise */
 .section-header {
-    text-align: center;
     margin-bottom: 3.5rem;
+    text-align: center;
 }
 
 .section-header h1,
 .section-header h2 {
-    font-size: 2.2rem;
-    color: #1A1A1A;
     margin-bottom: 0.5rem;
+    color: #1A1A1A;
+    font-size: 2.2rem;
     font-weight: 700;
 }
 
 .paw-divider {
+    max-width: 300px;
+    margin: 1rem auto 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 18px;
-    max-width: 300px;
-    margin: 1rem auto 2rem;
+    gap: 1.125rem;
 }
 
 .paw-divider .line {
-    flex-grow: 1;
+    flex: 1;
     height: 1px;
     background-color: #D4C5B9;
 }
@@ -153,32 +103,35 @@ summary:focus-visible {
 .paw-divider-icon {
     width: 40px;
     height: 40px;
-    object-fit: contain;
     flex-shrink: 0;
+    object-fit: contain;
 }
 
 .header-subtitle {
-    text-align: center;
-    color: #666666;
     max-width: 600px;
     margin: 1rem auto 3rem;
+    color: #666666;
     line-height: 1.6;
+    text-align: center;
 }
 
-
-/* Pulsanti principali */
-
-.btn-solid-dark {
+/* Pulsanti e collegamenti principali */
+.btn-solid-dark,
+.btn-outline,
+.btn-outline-dark {
     display: inline-block;
-    background-color: #1A3629;
-    color: #FFFFFF;
-    text-decoration: none;
-    padding: 1rem 2.5rem;
     border-radius: 50px;
     font-weight: 600;
-    font-size: 1.05rem;
-    border: none;
+    text-decoration: none;
     cursor: pointer;
+}
+
+.btn-solid-dark {
+    padding: 1rem 2.5rem;
+    border: 0;
+    background-color: #1A3629;
+    color: #FFFFFF;
+    font-size: 1.05rem;
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
@@ -196,14 +149,10 @@ summary:focus-visible {
 }
 
 .btn-outline {
-    display: inline-block;
-    color: #FFFFFF;
-    text-decoration: none;
     padding: 0.8rem 2rem;
     border: 1.5px solid #FFFFFF;
-    border-radius: 50px;
+    color: #FFFFFF;
     font-size: 0.95rem;
-    font-weight: 600;
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -213,15 +162,11 @@ summary:focus-visible {
 }
 
 .btn-outline-dark {
-    display: inline-block;
-    color: #1A3629;
-    text-decoration: none;
     padding: 1rem 2.5rem;
     border: 2px solid #1A3629;
     background-color: transparent;
-    border-radius: 50px;
+    color: #1A3629;
     font-size: 1.05rem;
-    font-weight: 600;
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -230,17 +175,14 @@ summary:focus-visible {
     color: #FFFFFF;
 }
 
-
-/* Collegamenti testuali delle card */
-
 .scopri-link {
+    margin-top: 1rem;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.5rem;
     color: #9C8A7B;
     font-weight: 700;
     text-decoration: none;
-    margin-top: 1rem;
     transition: color 0.3s;
 }
 
@@ -256,10 +198,38 @@ summary:focus-visible {
     transform: translateX(5px);
 }
 
+/* Messaggi e validazione */
+.alert-wrapper {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto 2rem;
+}
 
-/* Messaggi e feedback */
+.alert-success,
+.alert-danger {
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: center;
+}
 
-.auth-alert-link {
+.alert-success {
+    border: 1px solid #A3B5AE;
+    background-color: #E8F0EC;
+    color: #1A3629;
+}
+
+.alert-danger {
+    border: 1px solid #F8B4B4;
+    background-color: #FDE8E8;
+    color: #D32F2F;
+    font-weight: 600;
+}
+
+.alert-success a,
+.alert-success a:link,
+.alert-success a:visited {
     color: #1A3629;
     font-weight: 700;
     text-decoration: underline;
@@ -267,7 +237,7 @@ summary:focus-visible {
     transition: color 0.3s;
 }
 
-.auth-alert-link:hover {
+.alert-success a:hover {
     color: #9C8A7B;
 }
 
@@ -279,12 +249,12 @@ summary:focus-visible {
 .btn-close-alert {
     position: absolute;
     top: 50%;
-    right: 15px;
+    right: 0.95rem;
     transform: translateY(-50%);
+    border: 0;
     background: none;
-    border: none;
-    font-size: 1.5rem;
     color: inherit;
+    font-size: 1.5rem;
     cursor: pointer;
     opacity: 0.6;
     transition: opacity 0.3s;
@@ -292,51 +262,6 @@ summary:focus-visible {
 
 .btn-close-alert:hover {
     opacity: 1;
-}
-
-.auth-alert-danger {
-    background-color: #FDE8E8;
-    color: #D32F2F;
-    border: 1px solid #F8B4B4;
-    padding: 1rem;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    text-align: center;
-    margin-bottom: 2rem;
-    font-weight: 600;
-}
-
-.auth-alert-success {
-    background-color: #E8F0EC;
-    color: #1A3629;
-    border: 1px solid #A3B5AE;
-    padding: 1rem;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.auth-alert-success a,
-.auth-alert-success a:link,
-.auth-alert-success a:visited {
-    color: #1A3629;
-    font-weight: 700;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    transition: color 0.3s;
-}
-
-.auth-alert-success a:hover {
-    color: #9C8A7B;
-}
-
-.alert-wrapper {
-    width: 100%;
-    max-width: 650px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .messaggio-successo-titolo {
@@ -349,17 +274,17 @@ summary:focus-visible {
 }
 
 .icona-successo {
-    display: block;
     width: 20px;
     height: 20px;
-    object-fit: contain;
+    display: block;
     flex: 0 0 20px;
+    object-fit: contain;
 }
 
 .errore-js {
-    display: block;
     min-height: 1.2rem;
     margin-top: 0.35rem;
+    display: block;
     color: #D32F2F;
     font-size: 0.8rem;
     line-height: 1.4;
@@ -375,41 +300,36 @@ summary:focus-visible {
 }
 
 .input-error {
-    border-color: #D32F2F !important;
+    border-color: #D32F2F;
 }
 
-
 /* Header e navigazione */
-
 .site-header {
-    background: linear-gradient(135deg, #1A3629 0%, #2A4D3E 100%);
     padding: 1.5rem 0;
+    background: linear-gradient(135deg, #1A3629 0%, #2A4D3E 100%);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .header-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 3rem;
+    width: 100%;
     max-width: 1450px;
     margin: 0 auto;
     padding: 0 2rem;
-    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
 }
-
-
-/* Logo e nome del sito */
 
 .logo-link,
 .logo-link:link,
 .logo-link:visited {
     display: flex;
     align-items: center;
-    text-decoration: none;
     color: #FFFFFF;
     font-size: 1.45rem;
     font-weight: 700;
+    text-decoration: none;
     white-space: nowrap;
 }
 
@@ -419,24 +339,17 @@ summary:focus-visible {
 }
 
 .logo-icona {
-    height: 50px;
     width: 50px;
-    object-fit: cover;
-    margin-right: 15px;
+    height: 50px;
+    margin-right: 0.95rem;
     border-radius: 50%;
-}
-
-
-/* Navigazione principale */
-
-.main-nav {
-    margin: 0;
+    object-fit: cover;
 }
 
 .main-nav ul {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     gap: 3rem;
     list-style: none;
 }
@@ -445,21 +358,18 @@ summary:focus-visible {
 .main-nav a:link,
 .main-nav a:visited {
     color: #C2D5CD;
-    text-decoration: none;
     font-size: 1.08rem;
     font-weight: 700;
+    text-decoration: none;
     white-space: nowrap;
 }
 
-.main-nav a:hover,
-.main-nav a.active {
+.main-nav a:hover {
     color: #FFFFFF;
 }
 
-
-/* Area relativa allo stato dell'utente */
-
 .user-area {
+    min-width: 0;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -468,45 +378,45 @@ summary:focus-visible {
 }
 
 .status-testo {
-    color: #C2D5CD;
-    font-size: 0.9rem;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.6rem;
+    color: #C2D5CD;
+    font-size: 0.9rem;
     font-weight: 400;
 }
 
 .icona-utente {
     width: 32px;
     height: 32px;
-    object-fit: cover;
+    border: 2px solid #8AD9A5;
     border-radius: 50%;
     background-color: #F5F5F0;
-    border: 2px solid #8AD9A5;
+    object-fit: cover;
 }
 
-
-/* Menu personale */
-
+/* details mantiene il menu account funzionante anche senza JavaScript */
 .account-menu {
     position: relative;
+    min-width: 0;
+}
+
+.account-summary span {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .account-summary {
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    list-style: none;
-    cursor: pointer;
     color: #C2D5CD;
     font-size: 0.95rem;
+    list-style: none;
+    cursor: pointer;
     user-select: none;
 }
 
-/*
- * Il marcatore nativo di details viene nascosto perché la freccia personalizzata
- * viene disegnata più sotto con ::after mantenendo comunque summary come controllo nativo
- */
 .account-summary::-webkit-details-marker {
     display: none;
 }
@@ -517,10 +427,10 @@ summary:focus-visible {
 
 .account-summary::after {
     content: "▾";
+    margin-left: 0.1rem;
     display: inline-block;
     color: #8AD9A5;
     font-size: 0.9rem;
-    margin-left: 0.1rem;
     transition: transform 0.2s;
 }
 
@@ -528,41 +438,37 @@ summary:focus-visible {
     transform: rotate(180deg);
 }
 
-/*
- * Il menu viene posizionato rispetto ad account-menu, che ha position: relative
- * In questo modo l'apertura non modifica l'altezza dell'header
- */
 .account-dropdown {
     position: absolute;
     top: calc(100% + 0.8rem);
     left: 50%;
-    transform: translateX(-50%);
     z-index: 200;
     min-width: 245px;
     padding: 0.55rem;
-    background-color: #FFFFFF;
+    transform: translateX(-50%);
     border: 1px solid #E8E5E1;
     border-radius: 12px;
+    background-color: #FFFFFF;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
 .account-dropdown a,
 .account-dropdown a:link,
 .account-dropdown a:visited {
-    display: block;
     padding: 0.85rem 0.9rem;
-    color: #1A3629;
-    background-color: transparent;
+    display: block;
     border-radius: 8px;
-    text-decoration: none;
+    background-color: transparent;
+    color: #1A3629;
     font-size: 0.9rem;
     font-weight: 600;
+    text-decoration: none;
     transition: background-color 0.2s;
 }
 
 .account-dropdown a:hover {
-    color: #1A3629;
     background-color: #F5F5F0;
+    color: #1A3629;
 }
 
 .account-dropdown a + a {
@@ -573,30 +479,24 @@ summary:focus-visible {
     border-top-right-radius: 0;
 }
 
-
 /* Login e registrazione */
-
-/*
- * Le due pagine condividono la stessa struttura a card
- * Flex centra il contenuto senza dover fissare altezze o posizioni assolute
- */
 .auth-wrapper {
-    background-color: #F5F5F0;
     min-height: 75vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 3rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F5F5F0;
 }
 
 .auth-card {
-    background-color: #FFFFFF;
     width: 100%;
     max-width: 450px;
     padding: 2.5rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     border: 1px solid #E8E5E1;
+    border-radius: 20px;
+    background-color: #FFFFFF;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .auth-card-large {
@@ -604,8 +504,8 @@ summary:focus-visible {
 }
 
 .auth-header {
-    text-align: center;
     margin-bottom: 2rem;
+    text-align: center;
 }
 
 .auth-header h1 {
@@ -615,9 +515,14 @@ summary:focus-visible {
 }
 
 .auth-header p {
+    margin-top: 0.5rem;
     color: #666666;
     line-height: 1.6;
-    margin-top: 0.5rem;
+}
+
+.auth-card > .alert-success,
+.auth-card > .alert-danger {
+    margin-bottom: 2rem;
 }
 
 .form-group {
@@ -625,33 +530,34 @@ summary:focus-visible {
 }
 
 .form-group label {
-    display: block;
     margin-bottom: 0.5rem;
+    display: block;
+    color: #1A1A1A;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #1A1A1A;
 }
 
 .auth-card input[type="text"],
 .auth-card input[type="password"],
 .auth-card input[type="email"] {
     width: 100%;
-    padding: 0.75rem 1rem;
     margin-top: 0.4rem;
+    padding: 0.75rem 1rem;
     border: 2px solid #EAE6DF;
     border-radius: 8px;
-    font-size: 0.95rem;
     background-color: #FAFAFA;
+    font-size: 0.95rem;
 }
 
-/*
- * Durante il focus il bordo diventa marrone
- * L'indicazione resta coerente con il focus globale senza introdurre colori diversi
- */
 .auth-card input:focus {
     outline: none;
     border-color: #9C8A7B;
     background-color: #FFFFFF;
+}
+
+.auth-card input.input-error,
+.auth-card input.input-error:focus {
+    border-color: #D32F2F;
 }
 
 #form-registrazione {
@@ -669,70 +575,111 @@ summary:focus-visible {
     margin-bottom: 0;
 }
 
-#form-registrazione .text-center.mt-2 {
-    margin-top: 0.5rem;
-}
-
 .auth-card-large .auth-header {
     margin-bottom: 1.75rem;
 }
 
+.auth-actions {
+    text-align: center;
+}
 
-/* Presentazione iniziale della home */
+#form-login .auth-actions {
+    margin-top: 2rem;
+}
 
-.home-hero {
+#form-registrazione .auth-actions {
+    margin-top: 0.5rem;
+}
+
+.auth-actions .btn-solid-dark {
+    width: 100%;
+}
+
+.checkbox-group {
+    margin-top: 1rem;
+    margin-bottom: 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    flex: 0 0 16px;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.cookie-disclaimer {
+    margin: 0 0 1.5rem;
+    display: block;
+    color: #888888;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+.form-switch-text {
+    margin: 1.5rem 0 1rem;
+    color: #666666;
+    font-size: 0.95rem;
+}
+
+/* Presentazione iniziale della Home */
+.home-intro {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 4rem;
-    padding: 6rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
     flex-wrap: wrap;
 }
 
-.home-hero-text {
+.home-intro-text,
+.home-intro-image {
     flex: 1;
     min-width: 350px;
 }
 
-.home-hero-text h1 {
-    font-size: 3rem;
+.home-intro-text h1 {
+    margin-bottom: 2.5rem;
     color: #1A1A1A;
-    line-height: 1.18;
-    margin-bottom: 2.5rem;
+    font-size: 3rem;
     font-weight: 700;
+    line-height: 1.18;
 }
 
-.home-hero-text p {
-    font-size: 1.1rem;
-    color: #4A4A4A;
-    line-height: 1.7;
+.home-intro-text p {
     margin-bottom: 2.5rem;
+    color: #4A4A4A;
+    font-size: 1.1rem;
+    line-height: 1.7;
 }
 
-.home-hero-buttons {
+.home-intro-buttons {
     display: flex;
-    flex-direction: row;
     align-items: center;
     gap: 1.5rem;
     flex-wrap: wrap;
 }
 
-.home-hero-image {
-    flex: 1;
-    min-width: 350px;
-}
-
-.home-hero-image img {
+.home-intro-image img {
     width: 100%;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
-
 /* Processo di adozione */
-
 .adoption-steps-wrapper {
     background-color: #FFFFFF;
 }
@@ -752,35 +699,34 @@ summary:focus-visible {
 }
 
 .adoption-steps-box {
-    background-color: #F5F5F0;
+    padding: 3rem 2rem;
     border: 1px solid #E8E5E1;
     border-radius: 20px;
-    padding: 3rem 2rem;
+    background-color: #F5F5F0;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .adoption-grid {
     display: flex;
-    justify-content: space-between;
     align-items: stretch;
+    justify-content: space-between;
     gap: 2rem;
-    flex-wrap: nowrap;
 }
 
 .step {
-    flex: 1;
     min-width: 0;
-    text-align: center;
     padding: 0 1rem;
+    flex: 1;
+    text-align: center;
 }
 
 .step-icon {
     width: 80px;
     height: 80px;
+    margin: 0 auto 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.5rem;
 }
 
 .step-icon img {
@@ -790,119 +736,153 @@ summary:focus-visible {
 }
 
 .step h3 {
-    font-size: 1.2rem;
-    color: #1A1A1A;
     margin-bottom: 0.8rem;
+    color: #1A1A1A;
+    font-size: 1.2rem;
 }
 
 .step p {
-    font-size: 0.95rem;
     color: #666666;
+    font-size: 0.95rem;
     line-height: 1.6;
 }
 
-
-/* Ultimi gatti arrivati */
-
+/* Ultimi ospiti e card informative */
 .home-arrivals-section {
-    background-color: #F5F5F0;
     padding: 3rem 2rem 5rem;
+    background-color: #F5F5F0;
 }
 
+.home-arrivals-action {
+    margin-top: 2rem;
+    text-align: center;
+}
 
-/* Card informative */
+.info-section {
+    padding: 2rem 2rem 5rem;
+    background-color: #FFFFFF;
+}
 
-.icon-png-large {
+.info-grid {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.info-card {
+    min-width: 250px;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #EAE6DF;
+    border-radius: 12px;
+    background-color: #F5F5F0;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+}
+
+.info-card > img {
     width: 70px;
     height: 70px;
-    object-fit: contain;
     margin-bottom: 1.5rem;
+    object-fit: contain;
 }
 
+.info-card h3 {
+    margin-bottom: 1rem;
+    color: #1A1A1A;
+    font-size: 1.3rem;
+}
 
-/* Animale in difficoltà */
+.info-card p {
+    color: #666666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
 
+/* Animale in difficoltà: il riquadro è volutamente più arioso delle card normali */
 .home-emergency-section {
+    padding: 4.5rem 2rem;
     background-color: #F5F5F0;
 }
 
-.home-emergency-section.section-padding {
-    padding-top: 4.5rem;
-    padding-bottom: 4.5rem;
-}
-
-.home-emergency-section .emergency-container {
-    display: flex;
+.emergency-container {
     width: 100%;
-    max-width: 1000px;
+    max-width: 1100px;
+    min-height: 500px;
     margin: 0 auto;
-    background-color: #FFFFFF;
-    border-radius: 20px;
+    display: flex;
     overflow: hidden;
+    border-radius: 20px;
+    background-color: #FFFFFF;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-    flex-wrap: nowrap;
 }
 
-.home-emergency-section .emergency-text {
-    flex: 1 1 55%;
+.emergency-text {
     min-width: 0;
-    padding: 3.25rem 3rem;
+    padding: 3.75rem 3.5rem;
+    flex: 1 1 58%;
 }
 
-.home-emergency-section .emergency-title {
-    font-size: 2.25rem;
-    line-height: 1.2;
-    color: #1A3629;
+.emergency-title {
     margin-bottom: 0.7rem;
+    color: #1A3629;
+    font-size: 2.25rem;
     font-weight: 700;
+    line-height: 1.2;
 }
 
-.home-emergency-section .emergency-subtitle {
-    text-align: left;
+.emergency-subtitle {
+    margin: 0 0 2.5rem;
     color: #666666;
     font-size: 1rem;
     line-height: 1.6;
-    margin: 0 0 2.4rem;
 }
 
-.home-emergency-section .emergency-item {
+.emergency-item {
+    margin-bottom: 1.9rem;
     display: flex;
-    gap: 1.35rem;
-    margin-bottom: 1.8rem;
     align-items: flex-start;
+    gap: 1.35rem;
 }
 
-.home-emergency-section .emergency-item:last-child {
+.emergency-item:last-child {
     margin-bottom: 0;
 }
 
-.home-emergency-section .icon-png-small {
+.emergency-item > img {
     width: 45px;
     height: 45px;
-    object-fit: contain;
     flex: 0 0 45px;
+    object-fit: contain;
 }
 
-.home-emergency-section .emergency-item-content {
+.emergency-item-content {
     min-width: 0;
 }
 
-.home-emergency-section .emergency-item-content h3 {
-    color: #1A1A1A;
+.emergency-item-content h3 {
     margin-bottom: 0.3rem;
+    color: #1A1A1A;
     font-size: 1.05rem;
     line-height: 1.4;
 }
 
-.home-emergency-section .emergency-item-content p {
+.emergency-item-content p {
     color: #666666;
-    line-height: 1.5;
     font-size: 0.92rem;
+    line-height: 1.5;
 }
 
-.home-emergency-section .emergency-link,
-.home-emergency-section .emergency-link:link,
-.home-emergency-section .emergency-link:visited {
+.emergency-link,
+.emergency-link:link,
+.emergency-link:visited {
     color: #1A3629;
     font-weight: 600;
     text-decoration: underline;
@@ -911,48 +891,42 @@ summary:focus-visible {
     transition: color 0.3s;
 }
 
-.home-emergency-section .emergency-link:hover {
+.emergency-link:hover {
     color: #9C8A7B;
 }
 
-.home-emergency-section .emergency-image {
-    flex: 0 0 45%;
+.emergency-image {
     min-width: 0;
+    flex: 0 0 42%;
 }
 
-/* object-fit: cover riempie il riquadro mantenendo le proporzioni dell'immagine */
-.home-emergency-section .emergency-image img {
-    display: block;
+/* object-fit: cover riempie il riquadro senza deformare l'immagine */
+.emergency-image img {
     width: 100%;
     height: 100%;
-    min-height: 390px;
+    min-height: 500px;
+    display: block;
     object-fit: cover;
 }
 
-
-/* Partner del rifugio */
-
+/* Partner */
 .home-partners-strip {
     width: 100%;
+    padding: 2.3rem 2rem 2.6rem;
     background-color: #FFFFFF;
     text-align: center;
-    padding: 2.3rem 2rem 2.6rem;
 }
 
 .partners-label {
+    margin-bottom: 1.5rem;
     color: #666666;
-    font-family: 'Poppins', sans-serif;
     font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.16em;
     line-height: 1.4;
-    margin-bottom: 1.5rem;
 }
 
-/*
- * La griglia dei partner parte da quattro colonne e viene ridotta dalle media query
- * justify-items centra ogni logo nella propria cella
- */
+/* La griglia mantiene quattro celle uguali e centra ogni logo */
 .partners-logos {
     width: 100%;
     max-width: 880px;
@@ -965,10 +939,9 @@ summary:focus-visible {
 }
 
 .sponsor-logo {
-    display: block;
     width: 170px;
     height: 80px;
-    max-width: 100%;
+    display: block;
     object-fit: contain;
     cursor: default;
     transition: transform 0.3s;
@@ -978,169 +951,153 @@ summary:focus-visible {
     transform: translateY(-5px);
 }
 
+/* Galleria dei gatti e componente React */
 
-/* Card dei gatti e componente React */
-
-/*
- * La griglia è condivisa dalla Home e dalla galleria React
- * auto-fit permette alle card di occupare lo spazio disponibile senza fissare il numero di colonne
- */
-.gatti-grid-2 {
+/* auto-fit adatta automaticamente il numero di colonne allo spazio disponibile */
+.gatti-grid {
+    max-width: 780px;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 350px));
     justify-content: center;
     gap: 2.5rem;
-    max-width: 780px;
-    margin: 0 auto;
 }
 
-.card-gatto-premium {
-    background: #FFFFFF;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-    border: 1px solid #E8E5E1;
-    transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+.gatti-grid > p {
+    grid-column: 1 / -1;
+    width: 100%;
+    text-align: center;
+}
+
+.gatto-card {
     min-width: 280px;
     max-width: 350px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #E8E5E1;
+    border-radius: 16px;
+    background-color: #FFFFFF;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s;
 }
 
-.card-gatto-premium:hover {
+.gatto-card:hover {
     transform: translateY(-8px);
 }
 
-.card-img-wrapper {
+.gatto-card-image {
     position: relative;
     height: 240px;
-    background-color: #F9F8F6;
-    border-bottom: 1px solid #EAE6DF;
     display: flex;
     align-items: flex-end;
     justify-content: center;
+    border-bottom: 1px solid #EAE6DF;
+    background-color: #F9F8F6;
 }
 
-/*
- * object-fit: contain mantiene visibile l'intero placeholder senza deformarlo
- * object-position lo appoggia visivamente verso il fondo della card
- */
-.card-img-wrapper img {
+.gatto-card-image img {
     width: 100%;
     height: 90%;
+    padding: 0 1.5rem;
     object-fit: contain;
     object-position: center bottom;
-    padding: 0 1.5rem;
 }
 
-.badge-nuovo {
+.gatto-badge {
     position: absolute;
     top: 15px;
     left: 15px;
-    background-color: #1A3629;
-    color: #FFFFFF;
     padding: 6px 14px;
     border-radius: 30px;
+    background-color: #1A3629;
+    color: #FFFFFF;
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
 }
 
-.card-body {
+.gatto-card-body {
     padding: 2rem 1.5rem;
     display: flex;
-    flex-direction: column;
     flex-grow: 1;
+    flex-direction: column;
 }
 
-.card-body h2,
-.card-body h3 {
-    font-size: 1.5rem;
-    color: #1A3629;
+.gatto-card-body h2,
+.gatto-card-body h3 {
     margin-bottom: 0.8rem;
+    color: #1A3629;
+    font-size: 1.5rem;
 }
 
-.card-desc {
+.gatto-card-description {
+    margin-bottom: 1.5rem;
     color: #555555;
     line-height: 1.6;
-    margin-bottom: 1.5rem;
 }
 
-.card-gatto-premium.selezionata {
-    border: 3px solid #1A3629;
-    transform: scale(1.02);
-    box-shadow: 0 15px 35px rgba(26, 54, 41, 0.2);
+.gatto-card.selezionata {
     position: relative;
+    border: 3px solid #1A3629;
+    box-shadow: 0 15px 35px rgba(26, 54, 41, 0.2);
+    transform: scale(1.02);
 }
 
-.card-gatto-premium.selezionata::after {
+.gatto-card.selezionata::after {
     content: "✓";
     position: absolute;
     top: 15px;
     right: 15px;
-    background-color: #1A3629;
-    color: #FFFFFF;
+    z-index: 10;
     width: 30px;
     height: 30px;
-    border-radius: 50%;
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-weight: 700;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #1A3629;
+    color: #FFFFFF;
     font-size: 1.2rem;
+    font-weight: 700;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 10;
 }
 
-.card-cliccabile {
+.gatto-card-selezionabile {
     cursor: pointer;
 }
 
-/*
- * Le card React degli utenti autenticati ricevono tabIndex e role="button"
- * Essendo article e non button nativi, serve una regola specifica per rendere visibile il focus da tastiera
- */
-.card-cliccabile:focus-visible {
+/* Le card selezionabili ricevono tabIndex da React e mostrano il focus da tastiera */
+.gatto-card-selezionabile:focus-visible {
     outline: 3px solid #9C8A7B;
     outline-offset: 3px;
 }
 
-.react-container {
-    width: 100%;
-}
-
-
-/* Ricerca e ordinamento della galleria */
-
-/*
- * I controlli React rimangono fluidi grazie a flex-wrap
- * Su schermi più piccoli la media query li dispone poi in colonna
- */
 .filtri-ricerca {
     max-width: 800px;
     margin: 0 auto 4rem;
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 1rem;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+}
+
+.input-ricerca,
+.select-ordinamento {
+    padding: 0.8rem 1.5rem;
+    border: 2px solid #EAE6DF;
+    border-radius: 50px;
+    font-size: 0.95rem;
 }
 
 .input-ricerca {
-    padding: 0.8rem 1.5rem;
-    border-radius: 50px;
-    border: 2px solid #EAE6DF;
-    flex: 1;
     min-width: 280px;
-    font-size: 0.95rem;
+    flex: 1;
 }
 
 .select-ordinamento {
-    padding: 0.8rem 1.5rem;
-    border-radius: 50px;
-    border: 2px solid #EAE6DF;
-    font-size: 0.95rem;
     background-color: #FFFFFF;
     cursor: pointer;
 }
@@ -1156,34 +1113,30 @@ summary:focus-visible {
 .messaggio-errore,
 .nessun-risultato {
     width: 100%;
-    text-align: center;
     padding: 2rem 1rem;
     color: #666666;
+    text-align: center;
 }
 
 .messaggio-errore {
     color: #D32F2F;
 }
 
-
-/* Prenotazione delle visite */
-
-/*
- * Il wrapper viene riutilizzato anche dal form amministrativo di inserimento
- * In questo modo form diversi mantengono stessa larghezza, bordi e spaziature
- */
-.prenotazione-wrapper {
+/* Form condivisi */
+.form-card {
+    width: 100%;
     max-width: 800px;
     margin: 0 auto 2rem;
-    background-color: #FFFFFF;
     padding: 3rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
     border: 1px solid #E8E5E1;
+    border-radius: 20px;
+    background-color: #FFFFFF;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .prenotazione-header {
     margin-bottom: 1.5rem;
+    text-align: center;
 }
 
 .prenotazione-subtitle {
@@ -1200,26 +1153,23 @@ summary:focus-visible {
     text-align: center;
 }
 
-/*
- * CSS Grid è usato per affiancare i campi correlati
- * A 48rem la media query passa automaticamente a una sola colonna
- */
+/* Grid affianca i campi correlati e passa a una colonna nel breakpoint tablet */
 .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
     margin-bottom: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem;
 }
 
 .input-data-large {
-    padding: 0.9rem 1.2rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: 2px solid #EAE6DF;
     width: 100%;
     max-width: 100%;
+    padding: 0.9rem 1.2rem;
+    border: 2px solid #EAE6DF;
+    border-radius: 8px;
     background-color: #FFFFFF;
     color: #1A1A1A;
+    font-size: 1rem;
     transition: border-color 0.3s;
 }
 
@@ -1229,104 +1179,110 @@ summary:focus-visible {
     box-shadow: 0 0 0 3px rgba(156, 138, 123, 0.12);
 }
 
-/*
- * Le cifre tabulari occupano la stessa larghezza e mantengono più stabile la lettura dell'orario
- * È una scelta tipografica, non modifica il valore del campo
- */
-.input-data-large[type="time"] {
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0;
+.input-data-large.input-error,
+.input-data-large.input-error:focus {
+    border-color: #D32F2F;
 }
 
-.input-data-full-width {
-    display: block;
-    width: 100%;
+.input-data-large[type="time"] {
+    font-variant-numeric: tabular-nums;
 }
 
 .form-label-title,
 .form-group .form-label-title {
-    display: block;
     margin-bottom: 0.8rem;
+    display: block;
+    color: #1A1A1A;
     font-size: 1.1rem;
     font-weight: 700;
-    color: #1A1A1A;
 }
 
 #form-prenotazione-visita .form-row {
     margin-bottom: 0.5rem;
 }
 
-#form-prenotazione-visita .form-group.mt-2 {
+#form-prenotazione-visita > .form-group {
     margin-top: 0.5rem;
     margin-bottom: 1.5rem;
 }
 
+#btn-prenota,
+#btn-invia-turno,
+#form-inserimento .btn-solid-dark {
+    width: 100%;
+}
+
+#btn-prenota,
+#btn-invia-turno {
+    margin-top: 1rem;
+}
+
 .lista-selezionati {
     width: 100%;
-    max-width: 100%;
     min-height: 64px;
     margin: 1rem 0 1.5rem;
     padding: 0.8rem 1rem;
-    background-color: #F0EDE6;
-    border: 1px solid #D4C5B9;
-    border-radius: 10px;
     display: flex;
     align-items: center;
     gap: 0.7rem;
     flex-wrap: nowrap;
     overflow-x: auto;
+    border: 1px solid #D4C5B9;
+    border-radius: 10px;
+    background-color: #F0EDE6;
     list-style: none;
 }
 
 .lista-selezionati li {
-    list-style: none;
-    flex: 0 0 auto;
-    background-color: #E8F0EC;
-    border: 1px solid #A3B5AE;
-    color: #1A3629;
-    border-radius: 30px;
     padding: 0.55rem 1rem;
+    flex: 0 0 auto;
+    border: 1px solid #A3B5AE;
+    border-radius: 30px;
+    background-color: #E8F0EC;
+    color: #1A3629;
     font-size: 0.9rem;
     font-weight: 600;
+    list-style: none;
     white-space: nowrap;
 }
 
 .lista-selezionati .nessun-gatto-selezionato {
+    padding: 0.4rem;
+    border: 0;
     background-color: transparent;
-    border: none;
     color: #666666;
     font-weight: 400;
-    padding: 0.4rem;
 }
 
-
-/* Inserimento di un nuovo ospite */
-
+/* Inserimento nuovo ospite */
 .inserimento-gatto-wrapper {
     position: relative;
 }
 
-/*
- * Il titolo è semanticamente h1 ma mantiene la stessa resa del precedente h2
- * La modifica evita quindi cambiamenti grafici dopo la correzione della gerarchia dei titoli
- */
 .inserimento-gatto-wrapper > h1 {
+    margin-bottom: 2rem;
     color: #1A1A1A;
     font-size: 1.5rem;
     font-weight: 700;
+    text-align: center;
+}
+
+.inserimento-gatto-wrapper > .alert-success,
+.inserimento-gatto-wrapper > .alert-danger {
+    margin-bottom: 2rem;
 }
 
 .back-admin-link,
 .back-admin-link:link,
 .back-admin-link:visited {
+    margin-bottom: 0.8rem;
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    margin-bottom: 0.8rem;
     color: #1A3629;
-    text-decoration: none;
     font-size: 0.88rem;
     font-weight: 600;
+    text-decoration: none;
     transition: color 0.3s, transform 0.3s;
 }
 
@@ -1340,58 +1296,101 @@ summary:focus-visible {
     line-height: 1;
 }
 
-.inserimento-gatto-wrapper .auth-alert-success {
-    font-weight: 700;
+/* Volontariato */
+.volontariato-intro-wrapper {
+    padding-top: 2rem;
 }
 
+.volontariato-header {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
 
-/* Turni di volontariato */
+.volontariato-intro-content {
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 0 2rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+}
 
-/* Il fieldset mantiene lo stesso aspetto del precedente contenitore senza bordi nativi del browser */
+.volontariato-intro-text {
+    min-width: 300px;
+    flex: 1;
+    color: #1A1A1A;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.volontariato-intro-image {
+    min-width: 300px;
+    flex: 1;
+    text-align: center;
+}
+
+.volontariato-intro-image img {
+    width: 100%;
+    max-width: 550px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.volontariato-btn-wrapper {
+    width: 100%;
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+.volontariato-form-wrapper {
+    padding-top: 1rem;
+}
+
 #sezione-fasce {
-    border: 0;
     min-width: 0;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    border: 0;
 }
 
 .fasce-orarie-container {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 1rem;
     margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: nowrap;
 }
 
 .fascia-oraria-label {
+    position: relative;
+    min-width: 140px;
+    min-height: 74px;
+    padding: 1.4rem 1rem;
     display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    padding: 1.4rem 1rem;
-    min-height: 74px;
     border: 2px solid #EAE6DF;
     border-radius: 8px;
     background-color: #FFFFFF;
     color: #1A1A1A;
+    font-size: 1.05rem;
     font-weight: 600;
+    text-align: center;
     cursor: pointer;
     transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
-    flex: 1;
-    min-width: 140px;
-    position: relative;
-    font-size: 1.05rem;
 }
 
 .fascia-oraria-label input[type="checkbox"] {
     position: absolute;
-    opacity: 0;
     width: 0;
     height: 0;
+    opacity: 0;
 }
 
-/*
- * Le checkbox restano semanticamente presenti ma sono nascoste graficamente
- * Il focus viene quindi trasferito visivamente sul testo adiacente per la navigazione da tastiera
- */
+/* Il controllo resta una checkbox reale, mentre il focus viene reso visibile sul testo */
 .fascia-oraria-label input[type="checkbox"]:focus-visible + span {
     outline: 3px solid #9C8A7B;
     outline-offset: 4px;
@@ -1418,168 +1417,31 @@ summary:focus-visible {
 
 .fascia-oraria-label.pieno::after {
     content: "AL COMPLETO";
-    display: block;
     margin-top: 0.25rem;
+    display: block;
     font-size: 0.75rem;
+    font-weight: 700;
     line-height: 1.2;
-    font-weight: 700;
 }
-
-.volontariato-prenotazione-box #sezione-fasce {
-    margin-bottom: 0.5rem;
-}
-
-.volontariato-prenotazione-box #btn-invia-turno {
-    margin-top: 1rem;
-}
-
-
-/* Pagina volontariato */
-
-.volontariato-intro-wrapper {
-    padding-top: 2rem;
-}
-
-.volontariato-header-mansioni {
-    margin-top: 0;
-}
-
-.volontariato-form-wrapper {
-    padding-top: 1rem;
-}
-
-.volontariato-prenotazione-box {
-    margin-top: 0;
-}
-
-.volontariato-header {
-    margin-top: 2rem;
-    margin-bottom: 3rem;
-}
-
-.volontariato-intro-content {
-    display: flex;
-    align-items: center;
-    gap: 4rem;
-    margin: 0 auto;
-    max-width: 1050px;
-    flex-wrap: wrap;
-    padding-bottom: 1rem;
-}
-
-.volontariato-intro-compatta {
-    padding-top: 0;
-}
-
-.volontariato-intro-text {
-    flex: 1;
-    min-width: 300px;
-    font-size: 1.1rem;
-    color: #1A1A1A;
-    line-height: 1.8;
-}
-
-.testo-invito {
-    font-weight: 700;
-    color: #1A3629;
-    display: block;
-    margin-top: 1.5rem;
-}
-
-.volontariato-intro-image {
-    flex: 1;
-    min-width: 300px;
-    text-align: center;
-}
-
-.volontariato-intro-image img {
-    width: 100%;
-    max-width: 550px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-}
-
-.msg-indirizzo {
-    display: block;
-    margin-top: 10px;
-    font-weight: 400;
-    color: #1A3629;
-}
-
-.volontariato-btn-wrapper {
-    margin-top: 3rem;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-.ruoli-volontariato {
-    background-color: #FFFFFF;
-    padding-top: 2rem;
-    padding-bottom: 5rem;
-}
-
-.ruoli-container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.ruoli-grid {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-}
-
-.ruolo-card {
-    background-color: #F5F5F0;
-    padding: 2.5rem 2rem;
-    border-radius: 12px;
-    text-align: center;
-    border: 1px solid #EAE6DF;
-    transition: transform 0.3s ease;
-    flex: 1;
-    min-width: 250px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.ruolo-card:hover {
-    transform: translateY(-5px);
-}
-
-.ruolo-card h3 {
-    font-size: 1.3rem;
-    color: #1A1A1A;
-    margin-bottom: 1rem;
-}
-
-.ruolo-card p {
-    font-size: 0.95rem;
-    color: #666666;
-    line-height: 1.6;
-}
-
 
 /* Area personale */
-
-/*
- * La pagina usa una griglia a due colonne su desktop
- * Le card restano indipendenti in altezza grazie ad align-items: start
- */
-.area-personale-wrapper {
+.area-personale-wrapper,
+.admin-page-wrapper {
     max-width: 1150px;
 }
 
-.area-personale-wrapper > .section-header {
+.area-personale-wrapper > .section-header,
+.admin-page-wrapper > .section-header {
     margin-bottom: 3.5rem;
 }
 
-.area-personale-wrapper > .section-header .header-subtitle {
+.area-personale-wrapper > .section-header .header-subtitle,
+.admin-page-wrapper > .section-header .header-subtitle {
     margin-bottom: 0;
 }
 
-.area-personale-grid {
+.area-personale-grid,
+.admin-dashboard-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem;
@@ -1587,10 +1449,10 @@ summary:focus-visible {
 }
 
 .dashboard-section {
-    background-color: #FFFFFF;
+    padding: 2rem;
     border: 1px solid #E8E5E1;
     border-radius: 20px;
-    padding: 2rem;
+    background-color: #FFFFFF;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
@@ -1599,9 +1461,9 @@ summary:focus-visible {
 }
 
 .dashboard-section-header h2 {
+    margin-bottom: 0.4rem;
     color: #1A3629;
     font-size: 1.4rem;
-    margin-bottom: 0.4rem;
 }
 
 .dashboard-section-header p {
@@ -1616,14 +1478,8 @@ summary:focus-visible {
     gap: 0.85rem;
 }
 
-/*
- * grid-template-areas separa contenuto e pulsante senza posizionamenti assoluti
- * Su smartphone le aree vengono ridefinite in verticale mantenendo lo stesso HTML
- */
+/* Grid separa contenuto e azione senza posizionamenti assoluti */
 .dashboard-item {
-    background-color: #F5F5F0;
-    border: 1px solid #EAE6DF;
-    border-radius: 12px;
     padding: 1.1rem 1.25rem;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
@@ -1633,18 +1489,19 @@ summary:focus-visible {
     column-gap: 1rem;
     row-gap: 0.3rem;
     align-items: center;
+    border: 1px solid #EAE6DF;
+    border-radius: 12px;
+    background-color: #F5F5F0;
 }
 
 .dashboard-item-header {
     grid-area: header;
-    display: block;
-    margin: 0;
 }
 
 .dashboard-item-header h3 {
+    margin-bottom: 0.15rem;
     color: #1A1A1A;
     font-size: 1.05rem;
-    margin-bottom: 0.15rem;
 }
 
 .dashboard-orario {
@@ -1657,30 +1514,27 @@ summary:focus-visible {
     color: #555555;
     font-size: 0.9rem;
     line-height: 1.4;
-    margin: 0;
 }
 
 .form-annulla-attivita {
     grid-area: action;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     align-self: stretch;
-    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-annulla-attivita {
-    display: inline-block;
-    background-color: transparent;
-    color: #A85454;
+    padding: 0.65rem 1rem;
     border: 1.5px solid #A85454;
     border-radius: 50px;
-    padding: 0.65rem 1rem;
+    background-color: transparent;
+    color: #A85454;
     font-size: 0.85rem;
-    line-height: 1.2;
     font-weight: 600;
-    cursor: pointer;
+    line-height: 1.2;
     white-space: nowrap;
+    cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -1690,60 +1544,39 @@ summary:focus-visible {
 }
 
 .dashboard-empty {
+    padding: 2rem 1rem;
+    border: 1px solid #EAE6DF;
+    border-radius: 12px;
+    background-color: #F5F5F0;
     color: #777777;
     font-size: 0.95rem;
     line-height: 1.6;
     text-align: center;
-    padding: 2rem 1rem;
-    background-color: #F5F5F0;
-    border: 1px solid #EAE6DF;
-    border-radius: 12px;
 }
-
 
 /* Pannello amministratore */
-
-/*
- * Le sezioni amministrative usano gli stessi principi responsive dell'area personale
- * Il CSS agisce solo sulla presentazione: il controllo dei privilegi rimane nel PHP
- */
-.admin-page-wrapper {
-    max-width: 1150px;
-}
-
-.admin-page-wrapper > .section-header {
-    margin-bottom: 3.5rem;
-}
-
-.admin-page-wrapper > .section-header .header-subtitle {
-    margin-bottom: 0;
+.admin-dashboard-card {
+    padding: 2rem;
+    border: 1px solid #E8E5E1;
+    border-radius: 20px;
+    background-color: #FFFFFF;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .admin-card-ospiti {
     position: relative;
-    background-color: #FFFFFF;
-    border: 1px solid #E8E5E1;
-    border-radius: 20px;
-    padding: 2rem;
     margin-bottom: 2rem;
     text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .admin-card-ospiti .admin-card-header {
+    margin-bottom: 0;
     display: block;
     text-align: center;
-    margin-bottom: 0;
 }
 
 .admin-card-ospiti .admin-card-header h2 {
-    text-align: center;
     margin-bottom: 0.8rem;
-}
-
-.admin-card-ospiti .admin-card-header p {
-    text-align: center;
-    margin-bottom: 0;
 }
 
 .admin-card-ospiti .admin-card-badge {
@@ -1757,33 +1590,18 @@ summary:focus-visible {
     text-align: center;
 }
 
-.admin-dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2rem;
-    align-items: start;
-}
-
-.admin-dashboard-card {
-    background-color: #FFFFFF;
-    border: 1px solid #E8E5E1;
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-}
-
 .admin-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
     margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
 .admin-card-header h2 {
+    margin-bottom: 0.35rem;
     color: #1A3629;
     font-size: 1.35rem;
-    margin-bottom: 0.35rem;
 }
 
 .admin-card-header p {
@@ -1793,21 +1611,21 @@ summary:focus-visible {
 }
 
 .admin-card-badge {
-    flex-shrink: 0;
-    background-color: #E8F0EC;
-    border: 1px solid #A3B5AE;
-    color: #1A3629;
     padding: 0.35rem 0.7rem;
+    flex-shrink: 0;
+    border: 1px solid #A3B5AE;
     border-radius: 30px;
+    background-color: #E8F0EC;
+    color: #1A3629;
     font-size: 0.72rem;
     font-weight: 700;
     white-space: nowrap;
 }
 
 .admin-subtitle {
+    margin-bottom: 1rem;
     color: #1A1A1A;
     font-size: 1rem;
-    margin-bottom: 1rem;
 }
 
 .admin-list {
@@ -1817,28 +1635,27 @@ summary:focus-visible {
 }
 
 .admin-date-divider {
-    color: #1A3629;
-    font-size: 0.82rem;
-    font-weight: 700;
     margin-top: 0.65rem;
     padding-bottom: 0.35rem;
     border-bottom: 1px solid #D4C5B9;
+    color: #1A3629;
+    font-size: 0.82rem;
+    font-weight: 700;
 }
 
-/* Il primo separatore non necessita dello spazio superiore previsto tra gruppi successivi */
 .admin-date-divider:first-child {
     margin-top: 0;
 }
 
 .admin-list-item {
-    background-color: #F5F5F0;
-    border: 1px solid #EAE6DF;
-    border-radius: 9px;
     padding: 0.9rem 1rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     gap: 1rem;
+    border: 1px solid #EAE6DF;
+    border-radius: 9px;
+    background-color: #F5F5F0;
 }
 
 .admin-list-main {
@@ -1868,33 +1685,29 @@ summary:focus-visible {
 }
 
 .admin-empty {
+    padding: 1.5rem 1rem;
+    border-radius: 9px;
+    background-color: #F5F5F0;
     color: #777777;
     font-size: 0.88rem;
     line-height: 1.5;
     text-align: center;
-    padding: 1.5rem 1rem;
-    background-color: #F5F5F0;
-    border-radius: 9px;
 }
 
-/*
- * Lo storico usa details e summary nativi
- * L'apertura e la chiusura funzionano quindi anche senza JavaScript
- */
 .admin-history {
     margin-top: 1.5rem;
-    border-top: 1px solid #E8E5E1;
     padding-top: 1rem;
+    border-top: 1px solid #E8E5E1;
 }
 
 .admin-history summary {
+    position: relative;
+    padding-right: 1.5rem;
     color: #1A3629;
     font-size: 0.9rem;
     font-weight: 700;
-    cursor: pointer;
     list-style: none;
-    position: relative;
-    padding-right: 1.5rem;
+    cursor: pointer;
 }
 
 .admin-history summary::-webkit-details-marker {
@@ -1904,8 +1717,8 @@ summary:focus-visible {
 .admin-history summary::after {
     content: "▼";
     position: absolute;
-    right: 0;
     top: 50%;
+    right: 0;
     transform: translateY(-50%);
     color: #9C8A7B;
     font-size: 0.7rem;
@@ -1917,23 +1730,13 @@ summary:focus-visible {
 }
 
 .admin-history-content {
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.65rem;
-    margin-top: 1rem;
 }
-
 
 /* Pagina Sostienici */
-
-/*
- * scroll-margin-top lascia spazio sopra la sezione quando viene raggiunta tramite un'ancora
- * evitando che il titolo risulti troppo vicino al margine superiore della finestra
- */
-.scroll-anchor {
-    scroll-margin-top: 4rem;
-}
-
 .sostienici-page-wrapper {
     padding-bottom: 4rem;
 }
@@ -1946,72 +1749,58 @@ summary:focus-visible {
     padding-top: 2rem;
 }
 
-.sostienici-section-white {
-    background-color: #FFFFFF;
-}
-
-.sostienici-section-beige {
-    background-color: #F5F5F0;
-}
-
-.content-split {
+.adozione-cuore-content {
+    max-width: 1100px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     gap: 4rem;
     flex-wrap: wrap;
-    max-width: 1100px;
-    margin: 0 auto;
 }
 
-.split-text {
-    flex: 1;
+.adozione-cuore-text {
     min-width: 300px;
+    flex: 1;
     text-align: left;
 }
 
-.split-title {
-    font-size: 2.2rem;
-    color: #1A1A1A;
+.adozione-cuore-text h2 {
     margin-bottom: 1rem;
+    color: #1A1A1A;
+    font-size: 2.2rem;
     font-weight: 700;
 }
 
-.split-text p {
-    font-size: 1.05rem;
-    color: #4A4A4A;
-    line-height: 1.7;
+.adozione-cuore-text p {
     margin-bottom: 1rem;
-}
-
-.split-box {
-    flex: 1.1;
-    min-width: 350px;
+    color: #4A4A4A;
+    font-size: 1.05rem;
+    line-height: 1.7;
 }
 
 .info-bancarie-box {
-    background-color: #FFFFFF;
+    min-width: 350px;
+    padding: 2rem 2.5rem;
+    flex: 1.1;
     border: 1px solid #E8E5E1;
     border-radius: 20px;
-    padding: 2rem 2.5rem;
+    background-color: #FFFFFF;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .info-bancarie-box h3 {
+    margin-bottom: 1rem;
     color: #1A3629;
     font-size: 1.3rem;
-    margin-bottom: 1rem;
     font-weight: 700;
 }
 
 .info-bancarie-box p {
-    font-size: 0.95rem;
     margin-bottom: 0.5rem;
     color: #333333;
+    font-size: 0.95rem;
 }
-
-
-/* IBAN con funzione di copia */
 
 .iban-copy-wrapper {
     position: relative;
@@ -2022,34 +1811,34 @@ summary:focus-visible {
 
 .iban-code {
     width: 100%;
+    padding: 0.8rem 3.4rem 0.8rem 1.2rem;
+    display: block;
+    border-radius: 8px;
+    background-color: #E8EDE9;
+    color: #1A3629;
     font-family: monospace;
     font-size: 1.05rem;
     font-weight: 700;
-    color: #1A3629;
     letter-spacing: 1px;
-    white-space: nowrap;
     text-align: center;
-    background-color: #E8EDE9;
-    padding: 0.8rem 3.4rem 0.8rem 1.2rem;
-    border-radius: 8px;
-    display: block;
+    white-space: nowrap;
 }
 
 .btn-copia-iban {
     position: absolute;
     top: 50%;
     right: 0.65rem;
-    transform: translateY(-50%);
+    z-index: 2;
     width: 32px;
     height: 32px;
-    border: none;
-    border-radius: 6px;
-    background-color: transparent;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2;
+    transform: translateY(-50%);
+    border: 0;
+    border-radius: 6px;
+    background-color: transparent;
+    cursor: pointer;
     transition: background-color 0.2s;
 }
 
@@ -2057,10 +1846,7 @@ summary:focus-visible {
     background-color: rgba(26, 54, 41, 0.1);
 }
 
-/*
- * L'icona di copia viene costruita con CSS usando un elemento e il suo ::before
- * così non serve aggiungere un'ulteriore immagine solo per questo piccolo controllo
- */
+/* L'icona di copia usa un elemento e uno pseudo-elemento, senza immagini aggiuntive */
 .copy-icon {
     position: relative;
     width: 14px;
@@ -2072,10 +1858,10 @@ summary:focus-visible {
 .copy-icon::before {
     content: "";
     position: absolute;
-    width: 11px;
-    height: 11px;
     top: -5px;
     left: -5px;
+    width: 11px;
+    height: 11px;
     border: 1.5px solid #1A3629;
     border-radius: 2px;
     background-color: #E8EDE9;
@@ -2085,10 +1871,10 @@ summary:focus-visible {
     position: absolute;
     right: 0.2rem;
     bottom: calc(100% + 0.4rem);
+    padding: 0.35rem 0.55rem;
+    border-radius: 6px;
     background-color: #1A3629;
     color: #FFFFFF;
-    border-radius: 6px;
-    padding: 0.35rem 0.55rem;
     font-size: 0.72rem;
     font-weight: 600;
     white-space: nowrap;
@@ -2098,111 +1884,121 @@ summary:focus-visible {
     display: none;
 }
 
-.box-5x1000 {
-    background-color: #F9F8F6;
-    border-radius: 12px;
-    padding: 1rem;
+.cinque-per-mille-box {
+    width: 100%;
     margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #EAE6DF;
+    border-radius: 12px;
+    background-color: #F9F8F6;
+    color: #555555;
     font-size: 0.95rem;
     line-height: 1.6;
-    color: #555555;
-    border: 1px solid #EAE6DF;
-    width: 100%;
 }
 
-/*
- * auto-fit e minmax rendono i piani flessibili senza fissare manualmente il numero di colonne
- */
-.tier-grid {
+#adozioni-distanza,
+.faq-section {
+    background-color: #FFFFFF;
+}
+
+#donazioni {
+    background-color: #F5F5F0;
+}
+
+/* auto-fit permette ai piani di adattarsi senza fissare un numero di colonne per dispositivo */
+.piani-grid {
+    max-width: 1050px;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2.5rem;
-    max-width: 1050px;
-    margin: 0 auto;
 }
 
-.tier-card {
-    background-color: #F5F5F0;
-    border-radius: 16px;
+.piano-card {
     padding: 3rem 2rem;
-    text-align: center;
-    border: 1px solid #EAE6DF;
-    transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
     flex-direction: column;
+    border: 1px solid #EAE6DF;
+    border-radius: 16px;
+    background-color: #F5F5F0;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.tier-card:hover {
+.piano-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
 }
 
-.tier-card.premium-tier {
-    background-color: #FFFFFF;
+.piano-card.piano-evidenziato {
     border: 2px solid #1A3629;
-    transform: scale(1.05);
+    background-color: #FFFFFF;
     box-shadow: 0 10px 25px rgba(26, 54, 41, 0.1);
+    transform: scale(1.05);
 }
 
-.tier-card.premium-tier:hover {
+.piano-card.piano-evidenziato:hover {
     transform: scale(1.05) translateY(-8px);
 }
 
-.tier-icon-img {
+.piano-card > img {
     width: 80px;
     height: 80px;
-    object-fit: contain;
     margin: 0 auto 1.5rem;
+    object-fit: contain;
 }
 
-.tier-card h3 {
+.piano-card h3 {
+    margin-bottom: 0.5rem;
     color: #1A1A1A;
     font-size: 1.4rem;
-    margin-bottom: 0.5rem;
 }
 
-.tier-price {
+.piano-prezzo {
+    margin-bottom: 1.5rem;
+    color: #1A3629;
     font-size: 1.8rem;
     font-weight: 700;
-    color: #1A3629;
-    margin-bottom: 1.5rem;
 }
 
-.tier-price span {
-    font-size: 1rem;
+.piano-prezzo span {
     color: #666666;
+    font-size: 1rem;
     font-weight: 400;
 }
 
-.tier-features {
-    text-align: left;
+.piano-caratteristiche {
     margin-bottom: 2rem;
     padding-left: 1.5rem;
+    text-align: left;
 }
 
-.tier-features li {
+.piano-caratteristiche li {
     margin-bottom: 0.8rem;
     color: #555555;
     font-size: 0.95rem;
-    list-style-type: disc;
     line-height: 1.4;
+    list-style-type: disc;
 }
 
-.tier-footer-text {
-    margin: 4rem auto 0;
+.piani-info {
     max-width: 800px;
-    background-color: #E8F0EC;
-    border: 1px solid #A3B5AE;
+    margin: 4rem auto 0;
     padding: 1.2rem 2rem;
+    border: 1px solid #A3B5AE;
     border-radius: 8px;
-    text-align: center;
+    background-color: #E8F0EC;
     color: #1A1A1A;
     font-size: 0.95rem;
+    text-align: center;
 }
 
-.tier-footer-link,
-.tier-footer-link:link,
-.tier-footer-link:visited {
+.piani-info a,
+.piani-info a:link,
+.piani-info a:visited,
+.contact-link,
+.contact-link:link,
+.contact-link:visited {
     color: #1A3629;
     font-weight: 700;
     text-decoration: underline;
@@ -2210,43 +2006,42 @@ summary:focus-visible {
     transition: color 0.3s;
 }
 
-.tier-footer-link:hover {
+.piani-info a:hover,
+.contact-link:hover {
     color: #9C8A7B;
 }
 
-.donazioni-orizzontali {
+.contact-banner {
+    width: 100%;
     max-width: 900px;
     margin: 0 auto;
-    text-align: center;
-}
-
-.contact-banner {
+    padding: 3rem 2rem;
     display: flex;
     justify-content: space-between;
     gap: 2rem;
-    background-color: #FFFFFF;
-    padding: 3rem 2rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-    border: 1px solid #E8E5E1;
     flex-wrap: wrap;
+    border: 1px solid #E8E5E1;
+    border-radius: 20px;
+    background-color: #FFFFFF;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .contact-banner-item {
-    flex: 1;
     min-width: 200px;
     display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: center;
-    text-align: center;
     gap: 0.5rem;
+    text-align: center;
 }
 
-.contact-icon-img {
+.contact-banner-item > img {
     width: 46px;
     height: 46px;
-    object-fit: contain;
     margin-bottom: 0.5rem;
+    object-fit: contain;
 }
 
 .contact-banner-item h3 {
@@ -2257,47 +2052,23 @@ summary:focus-visible {
 .contact-banner-item p {
     color: #666666;
     font-size: 0.95rem;
-    line-height: 1.6;
     font-weight: 400;
+    line-height: 1.6;
 }
 
-.contact-link,
-.contact-link:link,
-.contact-link:visited,
-.phone-link,
-.phone-link:link,
-.phone-link:visited {
-    color: #1A3629;
-    font-weight: 700;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    transition: color 0.3s;
-}
-
-.contact-link:hover,
-.phone-link:hover {
-    color: #9C8A7B;
-}
-
-
-/* FAQ */
-
-/*
- * Anche la FAQ utilizza details e summary nativi
- * Il triangolo è solo un indicatore grafico aggiunto con pseudo-elemento
- */
+/* FAQ con details e summary nativi */
 .faq-accordion {
     max-width: 800px;
     margin: 0 auto;
 }
 
 .faq-accordion details {
-    background-color: #F5F5F0;
-    border: 1px solid #EAE6DF;
-    border-radius: 8px;
     margin-bottom: 1rem;
     padding: 1.2rem 1.5rem;
-    transition: box-shadow 0.3s ease;
+    border: 1px solid #EAE6DF;
+    border-radius: 8px;
+    background-color: #F5F5F0;
+    transition: box-shadow 0.3s;
 }
 
 .faq-accordion details:hover {
@@ -2305,77 +2076,78 @@ summary:focus-visible {
 }
 
 .faq-accordion summary {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #1A3629;
-    cursor: pointer;
-    list-style: none;
     position: relative;
     padding-right: 2rem;
-}
-
-.faq-accordion summary::after {
-    content: "▼";
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.8rem;
-    color: #D4C5B9;
-    transition: transform 0.3s ease;
-}
-
-.faq-accordion details[open] summary::after {
-    transform: translateY(-50%) rotate(180deg);
+    color: #1A3629;
+    font-size: 1.1rem;
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
 }
 
 .faq-accordion summary::-webkit-details-marker {
     display: none;
 }
 
+.faq-accordion summary::after {
+    content: "▼";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    color: #D4C5B9;
+    font-size: 0.8rem;
+    transition: transform 0.3s;
+}
+
+.faq-accordion details[open] summary::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
 .faq-accordion p {
     margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #E8E5E1;
     color: #666666;
     font-size: 0.95rem;
     line-height: 1.6;
-    border-top: 1px solid #E8E5E1;
-    padding-top: 1rem;
 }
-
 
 /* Footer */
-
 .site-footer {
+    padding-top: 4rem;
     background-color: #152E22;
     color: #E8E5E1;
-    padding-top: 4rem;
 }
 
+/* Tre colonne uguali mantengono il contenuto centrato nell'intera larghezza del footer */
 .footer-container {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto 3rem;
     padding: 0 2rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 3rem;
+    align-items: start;
 }
 
 .footer-col h2 {
-    color: #FFFFFF;
-    font-size: 1.2rem;
     margin-bottom: 1.5rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #D4C5B9;
     padding-bottom: 0.5rem;
     display: inline-block;
+    border-bottom: 2px solid #D4C5B9;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
 .footer-col p {
+    margin-bottom: 1.5rem;
+    color: #A3B5AE;
     font-size: 0.95rem;
     line-height: 1.6;
-    color: #A3B5AE;
-    margin-bottom: 1.5rem;
 }
 
 .footer-col address {
@@ -2385,44 +2157,44 @@ summary:focus-visible {
 .footer-contact,
 .footer-links,
 .footer-note-list {
-    list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .footer-contact li {
+    min-height: 30px;
+    margin-bottom: 0.9rem;
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    min-height: 30px;
+    color: #A3B5AE;
     font-size: 0.95rem;
     line-height: 1.4;
-    margin-bottom: 0.9rem;
-    color: #A3B5AE;
 }
 
 .footer-contact-icon {
     width: 26px;
     height: 26px;
-    object-fit: contain;
     flex: 0 0 26px;
+    object-fit: contain;
 }
 
 .footer-links li,
 .footer-note-list li {
-    font-size: 0.95rem;
     margin-bottom: 0.8rem;
     color: #A3B5AE;
+    font-size: 0.95rem;
 }
 
 .footer-contact a,
 .footer-links a,
 .footer-note-list a {
-    color: #A3B5AE;
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: color 0.3s, padding-left 0.3s;
     display: inline-block;
+    color: #A3B5AE;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: color 0.3s, padding-left 0.3s;
 }
 
 .footer-contact a:hover,
@@ -2436,26 +2208,15 @@ summary:focus-visible {
     padding-left: 5px;
 }
 
-/*
- * nth-child centra soltanto la seconda colonna del footer su desktop
- * Nella media query tablet il margine viene poi annullato quando le colonne diventano verticali
- */
-.footer-container .footer-col:nth-child(2) {
-    margin: 0 auto;
-}
-
-.footer-social,
-.social-icons {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 1.5rem;
+.footer-social {
     margin-top: 1.5rem;
-    padding-left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.5rem;
 }
 
-.footer-social img,
-.social-icons img {
+.footer-social img {
     width: 42px;
     height: 42px;
     object-fit: contain;
@@ -2463,38 +2224,37 @@ summary:focus-visible {
     transition: opacity 0.3s, transform 0.3s;
 }
 
-.footer-social img:hover,
-.social-icons img:hover {
+.footer-social img:hover {
     opacity: 1;
     transform: translateY(-3px) scale(1.05);
 }
 
 .footer-bottom {
-    background-color: #0B1A12;
     padding: 1.5rem 0;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: #0B1A12;
 }
 
 .footer-bottom-content {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    justify-content: space-between;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .footer-bottom-content p {
-    font-size: 0.85rem;
     color: #889C94;
-    margin: 0;
+    font-size: 0.85rem;
 }
 
 .academic-credit {
-    font-style: normal;
     color: #D4C5B9;
+    font-style: normal;
 }
 
 .academic-credit strong {
@@ -2502,97 +2262,22 @@ summary:focus-visible {
     font-weight: 700;
 }
 
-
-/* Classi di supporto per testi e form */
-
-.fw-bold {
-    font-weight: 700 !important;
-    color: inherit;
-    font-size: inherit;
-}
-
-.fw-bold-primary {
-    font-weight: 700 !important;
-    color: #1A3629 !important;
-}
-
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
-    margin-top: 1rem;
-    margin-bottom: 0.35rem;
-}
-
-.checkbox-group input[type="checkbox"] {
-    width: 16px !important;
-    height: 16px;
-    margin: 0 !important;
-    flex: 0 0 16px;
-    cursor: pointer;
-}
-
-.checkbox-group .checkbox-label {
-    display: inline-flex;
-    align-items: center;
-    margin: 0;
-    line-height: 1.2;
-    font-weight: 400;
-}
-
-.cookie-disclaimer {
-    font-size: 0.75rem;
-    color: #888888;
-    display: block;
-    line-height: 1.4;
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-}
-
-.form-switch-text {
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-    color: #666666;
-}
-
-.form-hint {
-    font-size: 0.8rem;
-    color: #888888;
-    margin-top: 0.4rem;
-    display: block;
-    line-height: 1.4;
-    font-weight: 400;
-}
-
-
-/* Schermi intermedi */
-
-/*
- * Primo breakpoint dedicato soprattutto all'header
- * Il menu può andare su una seconda riga prima di arrivare alle dimensioni tablet
- */
+/* Schermi intermedi: l'header va su due righe quando lo spazio non è più sufficiente */
 @media screen and (max-width: 68rem) {
     .header-container {
-        flex-wrap: wrap;
         justify-content: space-between;
         row-gap: 1.25rem;
+        flex-wrap: wrap;
     }
 
     .main-nav {
         order: 3;
         width: 100%;
-        margin: 0;
     }
 
     .main-nav ul {
-        justify-content: center;
-        flex-wrap: wrap;
         gap: 1rem 2rem;
-    }
-
-    .home-emergency-section .emergency-container {
-        max-width: 980px;
+        flex-wrap: wrap;
     }
 
     .partners-logos {
@@ -2605,13 +2290,7 @@ summary:focus-visible {
     }
 }
 
-
-/* Tablet e smartphone */
-
-/*
- * A 48rem i layout principali passano progressivamente a una colonna
- * Le larghezze restano fluide per evitare scorrimento orizzontale
- */
+/* Tablet: i layout affiancati passano a una colonna quando necessario */
 @media screen and (max-width: 48rem) {
     .page-wrapper {
         padding: 3rem 1.25rem 4rem;
@@ -2630,49 +2309,42 @@ summary:focus-visible {
         font-size: 1.9rem;
     }
 
-
-    /* Header */
-
     .header-container {
         padding: 0 1.25rem;
     }
 
     .user-area {
-        flex-wrap: wrap;
         white-space: normal;
+        flex-wrap: wrap;
     }
 
     .account-dropdown {
-        left: auto;
         right: 0;
+        left: auto;
         transform: none;
     }
 
-
-    /* Home */
-
-    .home-hero {
-        gap: 2.5rem;
+    .home-intro {
         padding: 4rem 1.25rem;
+        gap: 2.5rem;
     }
 
-    .home-hero-text,
-    .home-hero-image {
+    .home-arrivals-section {
+        padding: 3rem 1.25rem 4rem;
+    }
+
+    .info-section {
+        padding: 2rem 1.25rem 4rem;
+    }
+
+    .home-intro-text,
+    .home-intro-image {
         min-width: 0;
         flex-basis: 100%;
     }
 
-    .home-hero-text h1 {
+    .home-intro-text h1 {
         font-size: 2.4rem;
-    }
-
-    .home-hero-buttons {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .adoption-steps-wrapper {
-        padding: 4rem 1.25rem;
     }
 
     .adoption-steps-box {
@@ -2688,41 +2360,40 @@ summary:focus-visible {
         padding: 0;
     }
 
-    .gatti-grid-2 {
-        grid-template-columns: minmax(0, 1fr);
+    .gatti-grid {
         max-width: 350px;
+        grid-template-columns: minmax(0, 1fr);
     }
 
-    .card-gatto-premium {
+    .gatto-card {
         min-width: 0;
         width: 100%;
     }
 
+    .home-emergency-section {
+        padding: 4rem 1.25rem;
+    }
 
-    /* Emergenze */
-
-    .home-emergency-section .emergency-container {
-        flex-wrap: wrap;
+    .emergency-container {
         max-width: 650px;
+        min-height: 0;
+        flex-wrap: wrap;
     }
 
-    .home-emergency-section .emergency-text,
-    .home-emergency-section .emergency-image {
-        flex: 0 0 100%;
+    .emergency-text,
+    .emergency-image {
         min-width: 0;
+        flex: 0 0 100%;
     }
 
-    .home-emergency-section .emergency-text {
+    .emergency-text {
         padding: 2.75rem 2rem;
     }
 
-    .home-emergency-section .emergency-image img {
-        min-height: 300px;
+    .emergency-image img {
+        min-height: 320px;
         max-height: 390px;
     }
-
-
-    /* Form */
 
     .filtri-ricerca {
         flex-direction: column;
@@ -2747,53 +2418,43 @@ summary:focus-visible {
         gap: 1rem;
     }
 
-    .fasce-orarie-container {
-        flex-wrap: wrap;
-    }
-
     .lista-selezionati {
         flex-wrap: wrap;
         overflow-x: visible;
     }
 
+    .volontariato-intro-content {
+        padding: 0 1rem 1rem;
+        gap: 2.5rem;
+    }
 
-    /* Sostegno e volontariato */
+    .fasce-orarie-container {
+        flex-wrap: wrap;
+    }
 
-    .content-split {
+    .adozione-cuore-content {
         flex-direction: column;
     }
 
-    .split-text,
-    .split-box {
+    .adozione-cuore-text,
+    .info-bancarie-box {
         min-width: 0;
         width: 100%;
     }
 
-    .tier-card.premium-tier,
-    .tier-card.premium-tier:hover {
+    .piano-card.piano-evidenziato,
+    .piano-card.piano-evidenziato:hover {
         transform: none;
     }
 
-
-    /* Area personale */
-
-    .area-personale-grid {
-        grid-template-columns: 1fr;
-    }
-
-
-    /* Pannello amministratore */
-
+    .area-personale-grid,
     .admin-dashboard-grid {
         grid-template-columns: 1fr;
     }
 
-
-    /* Partner */
-
     .partners-logos {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
         max-width: 470px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1rem 1.5rem;
     }
 
@@ -2802,15 +2463,8 @@ summary:focus-visible {
         height: 80px;
     }
 
-
-    /* Footer */
-
     .footer-container {
         grid-template-columns: 1fr;
-    }
-
-    .footer-container .footer-col:nth-child(2) {
-        margin: 0;
     }
 
     .footer-bottom-content {
@@ -2819,15 +2473,39 @@ summary:focus-visible {
     }
 }
 
-
-/* Smartphone con larghezza ridotta */
-
-/*
- * Il secondo breakpoint riduce spaziature e dimensioni dove necessario
- * senza creare una versione separata della pagina
- */
+/* Smartphone stretti: si riducono soltanto gli elementi che ne hanno realmente bisogno */
 @media screen and (max-width: 36rem) {
-    .home-hero-text h1 {
+    .header-container {
+        padding: 0 1rem;
+        gap: 1rem;
+    }
+
+    .logo-link {
+        font-size: 1.2rem;
+    }
+
+    .logo-icona {
+        width: 44px;
+        height: 44px;
+        margin-right: 0.65rem;
+    }
+
+    .user-area {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .main-nav ul {
+        gap: 0.75rem 1.2rem;
+    }
+
+    .main-nav a,
+    .main-nav a:link,
+    .main-nav a:visited {
+        font-size: 0.98rem;
+    }
+
+    .home-intro-text h1 {
         font-size: 2rem;
     }
 
@@ -2840,19 +2518,19 @@ summary:focus-visible {
         padding: 2rem 1rem;
     }
 
-    .home-emergency-section .emergency-text {
+    .emergency-text {
         padding: 2.5rem 1.25rem;
     }
 
-    .home-emergency-section .emergency-title {
+    .emergency-title {
         font-size: 1.7rem;
     }
 
-    .home-emergency-section .emergency-item {
+    .emergency-item {
         gap: 1rem;
     }
 
-    .prenotazione-wrapper {
+    .form-card {
         padding: 2rem 1rem;
     }
 
@@ -2883,10 +2561,12 @@ summary:focus-visible {
         padding: 2rem 1.25rem;
     }
 
+    .volontariato-intro-content {
+        padding: 0 0 1rem;
+    }
 
-    /* Area personale */
-
-    .dashboard-section {
+    .dashboard-section,
+    .admin-dashboard-card {
         padding: 1.5rem 1rem;
     }
 
@@ -2900,16 +2580,8 @@ summary:focus-visible {
     }
 
     .form-annulla-attivita {
-        justify-content: flex-start;
         align-self: auto;
-    }
-
-
-    /* Pannello amministratore */
-
-    .admin-dashboard-card,
-    .admin-card-ospiti {
-        padding: 1.5rem 1rem;
+        justify-content: flex-start;
     }
 
     .admin-card-header {
@@ -2918,8 +2590,8 @@ summary:focus-visible {
 
     .admin-card-ospiti .admin-card-badge {
         position: static;
-        display: inline-block;
         margin-bottom: 1rem;
+        display: inline-block;
     }
 
     .admin-list-item {
@@ -2931,29 +2603,25 @@ summary:focus-visible {
         text-align: left;
     }
 
-
-    /* Sostienici */
-
     .info-bancarie-box {
         padding: 2rem 1rem;
     }
 
     .iban-code {
+        padding: 0.8rem 2.8rem 0.8rem 0.7rem;
         font-size: 0.78rem;
         letter-spacing: 0;
-        white-space: nowrap;
+        white-space: normal;
+        overflow-wrap: anywhere;
     }
-
-
-    /* Partner */
 
     .home-partners-strip {
         padding: 2rem 1rem 2.2rem;
     }
 
     .partners-logos {
-        grid-template-columns: 1fr;
         max-width: 240px;
+        grid-template-columns: 1fr;
         gap: 0.4rem;
     }
 
@@ -2962,21 +2630,18 @@ summary:focus-visible {
         height: 90px;
     }
 
-
-    /* Footer */
+    .footer-container,
+    .footer-bottom-content {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
 
     .footer-contact li {
         align-items: flex-start;
     }
 }
 
-
-/* Riduzione delle animazioni */
-
-/*
- * prefers-reduced-motion rispetta la preferenza impostata nel sistema operativo
- * In questa modalità vengono eliminati movimenti e transizioni non indispensabili
- */
+/* Rispetta la preferenza di sistema per la riduzione del movimento */
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
@@ -2990,29 +2655,28 @@ summary:focus-visible {
     }
 }
 
-
-/* Versione destinata alla stampa */
-
-/*
- * La stampa privilegia i contenuti: navigazione, pulsanti e controlli interattivi vengono nascosti
- * Le card perdono le ombre e break-inside riduce il rischio di spezzarle tra due pagine
- */
+/* Versione per la stampa: contenuti leggibili, sfondi chiari e controlli interattivi rimossi */
 @media print {
     body {
         background: #FFFFFF;
         color: #000000;
         font-family: Georgia, "Times New Roman", serif;
+        font-size: 11pt;
+        line-height: 1.4;
     }
 
     .site-header,
     .site-footer,
     .paw-divider,
-    .home-hero-buttons,
+    .home-intro-buttons,
+    .home-arrivals-action,
+    .volontariato-btn-wrapper,
     .btn-solid-dark,
     .btn-outline,
     .btn-outline-dark,
     .scopri-link,
     .filtri-ricerca,
+    .alert-wrapper,
     .btn-close-alert,
     .btn-copia-iban,
     .btn-annulla-attivita,
@@ -3022,35 +2686,54 @@ summary:focus-visible {
 
     main,
     .page-wrapper,
-    .section-padding {
+    .section-container,
+    .section-padding,
+    .home-intro,
+    .home-emergency-section,
+    .info-section {
         width: 100%;
         max-width: none;
         margin: 0;
         padding: 0;
     }
 
+    .adoption-steps-wrapper,
+    .home-arrivals-section,
+    .info-section,
+    .home-emergency-section,
+    #adozioni-distanza,
+    #donazioni,
+    .faq-section {
+        background: #FFFFFF;
+    }
+
     .adoption-steps-box,
-    .card-gatto-premium,
+    .gatto-card,
     .emergency-container,
-    .ruolo-card,
-    .tier-card,
-    .prenotazione-wrapper,
+    .info-card,
+    .piano-card,
+    .form-card,
     .auth-card,
     .contact-banner,
     .info-bancarie-box,
     .dashboard-section,
-    .admin-dashboard-card,
-    .admin-card-ospiti {
+    .admin-dashboard-card {
+        background: #FFFFFF;
         box-shadow: none;
         break-inside: avoid;
     }
 
-    img {
-        max-width: 100%;
+    .gatto-card.selezionata,
+    .piano-card.piano-evidenziato {
+        transform: none;
     }
 
     a {
         color: #000000;
         text-decoration: underline;
+    }
+
+    img {
+        max-width: 100%;
     }
 }

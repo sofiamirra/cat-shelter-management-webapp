@@ -175,13 +175,13 @@ require 'includes/header.php';
         </div>
 
         <?php if (!empty($errore_php)) { ?>
-            <div class="auth-alert-danger" role="alert">
+            <div class="alert-danger" role="alert">
                 <?php echo htmlspecialchars($errore_php, ENT_QUOTES, 'UTF-8'); ?>
             </div>
         <?php } ?>
 
         <?php if (!empty($successo_php)) { ?>
-            <div class="auth-alert-success" role="status">
+            <div class="alert-success" role="status">
                 <?php echo htmlspecialchars($successo_php, ENT_QUOTES, 'UTF-8'); ?>
                 <br><br>
                 <a href="<?php echo htmlspecialchars($link_login, ENT_QUOTES, 'UTF-8'); ?>">Vai al Login</a>
@@ -271,8 +271,8 @@ require 'includes/header.php';
                 <span class="errore-js" id="err-conferma_password"></span>
             </div>
 
-            <div class="text-center mt-2">
-                <button type="submit" class="btn-solid-dark w-100">Registrati</button>
+            <div class="auth-actions">
+                <button type="submit" class="btn-solid-dark">Registrati</button>
 
                 <p class="form-switch-text">Hai già un account?</p>
 
@@ -358,7 +358,7 @@ document.getElementById('form-registrazione').addEventListener('submit', functio
         document.getElementById('err-password').classList.add('testo-errore');
         password.classList.add('input-error');
         formValido = false;
-}
+    }
 
     // Il secondo inserimento della password deve essere presente e coincidere con il primo
     const conferma = document.getElementById('conferma_password');

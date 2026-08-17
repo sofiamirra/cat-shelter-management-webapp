@@ -157,7 +157,7 @@ require 'includes/header.php';
         </div>
 
         <?php if (!empty($errore_php)) { ?>
-            <div class="auth-alert-danger" role="alert">
+            <div class="alert-danger" role="alert">
                 <?php echo htmlspecialchars($errore_php, ENT_QUOTES, 'UTF-8'); ?>
             </div>
         <?php } ?>
@@ -200,15 +200,15 @@ require 'includes/header.php';
                     name="ricordami"
                     <?php if (!empty($_COOKIE['remember_user'])) { echo 'checked'; } ?>
                 >
-                <label for="ricordami" class="checkbox-label">Ricordami</label>
+                <label for="ricordami">Ricordami</label>
             </div>
 
             <span class="cookie-disclaimer">
                 Selezionando la casella acconsenti all'uso di un cookie per ricordare il tuo username per 72 ore.
             </span>
 
-            <div class="text-center mt-2">
-                <button type="submit" class="btn-solid-dark w-100">Accedi</button>
+            <div class="auth-actions">
+                <button type="submit" class="btn-solid-dark">Accedi</button>
 
                 <p class="form-switch-text">Non hai ancora un account?</p>
 

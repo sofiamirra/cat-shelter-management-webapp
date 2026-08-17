@@ -27,8 +27,8 @@ require 'includes/header.php';
 
     <!-- Il parametro status nella query string determina quale messaggio mostrare dopo il redirect del backend -->
     <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
-        <div class="alert-wrapper mb-4" id="banner-feedback">
-            <div class="auth-alert-success alert-dismissible">
+        <div class="alert-wrapper" id="banner-feedback">
+            <div class="alert-success alert-dismissible">
                 <strong class="messaggio-successo-titolo"><img src="assets/img/icona_spunta_successo.png" alt="" class="icona-successo"> Prenotazione confermata!</strong><br>
                 Ti aspettiamo in struttura. I dettagli sono stati salvati correttamente.
 
@@ -39,8 +39,8 @@ require 'includes/header.php';
 
     <?php elseif (isset($_GET['status']) && $_GET['status'] === 'error'): ?>
         <!-- Se il backend reindirizza con status=error viene mostrato un messaggio generico senza esporre dettagli tecnici -->
-        <div class="alert-wrapper mb-4" id="banner-feedback">
-            <div class="auth-alert-danger alert-dismissible">
+        <div class="alert-wrapper" id="banner-feedback">
+            <div class="alert-danger alert-dismissible">
                 <strong>Si è verificato un errore!</strong> Riprova più tardi o contatta la struttura.
                 <button type="button" class="btn-close-alert" id="btn-chiudi-feedback" aria-label="Chiudi">&times;</button>
             </div>
@@ -49,8 +49,8 @@ require 'includes/header.php';
 
     <!-- La presenza dello username in sessione permette di mostrare il form soltanto agli utenti autenticati -->
     <?php if (isset($_SESSION['username'])): ?>
-        <div class="prenotazione-wrapper mb-4" id="sezione-prenotazione">
-            <div class="prenotazione-header text-center mb-2">
+        <div class="form-card" id="sezione-prenotazione">
+            <div class="prenotazione-header">
                 <h2>Prenota una visita in struttura</h2>
                 <p class="header-subtitle prenotazione-subtitle">Seleziona uno o più gatti dalle <strong>card in basso</strong> per compilare la tua richiesta.</p>
                 <p class="orari-visita-text">Le visite si effettuano tutti i giorni dalle 10:30 alle 17:30.</p>
@@ -72,7 +72,7 @@ require 'includes/header.php';
                     </div>
                 </div>
 
-                <div class="form-group mt-2">
+                <div class="form-group">
                     <!-- La lista viene aggiornata dinamicamente con i gatti ricevuti dal componente React -->
                     <p class="form-label-title">Gatti selezionati per l'incontro:</p>
 
@@ -85,15 +85,15 @@ require 'includes/header.php';
                 <input type="hidden" name="id_gatti_selezionati" id="input-hidden-gatti" value="">
 
                 <!-- Il pulsante parte disabilitato e viene attivato soltanto quando React ha comunicato almeno un gatto selezionato -->
-                <button type="submit" class="btn-solid-dark w-100 mt-1" id="btn-prenota" disabled>Conferma Prenotazione</button>
+                <button type="submit" class="btn-solid-dark" id="btn-prenota" disabled>Conferma Prenotazione</button>
             </form>
         </div>
 
     <!-- Chi non è autenticato può consultare la galleria ma non utilizzare il form di prenotazione -->
     <?php else: ?>
-        <div class="alert-wrapper mb-4 text-center">
-            <div class="auth-alert-success">
-                <a href="login.php?ritorno=ospiti.php" class="auth-alert-link">Accedi o Registrati</a> per selezionare i mici e prenotare la tua visita.
+        <div class="alert-wrapper">
+            <div class="alert-success">
+                <a href="login.php?ritorno=ospiti.php">Accedi o Registrati</a> per selezionare i mici e prenotare la tua visita.
             </div>
         </div>
     <?php endif; ?>

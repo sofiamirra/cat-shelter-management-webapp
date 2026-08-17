@@ -23,7 +23,7 @@ require 'includes/header.php';
     </header>
 
     <!-- Contenuto introduttivo con testo informativo e immagine rappresentativa del volontariato -->
-    <div class="volontariato-intro-content section-padding volontariato-intro-compatta">
+    <div class="volontariato-intro-content">
         <div class="volontariato-intro-text">
             <p>Il Parco delle Fusa ha bisogno di persone appassionate per garantire il benessere quotidiano dei nostri ospiti felini. Diventare volontario significa donare una parte del proprio tempo per migliorare la vita dei gatti in attesa di adozione. Non serve esperienza pregressa, ma solo tanta affidabilità, costanza e un amore incondizionato per gli animali.</p>
 
@@ -40,9 +40,9 @@ require 'includes/header.php';
 </div>
 
 <!-- Sezione dedicata alle principali attività svolte dai volontari -->
-<section class="ruoli-volontariato section-padding">
-    <div class="ruoli-container">
-        <header class="section-header volontariato-header volontariato-header-mansioni">
+<section class="info-section">
+    <div class="section-container">
+        <header class="section-header volontariato-header">
             <h2>Le Mansioni del Volontario</h2>
 
             <div class="paw-divider" aria-hidden="true">
@@ -52,34 +52,34 @@ require 'includes/header.php';
             </div>
         </header>
 
-        <div class="ruoli-grid">
+        <div class="info-grid">
 
             <!-- Ogni mansione è rappresentata come article perché costituisce un contenuto autonomo con titolo e descrizione -->
-            <article class="ruolo-card">
+            <article class="info-card">
 
                 <!-- Le icone sono decorative perché ogni mansione è già identificata dal relativo h3 -->
-                <img src="assets/img/icona_mattina.png" alt="" class="icon-png-large">
+                <img src="assets/img/icona_mattina.png" alt="">
 
                 <h3>Turno del Mattino</h3>
                 <p>Aiutaci a iniziare la giornata dei felini preparando il cibo e sistemando gli spazi.</p>
             </article>
 
-            <article class="ruolo-card">
-                <img src="assets/img/icona_sera.png" alt="" class="icon-png-large">
+            <article class="info-card">
+                <img src="assets/img/icona_sera.png" alt="">
 
                 <h3>Turno della Sera</h3>
                 <p>Assicura ai mici una serena buonanotte. Rifornirai il cibo secco e gli dedicherai qualche coccola serale.</p>
             </article>
 
-            <article class="ruolo-card">
-                <img src="assets/img/icona_gioco.png" alt="" class="icon-png-large">
+            <article class="info-card">
+                <img src="assets/img/icona_gioco.png" alt="">
 
                 <h3>Socializzazione</h3>
                 <p>Disponibilità nella fascia pomeridiana per favorire la socializzazione dei mici più timorosi e diffidenti.</p>
             </article>
 
-            <article class="ruolo-card">
-                <img src="assets/img/icona_eventi.png" alt="" class="icon-png-large">
+            <article class="info-card">
+                <img src="assets/img/icona_eventi.png" alt="">
 
                 <h3>Gestione Eventi</h3>
                 <p>Cerchiamo aiuto per la gestione degli eventi sul territorio, per i mercatini solidali e le raccolte fondi.</p>
@@ -89,7 +89,7 @@ require 'includes/header.php';
 </section>
 
 <!-- Sezione raggiungibile dal collegamento "Prenota il tuo Turno" tramite l'id prenota -->
-<div id="prenota" class="page-wrapper volontariato-form-wrapper section-padding">
+<div id="prenota" class="page-wrapper volontariato-form-wrapper">
     <header class="section-header volontariato-header">
         <h2>Prenota il tuo Turno</h2>
 
@@ -103,11 +103,11 @@ require 'includes/header.php';
     </header>
 
     <!-- aria-live="polite" permette di annunciare i messaggi prodotti dalle richieste asincrone senza interrompere bruscamente la lettura -->
-    <div id="messaggio-esito" class="d-none alert-wrapper mb-4" aria-live="polite"></div>
+    <div id="messaggio-esito" class="d-none alert-wrapper" aria-live="polite"></div>
 
     <!-- Il form viene mostrato soltanto se lo username è presente nella sessione dell'utente autenticato -->
     <?php if (isset($_SESSION['username'])): ?>
-        <div class="prenotazione-wrapper volontariato-prenotazione-box">
+        <div class="form-card">
 
             <!-- novalidate lascia al Vanilla JavaScript i controlli lato client; il submit viene intercettato e inviato al backend tramite fetch -->
             <form action="actions/processa_volontariato.php" method="POST" id="form-volontariato" novalidate>
@@ -116,28 +116,28 @@ require 'includes/header.php';
 
                     <!-- La data viene scelta prima delle fasce perché serve per interrogare il server sulla disponibilità -->
                     <label for="data_turno" class="form-label-title">Seleziona la data del turno:</label>
-                    <input type="date" id="data_turno" name="data_turno" class="input-data-large input-data-full-width">
+                    <input type="date" id="data_turno" name="data_turno" class="input-data-large">
                 </div>
 
                 <!-- fieldset raggruppa le checkbox correlate e legend ne fornisce il titolo -->
                 <fieldset class="form-group" id="sezione-fasce">
-                    <legend class="form-label-title mt-2">Fasce orarie disponibili (selezionane una o più):</legend>
+                    <legend class="form-label-title">Fasce orarie disponibili (selezionane una o più):</legend>
 
                     <!-- Le fasce partono disabilitate e vengono abilitate dal JavaScript solo dopo la verifica della disponibilità sul server -->
-                    <div class="fasce-orarie-container" id="contenitore-orari">
+                    <div class="fasce-orarie-container">
 
                         <!-- Ogni checkbox è contenuta nel proprio label, quindi il testo della fascia è direttamente associato al controllo -->
-                        <label class="fascia-oraria-label" id="label-mattina">
+                        <label class="fascia-oraria-label">
                             <input type="checkbox" name="fasce[]" value="09:00:00" class="chk-fascia" disabled>
                             <span>Mattina (09 - 13)</span>
                         </label>
 
-                        <label class="fascia-oraria-label" id="label-pomeriggio">
+                        <label class="fascia-oraria-label">
                             <input type="checkbox" name="fasce[]" value="13:00:00" class="chk-fascia" disabled>
                             <span>Pomeriggio (13 - 17)</span>
                         </label>
 
-                        <label class="fascia-oraria-label" id="label-sera">
+                        <label class="fascia-oraria-label">
                             <input type="checkbox" name="fasce[]" value="17:00:00" class="chk-fascia" disabled>
                             <span>Sera (17 - 21)</span>
                         </label>
@@ -145,16 +145,18 @@ require 'includes/header.php';
                 </fieldset>
 
                 <!-- Il pulsante parte disabilitato e viene attivato solo quando è selezionata almeno una fascia ancora disponibile -->
-                <button type="submit" class="btn-solid-dark w-100 mt-2" id="btn-invia-turno" disabled>Conferma Disponibilità</button>
+                <button type="submit" class="btn-solid-dark" id="btn-invia-turno" disabled>
+                    Conferma Disponibilità
+                </button>
             </form>
         </div>
 
     <!-- Il visitatore non autenticato può leggere la pagina ma deve accedere per prenotare i turni -->
     <?php else: ?>
-        <div class="alert-wrapper mb-4 text-center">
-            <div class="auth-alert-success">
+        <div class="alert-wrapper">
+            <div class="alert-success">
                 Vuoi unirti alla nostra squadra di volontari?<br>
-                <a href="login.php?ritorno=volontariato.php" class="auth-alert-link">Accedi o Registrati</a> per poter prenotare i tuoi turni.
+                <a href="login.php?ritorno=volontariato.php">Accedi o Registrati</a> per poter prenotare i tuoi turni.
             </div>
         </div>
     <?php endif; ?>
@@ -258,8 +260,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // L'operatore ternario assegna la classe di successo oppure quella di errore in base al tipo ricevuto
         alert.className = tipo === 'success'
-            ? 'auth-alert-success alert-dismissible'
-            : 'auth-alert-danger alert-dismissible';
+            ? 'alert-success alert-dismissible'
+            : 'alert-danger alert-dismissible';
 
         // Il testo principale viene evidenziato semanticamente con strong
         const testoPrincipale = document.createElement('strong');

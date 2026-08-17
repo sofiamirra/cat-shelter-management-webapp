@@ -143,7 +143,7 @@ function GattiApp() {
     }
 
     return (
-        <div className="react-container">
+        <div>
 
             {/* I controlli aggiornano gli stati utilizzati per filtrare e ordinare i dati già caricati */}
             <div className="filtri-ricerca">
@@ -173,17 +173,17 @@ function GattiApp() {
             {gattiVisualizzati.length === 0 ? (
                 <p className="nessun-risultato">Nessun felino corrisponde ai criteri di ricerca.</p>
             ) : (
-                <div className="gatti-grid-2">
+                <div className="gatti-grid">
 
                     {/* map genera una card per ogni gatto utilizzando l'ID del database come key univoca */}
                     {gattiVisualizzati.map(gatto => {
                         const isSelezionato = gattiSelezionati.some(g => g.id === gatto.id);
 
                         // let è utilizzato perché le classi vengono aggiunte in base allo stato della card
-                        let classiCard = 'card-gatto-premium';
+                        let classiCard = 'gatto-card';
 
                         if (IS_LOGGED_IN) {
-                            classiCard += ' card-cliccabile';
+                            classiCard += ' gatto-card-selezionabile';
                         }
 
                         if (isSelezionato) {
@@ -198,10 +198,10 @@ function GattiApp() {
                                 onKeyDown={IS_LOGGED_IN ? event => gestisciTastiera(event, gatto) : undefined}
                                 tabIndex={IS_LOGGED_IN ? 0 : undefined}
                             >
-                                <div className="card-img-wrapper">
+                                <div className="gatto-card-image">
 
                                     {/* Il ternario traduce il codice del sesso nel testo mostrato sul badge */}
-                                    <span className="badge-nuovo">
+                                    <span className="gatto-badge">
                                         {gatto.sesso === 'M' ? 'Maschio' : 'Femmina'}
                                     </span>
 
@@ -209,12 +209,12 @@ function GattiApp() {
                                     <img src="assets/img/placeholder_gatto.png" alt="" />
                                 </div>
 
-                                <div className="card-body">
+                                <div className="gatto-card-body">
 
                                     {/* Il nome usa h2 perché la galleria dipende direttamente dal titolo principale della pagina */}
                                     <h2>{gatto.nome}</h2>
 
-                                    <p className="card-desc">
+                                    <p className="gatto-card-description">
                                         <strong>Razza: </strong> {gatto.razza} <br />
                                         <strong>Manto: </strong> {gatto.colore_mantello} <br />
                                         <strong>Età: </strong> {gatto.eta} anni <br />

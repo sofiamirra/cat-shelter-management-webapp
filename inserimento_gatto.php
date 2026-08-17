@@ -203,7 +203,7 @@ require 'includes/header.php';
 ?>
 
 <div class="page-wrapper">
-    <div class="prenotazione-wrapper inserimento-gatto-wrapper">
+    <div class="form-card inserimento-gatto-wrapper">
 
         <a href="admin.php" class="back-admin-link">
             <span aria-hidden="true">←</span>
@@ -211,12 +211,12 @@ require 'includes/header.php';
         </a>
 
         <!-- Titolo principale della pagina amministrativa di inserimento -->
-        <h1 class="text-center mb-2">Inserimento Nuovo Ospite</h1>
+        <h1>Inserimento Nuovo Ospite</h1>
 
         <!-- Il messaggio comunica l'esito del controllo e dell'inserimento lato server -->
         <?php if (!empty($messaggio_server)): ?>
             <div
-                class="<?php echo $errore_server ? 'auth-alert-danger' : 'auth-alert-success'; ?>"
+                class="<?php echo $errore_server ? 'alert-danger' : 'alert-success'; ?>"
                 role="<?php echo $errore_server ? 'alert' : 'status'; ?>"
             >
                 <?php echo htmlspecialchars($messaggio_server, ENT_QUOTES, 'UTF-8'); ?>
@@ -374,7 +374,7 @@ require 'includes/header.php';
                 <span class="errore-js" id="err-descrizione"></span>
             </div>
 
-            <button type="submit" class="btn-solid-dark w-100">Registra Felino</button>
+            <button type="submit" class="btn-solid-dark">Registra Felino</button>
         </form>
     </div>
 </div>

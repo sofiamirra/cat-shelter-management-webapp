@@ -89,7 +89,7 @@ require 'includes/header.php';
 </section>
 
 <!-- Sezione dinamica che mostra i due gatti con data di arrivo più recente -->
-<section class="home-arrivals-section section-padding">
+<section class="home-arrivals-section">
     <header class="section-header">
         <h2>Gli Ultimi Arrivati</h2>
 
@@ -102,7 +102,7 @@ require 'includes/header.php';
         <p class="header-subtitle">I nuovi ospiti del rifugio sono pronti a trovare una casa.</p>
     </header>
 
-    <div class="gatti-grid-2">
+    <div class="gatti-grid">
         <?php
         // La Home deve soltanto leggere i gatti, quindi usa l'utente MySQL lecture con privilegi di sola lettura
         $con = get_db_connection('lecture');
@@ -157,20 +157,20 @@ require 'includes/header.php';
                 ?>
 
                 <!-- Ogni scheda rappresenta un singolo gatto come contenuto autonomo -->
-                <article class="card-gatto-premium">
+                <article class="gatto-card">
 
                     <!-- figure raggruppa l'immagine associata alla scheda del gatto -->
-                    <figure class="card-img-wrapper">
-                        <span class="badge-nuovo">Appena Accolto</span>
+                    <figure class="gatto-card-image">
+                        <span class="gatto-badge">Appena Accolto</span>
 
                         <!-- Il placeholder è uguale per tutti i gatti e non aggiunge informazioni alla scheda, quindi utilizza alt vuoto -->
                         <img src="assets/img/placeholder_gatto.png" alt="">
                     </figure>
 
-                    <div class="card-body">
+                    <div class="gatto-card-body">
                         <h3><?php echo $nome_mostrato; ?></h3>
 
-                        <p class="card-desc">
+                        <p class="gatto-card-description">
                             <strong>Sesso:</strong> <?php echo $sesso_esteso; ?><br>
                             <strong>Età:</strong> <?php echo (int) $eta; ?> anni<br>
                             <strong>Razza:</strong> <?php echo $razza_mostrata; ?><br>
@@ -184,7 +184,7 @@ require 'includes/header.php';
 
             // Se il risultato non contiene righe viene mostrato un messaggio al posto delle card
             if (mysqli_num_rows($result) === 0) {
-                echo '<p class="text-center w-100">Al momento non ci sono nuovi ospiti registrati.</p>';
+                echo '<p>Al momento non ci sono nuovi ospiti registrati.</p>';
             }
 
             // Terminata la lettura, il result set non è più necessario
@@ -196,7 +196,7 @@ require 'includes/header.php';
              * mentre all'utente viene mostrato un messaggio semplice e comprensibile
              */
             error_log('Errore durante il recupero dei gatti della home: ' . mysqli_error($con));
-            echo '<p class="text-center w-100">Non è stato possibile caricare i nuovi ospiti. Riprova più tardi.</p>';
+            echo '<p>Non è stato possibile caricare i nuovi ospiti. Riprova più tardi.</p>';
         }
 
         // Terminata la lettura, la connessione al database viene chiusa
@@ -205,14 +205,14 @@ require 'includes/header.php';
     </div>
 
     <!-- Collegamento alla galleria completa gestita nella pagina Ospiti -->
-    <div class="text-center mt-2">
+    <div class="home-arrivals-action">
         <a href="ospiti.php" class="btn-solid-dark">Scopri tutti i Gatti</a>
     </div>
 </section>
 
 <!-- Modalità alternative per sostenere il rifugio senza procedere con un'adozione fisica -->
-<section class="ruoli-volontariato home-special-section section-padding">
-    <div class="ruoli-container">
+<section class="info-section">
+    <div class="section-container">
 
         <header class="section-header">
             <h2>Un Aiuto a Distanza</h2>
@@ -226,13 +226,13 @@ require 'includes/header.php';
             <p class="header-subtitle">Scopri come sostenere il rifugio se non puoi adottare fisicamente un felino.</p>
         </header>
 
-        <div class="ruoli-grid">
+        <div class="info-grid">
 
             <!-- Ogni modalità di sostegno è un contenuto autonomo con titolo, descrizione e collegamento di approfondimento -->
-            <article class="ruolo-card">
+            <article class="info-card">
 
                 <!-- L'icona è decorativa perché il significato della card viene già comunicato dal relativo h3 -->
-                <img src="assets/img/icona_cuore.png" alt="" class="icon-png-large">
+                <img src="assets/img/icona_cuore.png" alt="">
 
                 <h3>Adozioni del Cuore</h3>
                 <p>Sostieni cure e terapie per gatti con disabilità o patologie, aiutandoli a ricevere l'assistenza necessaria.</p>
@@ -243,8 +243,8 @@ require 'includes/header.php';
                 </a>
             </article>
 
-            <article class="ruolo-card">
-                <img src="assets/img/icona_distanza.png" alt="" class="icon-png-large">
+            <article class="info-card">
+                <img src="assets/img/icona_distanza.png" alt="">
 
                 <h3>Adozioni a Distanza</h3>
                 <p>Contribuisci a cibo, cure e assistenza di un gatto, seguendone la crescita attraverso aggiornamenti dedicati.</p>
@@ -254,8 +254,8 @@ require 'includes/header.php';
                 </a>
             </article>
 
-            <article class="ruolo-card">
-                <img src="assets/img/icona_dono.png" alt="" class="icon-png-large">
+            <article class="info-card">
+                <img src="assets/img/icona_dono.png" alt="">
 
                 <h3>Donazioni</h3>
                 <p>Aiutaci donando cibo, coperte, farmaci o un piccolo contributo. Ogni singolo gesto fa un'enorme differenza per il rifugio.</p>
@@ -269,7 +269,7 @@ require 'includes/header.php';
 </section>
 
 <!-- Informazioni utili per emergenze, ritrovamenti e richieste di accoglienza -->
-<section class="home-emergency-section section-padding">
+<section class="home-emergency-section">
     <div class="emergency-container">
 
         <div class="emergency-text">
@@ -279,7 +279,7 @@ require 'includes/header.php';
             <div class="emergency-item">
 
                 <!-- Le piccole icone aiutano visivamente a distinguere i casi ma non aggiungono informazioni rispetto ai titoli -->
-                <img src="assets/img/icona_ambulanza.png" alt="" class="icon-png-small">
+                <img src="assets/img/icona_ambulanza.png" alt="">
 
                 <div class="emergency-item-content">
                     <h3>Soccorso Gatto Ferito o Malato</h3>
@@ -290,7 +290,7 @@ require 'includes/header.php';
             </div>
 
             <div class="emergency-item">
-                <img src="assets/img/icona_scudo.png" alt="" class="icon-png-small">
+                <img src="assets/img/icona_scudo.png" alt="">
 
                 <div class="emergency-item-content">
                     <h3>Avvistamento Gatto sul Territorio</h3>
@@ -299,7 +299,7 @@ require 'includes/header.php';
             </div>
 
             <div class="emergency-item">
-                <img src="assets/img/icona_selvatici.png" alt="" class="icon-png-small">
+                <img src="assets/img/icona_selvatici.png" alt="">
 
                 <div class="emergency-item-content">
                     <h3>Richiesta di Accoglienza al Rifugio</h3>
