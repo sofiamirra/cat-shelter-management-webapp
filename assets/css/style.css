@@ -67,8 +67,9 @@ summary:focus-visible {
     padding: 5rem 2rem;
 }
 
+/* display: none nasconde l'elemento e lo rimuove anche dallo spazio del layout */
 .d-none {
-    display: none !important;
+    display: none;
 }
 
 /* Intestazioni condivise */
@@ -100,6 +101,7 @@ summary:focus-visible {
     background-color: #D4C5B9;
 }
 
+/* object-fit: contain mantiene visibile l'intera immagine dentro il riquadro assegnato */
 .paw-divider-icon {
     width: 40px;
     height: 40px;
@@ -116,6 +118,11 @@ summary:focus-visible {
 }
 
 /* Pulsanti e collegamenti principali */
+
+/*
+ * transition rende graduale il passaggio tra lo stato normale e :hover
+ * transform modifica posizione o scala solo a livello grafico, senza cambiare lo spazio del layout
+ */
 .btn-solid-dark,
 .btn-outline,
 .btn-outline-dark {
@@ -304,6 +311,8 @@ summary:focus-visible {
 }
 
 /* Header e navigazione */
+
+/* box-shadow aggiunge un'ombra puramente grafica senza modificare le dimensioni del box */
 .site-header {
     padding: 1.5rem 0;
     background: linear-gradient(135deg, #1A3629 0%, #2A4D3E 100%);
@@ -401,6 +410,7 @@ summary:focus-visible {
     min-width: 0;
 }
 
+/* Permette a username molto lunghi di andare a capo invece di uscire dall'header */
 .account-summary span {
     min-width: 0;
     overflow-wrap: anywhere;
@@ -414,9 +424,9 @@ summary:focus-visible {
     font-size: 0.95rem;
     list-style: none;
     cursor: pointer;
-    user-select: none;
 }
 
+/* Safari usa un marcatore specifico per summary, nascosto perché la freccia viene aggiunta con ::after */
 .account-summary::-webkit-details-marker {
     display: none;
 }
@@ -440,7 +450,8 @@ summary:focus-visible {
 
 .account-dropdown {
     position: absolute;
-    top: calc(100% + 0.8rem);
+    top: 100%;
+    margin-top: 0.8rem;
     left: 50%;
     z-index: 200;
     min-width: 245px;
@@ -471,6 +482,7 @@ summary:focus-visible {
     color: #1A3629;
 }
 
+/* Il selettore + applica la regola a un link che segue immediatamente un altro link fratello */
 .account-dropdown a + a {
     margin-top: 0.35rem;
     padding-top: 1rem;
@@ -520,6 +532,7 @@ summary:focus-visible {
     line-height: 1.6;
 }
 
+/* > limita la regola agli alert che sono figli diretti della card */
 .auth-card > .alert-success,
 .auth-card > .alert-danger {
     margin-bottom: 2rem;
@@ -537,6 +550,7 @@ summary:focus-visible {
     font-weight: 600;
 }
 
+/* Le parentesi quadre selezionano gli input in base al valore dell'attributo type */
 .auth-card input[type="text"],
 .auth-card input[type="password"],
 .auth-card input[type="email"] {
@@ -806,7 +820,7 @@ summary:focus-visible {
     line-height: 1.6;
 }
 
-/* Animale in difficoltà: il riquadro è volutamente più arioso delle card normali */
+/* Animale in difficoltà */
 .home-emergency-section {
     padding: 4.5rem 2rem;
     background-color: #F5F5F0;
@@ -839,14 +853,14 @@ summary:focus-visible {
 }
 
 .emergency-subtitle {
-    margin: 0 0 2.5rem;
+    margin: 0 0 3rem;
     color: #666666;
     font-size: 1rem;
     line-height: 1.6;
 }
 
 .emergency-item {
-    margin-bottom: 1.9rem;
+    margin-bottom: 2.8rem;
     display: flex;
     align-items: flex-start;
     gap: 1.35rem;
@@ -932,7 +946,7 @@ summary:focus-visible {
     max-width: 880px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     align-items: center;
     justify-items: center;
     gap: 1.5rem;
@@ -953,13 +967,13 @@ summary:focus-visible {
 
 /* Galleria dei gatti e componente React */
 
-/* auto-fit adatta automaticamente il numero di colonne allo spazio disponibile */
+/* La griglia usa due colonne uguali su desktop e una colonna nel breakpoint tablet */
 .gatti-grid {
     max-width: 780px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 350px));
-    justify-content: center;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
     gap: 2.5rem;
 }
 
@@ -1157,7 +1171,7 @@ summary:focus-visible {
 .form-row {
     margin-bottom: 1.5rem;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 2.5rem;
 }
 
@@ -1182,10 +1196,6 @@ summary:focus-visible {
 .input-data-large.input-error,
 .input-data-large.input-error:focus {
     border-color: #D32F2F;
-}
-
-.input-data-large[type="time"] {
-    font-variant-numeric: tabular-nums;
 }
 
 .form-label-title,
@@ -1443,7 +1453,7 @@ summary:focus-visible {
 .area-personale-grid,
 .admin-dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
     align-items: start;
 }
@@ -1482,7 +1492,7 @@ summary:focus-visible {
 .dashboard-item {
     padding: 1.1rem 1.25rem;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: 1fr auto;
     grid-template-areas:
         "header action"
         "description action";
@@ -1710,6 +1720,7 @@ summary:focus-visible {
     cursor: pointer;
 }
 
+/* Compatibilità Safari: nasconde il marcatore nativo perché viene usata la freccia ::after */
 .admin-history summary::-webkit-details-marker {
     display: none;
 }
@@ -1870,7 +1881,8 @@ summary:focus-visible {
 .copy-feedback {
     position: absolute;
     right: 0.2rem;
-    bottom: calc(100% + 0.4rem);
+    bottom: 100%;
+    margin-bottom: 0.4rem;
     padding: 0.35rem 0.55rem;
     border-radius: 6px;
     background-color: #1A3629;
@@ -1905,12 +1917,12 @@ summary:focus-visible {
     background-color: #F5F5F0;
 }
 
-/* auto-fit permette ai piani di adattarsi senza fissare un numero di colonne per dispositivo */
+/* I tre piani occupano tre colonne uguali su desktop e una colonna sui dispositivi più stretti */
 .piani-grid {
     max-width: 1050px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2.5rem;
 }
 
@@ -2085,6 +2097,7 @@ summary:focus-visible {
     cursor: pointer;
 }
 
+/* Compatibilità Safari: evita di mostrare insieme marcatore nativo e freccia personalizzata */
 .faq-accordion summary::-webkit-details-marker {
     display: none;
 }
@@ -2120,16 +2133,22 @@ summary:focus-visible {
     color: #E8E5E1;
 }
 
-/* Tre colonne uguali mantengono il contenuto centrato nell'intera larghezza del footer */
+/* Tre colonne uguali mantengono il footer simmetrico sulla larghezza disponibile */
 .footer-container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto 3rem;
     padding: 0 2rem;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 3rem;
     align-items: start;
+    justify-items: center;
+}
+
+.footer-col {
+    max-width: 18rem;
+    text-align: left;
 }
 
 .footer-col h2 {
@@ -2167,6 +2186,7 @@ summary:focus-visible {
     margin-bottom: 0.9rem;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 0.8rem;
     color: #A3B5AE;
     font-size: 0.95rem;
@@ -2362,12 +2382,17 @@ summary:focus-visible {
 
     .gatti-grid {
         max-width: 350px;
-        grid-template-columns: minmax(0, 1fr);
+        grid-template-columns: 1fr;
     }
 
     .gatto-card {
         min-width: 0;
         width: 100%;
+    }
+
+    .piani-grid {
+        grid-template-columns: 1fr;
+        max-width: 24rem;
     }
 
     .home-emergency-section {
@@ -2454,7 +2479,7 @@ summary:focus-visible {
 
     .partners-logos {
         max-width: 470px;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 1rem 1.5rem;
     }
 
@@ -2465,6 +2490,20 @@ summary:focus-visible {
 
     .footer-container {
         grid-template-columns: 1fr;
+        justify-items: stretch;
+    }
+    
+    .footer-col {
+        max-width: none;
+        text-align: left;
+    }
+    
+    .footer-contact li {
+        justify-content: flex-start;
+    }
+    
+    .footer-social {
+        justify-content: flex-start;
     }
 
     .footer-bottom-content {
@@ -2607,6 +2646,7 @@ summary:focus-visible {
         padding: 2rem 1rem;
     }
 
+    /* Su schermi stretti l'IBAN può spezzarsi per evitare scorrimento orizzontale */
     .iban-code {
         padding: 0.8rem 2.8rem 0.8rem 0.7rem;
         font-size: 0.78rem;
@@ -2647,6 +2687,10 @@ summary:focus-visible {
         scroll-behavior: auto;
     }
 
+    /*
+     * !important è limitato a questa regola di accessibilità
+     * così la preferenza dell'utente prevale sulle transizioni definite nei singoli componenti
+     */
     *,
     *::before,
     *::after {
@@ -2655,7 +2699,7 @@ summary:focus-visible {
     }
 }
 
-/* Versione per la stampa: contenuti leggibili, sfondi chiari e controlli interattivi rimossi */
+/* Versione per la stampa */
 @media print {
     body {
         background: #FFFFFF;
