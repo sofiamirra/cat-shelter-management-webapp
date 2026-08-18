@@ -160,10 +160,7 @@ if (!$errore_transazione) {
         $errore_transazione = true;
     } else {
 
-        /*
-         * Entrambi i parametri sono interi
-         * gatto_id_corrente viene aggiornato nel ciclo riutilizzando lo stesso statement
-         */
+        // Lo stesso statement viene riutilizzato per tutti i gatti selezionati
         $gatto_id_corrente = 0;
         mysqli_stmt_bind_param($stmt_visita, 'ii', $prenotazione_id, $gatto_id_corrente);
 

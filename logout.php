@@ -9,12 +9,12 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
-// Vengono rimossi tutti i dati dell'utente conservati nella sessione corrente
+// session_destroy non svuota $_SESSION, quindi i dati vengono rimossi prima
 $_SESSION = array();
 
 /*
- * Se PHP utilizza un cookie per identificare la sessione,
- * viene eliminato utilizzando gli stessi parametri con cui era stato creato
+ * session_destroy non elimina il cookie di sessione
+ * Se presente viene quindi fatto scadere con gli stessi parametri
  */
 if (ini_get('session.use_cookies')) {
     $params = session_get_cookie_params();

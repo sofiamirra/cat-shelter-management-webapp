@@ -78,7 +78,7 @@ if ($result_visite) {
         }
     }
 
-    // Vengono rimossi gli indici temporanei basati sugli id prima della visualizzazione
+    // Gli id usati per il raggruppamento non servono nella visualizzazione
     $visite = array_values($visite_indicizzate);
 
     mysqli_free_result($result_visite);

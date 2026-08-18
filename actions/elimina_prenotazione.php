@@ -43,7 +43,6 @@ $con = get_db_connection('modifier');
 $query = 'DELETE FROM prenotazioni_visite
           WHERE id = ? AND utente_id = ? AND data_ora > NOW()';
 
-// mysqli_prepare crea lo statement con i due placeholder che verranno valorizzati successivamente
 $stmt = mysqli_prepare($con, $query);
 
 if (!$stmt) {
@@ -55,10 +54,6 @@ if (!$stmt) {
     exit;
 }
 
-/*
- * 'ii' indica che entrambi i parametri sono interi
- * In particolare utente_id non arriva dal browser ma dalla sessione autenticata
- */
 mysqli_stmt_bind_param($stmt, 'ii', $prenotazione_id, $utente_id);
 
 // La query preparata viene eseguita con i valori appena associati

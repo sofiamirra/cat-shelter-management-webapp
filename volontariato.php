@@ -102,7 +102,7 @@ require 'includes/header.php';
         <p class="header-subtitle">Il tuo tempo è il regalo più prezioso. Seleziona una data per scoprire le fasce orarie disponibili. Accettiamo un massimo di 2 volontari per turno.</p>
     </header>
 
-    <!-- aria-live="polite" permette di annunciare i messaggi prodotti dalle richieste asincrone senza interrompere bruscamente la lettura -->
+    <!-- Il feedback della copia viene annunciato anche alle tecnologie assistive -->
     <div id="messaggio-esito" class="d-none alert-wrapper" aria-live="polite"></div>
 
     <!-- Il form viene mostrato soltanto se lo username è presente nella sessione dell'utente autenticato -->

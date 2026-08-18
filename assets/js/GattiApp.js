@@ -19,10 +19,7 @@ function GattiApp() {
     const [criterioOrdinamento, setCriterioOrdinamento] = useState('data_desc');
     const [gattiSelezionati, setGattiSelezionati] = useState([]);
 
-    /*
-     * Al primo caricamento React interroga asincronamente il backend
-     * L'array delle dipendenze vuoto fa eseguire l'effetto una sola volta al montaggio
-     */
+    // Al primo caricamento React recupera i gatti dal backend PHP
     useEffect(() => {
         fetch('actions/get_gatti.php')
             .then(response => {
@@ -197,6 +194,8 @@ function GattiApp() {
                                 onClick={IS_LOGGED_IN ? () => gestisciSelezione(gatto) : undefined}
                                 onKeyDown={IS_LOGGED_IN ? event => gestisciTastiera(event, gatto) : undefined}
                                 tabIndex={IS_LOGGED_IN ? 0 : undefined}
+                                role={IS_LOGGED_IN ? 'button' : undefined}
+                                aria-pressed={IS_LOGGED_IN ? isSelezionato : undefined}
                             >
                                 <div className="gatto-card-image">
 

@@ -43,7 +43,6 @@ $con = get_db_connection('modifier');
 $query = 'DELETE FROM turni_volontariato
           WHERE id = ? AND utente_id = ? AND fascia_oraria > NOW()';
 
-// Lo statement viene preparato mantenendo separata la query dai valori ricevuti
 $stmt = mysqli_prepare($con, $query);
 
 if (!$stmt) {
@@ -55,13 +54,8 @@ if (!$stmt) {
     exit;
 }
 
-/*
- * I due placeholder vengono associati come interi
- * turno_id proviene dal form mentre utente_id proviene dalla sessione autenticata
- */
 mysqli_stmt_bind_param($stmt, 'ii', $turno_id, $utente_id);
 
-// execute esegue il DELETE utilizzando i valori precedentemente associati
 if (!mysqli_stmt_execute($stmt)) {
     error_log('Errore durante la cancellazione del turno: ' . mysqli_stmt_error($stmt));
     mysqli_stmt_close($stmt);

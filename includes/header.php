@@ -44,7 +44,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
 <header class="site-header">
     <div class="header-container">
 
-        <!-- Il testo visibile identifica già il collegamento alla Home, quindi non è necessario aggiungere aria-label -->
+        <!-- Il testo visibile identifica il collegamento alla Home, quindi non è necessario aggiungere aria-label -->
         <a href="home.php" class="logo-link">
             <img src="assets/img/logo_icona.png" alt="" class="logo-icona">
             <span>Il Parco delle Fusa</span>
@@ -65,7 +65,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
             <!-- La presenza dello username in sessione distingue l'utente autenticato dal visitatore -->
             <?php if (isset($_SESSION['username'])): ?>
 
-                <!-- details e summary creano il menu account espandibile direttamente tramite HTML senza richiedere JavaScript -->
+                <!-- details e summary creano il menu account espandibile tramite HTML -->
                 <details class="account-menu">
                     <summary class="account-summary">
                         <img src="assets/img/icona_utente.png" width="128" height="128" alt="" class="icona-utente">

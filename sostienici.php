@@ -196,10 +196,9 @@ require 'includes/header.php';
             </div>
         </header>
 
-        <!-- details e summary forniscono l'espansione delle FAQ direttamente tramite HTML senza richiedere JavaScript -->
+        <!-- Le FAQ usano details e summary senza richiedere JavaScript -->
         <div class="faq-accordion">
 
-            <!-- summary è la parte visibile e attivabile, mentre il contenuto di details viene mostrato quando l'elemento è aperto -->
             <details>
                 <summary>Come mi preparo all'arrivo del micio a casa?</summary>
                 <p>Prepara una stanza sicura e tranquilla, con lettiera, ciotole distanti dalla lettiera, tiragraffi e nascondigli. Lascia che il gatto esplori gradualmente la casa, rispettando i suoi tempi e permettendogli di ambientarsi senza forzature.</p>
@@ -247,10 +246,7 @@ btnCopiaIban.addEventListener('click', function() {
     // Recupera il contenitore in cui verrà mostrato l'esito dell'operazione
     const feedback = document.getElementById('copy-feedback');
 
-    /*
-    * La Clipboard API prova a scrivere l'IBAN negli appunti
-    * writeText restituisce una Promise, quindi successo ed errore vengono gestiti con then e catch
-    */
+    // Il messaggio informa l'utente dell'esito della copia
     navigator.clipboard.writeText(iban)
         .then(function() {
 

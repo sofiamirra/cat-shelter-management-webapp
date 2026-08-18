@@ -29,7 +29,6 @@ if (isset($_SESSION['username'])) {
 
 require 'includes/db_config.php';
 
-// Messaggi prodotti dalla validazione e dalle operazioni lato server
 $errore_php = '';
 $successo_php = '';
 
@@ -73,8 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         !preg_match('/[a-z]/', $password) ||
         !preg_match('/[A-Z]/', $password) ||
         !preg_match('/[0-9]/', $password) ||
-        !preg_match('/[^A-Za-z0-9\s]/', $password) ||
-        preg_match('/\s/', $password)
+        !preg_match('/[^A-Za-z0-9\s]/', $password)
     ) {
         $errore_php = 'La password non rispetta i requisiti minimi di sicurezza.';
     } else {
@@ -203,6 +201,7 @@ require 'includes/header.php';
                         id="nome"
                         name="nome"
                         value="<?php echo htmlspecialchars($nome, ENT_QUOTES, 'UTF-8'); ?>"
+                        aria-describedby="err-nome"
                     >
                     <span class="errore-js" id="err-nome"></span>
                 </div>
@@ -214,6 +213,7 @@ require 'includes/header.php';
                         id="cognome"
                         name="cognome"
                         value="<?php echo htmlspecialchars($cognome, ENT_QUOTES, 'UTF-8'); ?>"
+                        aria-describedby="err-cognome"
                     >
                     <span class="errore-js" id="err-cognome"></span>
                 </div>
@@ -226,6 +226,7 @@ require 'includes/header.php';
                     id="indirizzo"
                     name="indirizzo"
                     value="<?php echo htmlspecialchars($indirizzo, ENT_QUOTES, 'UTF-8'); ?>"
+                    aria-describedby="err-indirizzo"
                 >
                 <span class="errore-js" id="err-indirizzo"></span>
             </div>
@@ -250,10 +251,11 @@ require 'includes/header.php';
                 <label for="password">Password</label>
                 <input
                     type="password"
-                    id="password"
-                    name="password"
-                    aria-describedby="err-password"
+                    id="conferma_password"
+                    name="conferma_password"
+                    aria-describedby="err-conferma_password"
                 >
+                <span class="errore-js" id="err-conferma_password"></span>
 
                 <!-- La password non viene mai reinserita automaticamente dopo un invio -->
                 <span class="errore-js errore-js-info" id="err-password">
@@ -350,8 +352,7 @@ document.getElementById('form-registrazione').addEventListener('submit', functio
         /[a-z]/.test(password.value) &&
         /[A-Z]/.test(password.value) &&
         /[0-9]/.test(password.value) &&
-        /[^A-Za-z0-9\s]/.test(password.value) &&
-        !/\s/.test(password.value);
+        /[^A-Za-z0-9\s]/.test(password.value)
 
     if (!passwordValida) {
         document.getElementById('err-password').textContent = 'La password non rispetta i requisiti di sicurezza.';

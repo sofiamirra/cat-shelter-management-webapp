@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         /*
          * La query recupera l'identificativo, l'hash della password e il ruolo dell'utente
-         * Lo username proveniente dal form viene associato tramite prepared statement
+         * Lo username proviene dal form, quindi la query usa un prepared statement
          */
         $query = 'SELECT id, password, is_admin FROM utenti WHERE username = ?';
         $stmt = mysqli_prepare($con, $query);
@@ -77,16 +77,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_bind_result($stmt, $id_db, $hash_db, $is_admin_db);
 
-                /*
-                 * password_verify confronta la password inserita con l'hash salvato durante la registrazione
-                 * La password in chiaro non viene mai recuperata dal database
-                 */
+                // La password viene verificata confrontandola con l'hash salvato nel database
                 if (mysqli_stmt_fetch($stmt) && password_verify($password, (string) $hash_db)) {
 
-                    /*
-                     * Dopo un'autenticazione riuscita viene rigenerato l'ID della sessione
-                     * e vengono memorizzati i dati necessari alle pagine riservate
-                     */
+                    // Dopo il login viene rigenerato l'ID prima di salvare i dati dell'utente in sessione
                     session_regenerate_id(true);
 
                     $_SESSION['user_id'] = (int) $id_db;

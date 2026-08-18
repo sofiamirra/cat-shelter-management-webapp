@@ -12,7 +12,6 @@
 <footer class="site-footer">
     <div class="footer-container">
 
-        <!-- Le colonne del footer sono sezioni di supporto alla pagina e utilizzano h2 coerenti con la gerarchia del documento -->
         <section class="footer-col">
             <h2>Il Parco delle Fusa</h2>
 

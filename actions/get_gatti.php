@@ -1,8 +1,8 @@
 <?php
 /*
  * API utilizzata dal componente React della pagina Ospiti
- * Recupera i dati dei gatti con un utente MySQL di sola lettura
- * e restituisce al browser esclusivamente una risposta JSON
+ * Recupera i dati dei gatti con l'utente MySQL di sola lettura
+ * e restituisce i dati al browser in formato JSON
  */
 
 // L'endpoint produce JSON e non una pagina HTML

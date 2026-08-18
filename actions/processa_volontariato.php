@@ -102,12 +102,29 @@ $errore_codice = '';
 $errore_messaggio = '';
 
 /*
+ * La transazione rende unico il salvataggio delle fasce selezionate
+ * Se un inserimento fallisce vengono annullati anche quelli precedenti della stessa richiesta
+ */
+if (!mysqli_begin_transaction($con)) {
+    error_log('Impossibile avviare la transazione dei turni');
+    mysqli_close($con);
+
+    echo json_encode(array(
+        'status' => 'error',
+        'code' => 'SYSTEM_ERROR',
+        'message' => 'Si è verificato un errore durante il salvataggio.'
+    ));
+    exit;
+}
+
+/*
  * Il server ricontrolla quanti volontari sono già presenti
  * in ciascuna delle fasce selezionate
  */
-$query_limite = 'SELECT COUNT(*)
+$query_limite = 'SELECT id
                  FROM turni_volontariato
-                 WHERE fascia_oraria = ?';
+                 WHERE fascia_oraria = ?
+                 FOR UPDATE';
 
 $stmt_limite = mysqli_prepare($con, $query_limite);
 
@@ -132,17 +149,12 @@ if (!$stmt_limite) {
             break;
         }
 
-        mysqli_stmt_bind_result($stmt_limite, $numero_iscritti);
-
-        if (!mysqli_stmt_fetch($stmt_limite)) {
-            $errore_codice = 'SYSTEM_ERROR';
-            $errore_messaggio = 'Si è verificato un errore durante il salvataggio.';
-            error_log('Errore durante la lettura del numero di volontari');
-            break;
-        }
+        mysqli_stmt_store_result($stmt_limite);
+        $numero_iscritti = mysqli_stmt_num_rows($stmt_limite);
+        mysqli_stmt_free_result($stmt_limite);
 
         // La consegna permette un massimo di due volontari per ciascuna fascia
-        if ((int) $numero_iscritti >= 2) {
+        if ($numero_iscritti >= 2) {
             $errore_codice = 'LIMIT_EXCEEDED';
             $errore_messaggio = 'La fascia oraria selezionata è al completo.';
             break;
@@ -205,28 +217,13 @@ if ($errore_codice === '') {
 
 // Se uno dei controlli non è superato non viene effettuato alcun inserimento
 if ($errore_codice !== '') {
+    mysqli_rollback($con);
     mysqli_close($con);
 
     echo json_encode(array(
         'status' => 'error',
         'code' => $errore_codice,
         'message' => $errore_messaggio
-    ));
-    exit;
-}
-
-/*
- * La transazione rende unico il salvataggio delle fasce selezionate
- * Se un inserimento fallisce vengono annullati anche quelli precedenti della stessa richiesta
- */
-if (!mysqli_begin_transaction($con)) {
-    error_log('Impossibile avviare la transazione dei turni');
-    mysqli_close($con);
-
-    echo json_encode(array(
-        'status' => 'error',
-        'code' => 'SYSTEM_ERROR',
-        'message' => 'Si è verificato un errore durante il salvataggio.'
     ));
     exit;
 }

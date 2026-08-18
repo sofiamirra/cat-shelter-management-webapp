@@ -61,13 +61,13 @@ require 'includes/header.php';
                 <div class="form-row">
                     <div class="form-group">
                         <label for="data_visita" class="form-label-title">Data della visita:</label>
-                        <input type="date" id="data_visita" name="data_visita" class="input-data-large">
+                        <input type="date" id="data_visita" name="data_visita" class="input-data-large" aria-describedby="err-data">
                         <span class="errore-js" id="err-data"></span>
                     </div>
 
                     <div class="form-group">
                         <label for="ora_visita" class="form-label-title">Ora della visita:</label>
-                        <input type="time" id="ora_visita" name="ora_visita" class="input-data-large">
+                        <input type="time" id="ora_visita" name="ora_visita" class="input-data-large" aria-describedby="err-ora">
                         <span class="errore-js" id="err-ora"></span>
                     </div>
                 </div>
@@ -145,7 +145,6 @@ if (formPrenotazione) {
     const erroreData = document.getElementById('err-data');
     const erroreOra = document.getElementById('err-ora');
 
-    // L'oggetto Date resta lo stesso riferimento, mentre setDate ne modifica internamente la data
     const domani = new Date();
     domani.setDate(domani.getDate() + 1);
 

@@ -5,8 +5,7 @@
  * Gli ultimi due gatti arrivati vengono recuperati dal database in sola lettura
  */
 
-// I due file sono indispensabili alla pagina: uno configura il database e l'altro genera l'intestazione comune
-// require interrompe l'esecuzione se una risorsa necessaria non può essere caricata
+// Configurazione DB e intestazione comune sono necessarie alla Home
 require 'includes/db_config.php';
 require 'includes/header.php';
 ?>
@@ -15,7 +14,6 @@ require 'includes/header.php';
 <section class="home-intro">
     <div class="home-intro-text">
 
-        <!-- Unico h1 della pagina: identifica il contenuto principale della Home -->
         <h1>Un Rifugio d’Amore<br>per Gatti Bisognosi</h1>
 
         <p>
@@ -134,11 +132,7 @@ require 'includes/header.php';
                 $razza = $gatto['razza'];
                 $colore_mantello = $gatto['colore_mantello'];
 
-                /*
-                 * I valori testuali vengono codificati prima dell'output HTML
-                 * per evitare che eventuale markup o script venga interpretato dal browser e prevenire XSS
-                 * ENT_QUOTES gestisce anche le virgolette mentre UTF-8 mantiene la codifica utilizzata dal sito
-                 */
+                // I dati del database vengono codificati prima dell'output HTML
                 $nome_mostrato = htmlspecialchars((string) $nome, ENT_QUOTES, 'UTF-8');
                 $colore_mostrato = htmlspecialchars((string) $colore_mantello, ENT_QUOTES, 'UTF-8');
 
