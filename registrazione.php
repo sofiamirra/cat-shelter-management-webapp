@@ -251,11 +251,10 @@ require 'includes/header.php';
                 <label for="password">Password</label>
                 <input
                     type="password"
-                    id="conferma_password"
-                    name="conferma_password"
-                    aria-describedby="err-conferma_password"
+                    id="password"
+                    name="password"
+                    aria-describedby="err-password"
                 >
-                <span class="errore-js" id="err-conferma_password"></span>
 
                 <!-- La password non viene mai reinserita automaticamente dopo un invio -->
                 <span class="errore-js errore-js-info" id="err-password">
@@ -269,6 +268,7 @@ require 'includes/header.php';
                     type="password"
                     id="conferma_password"
                     name="conferma_password"
+                    aria-describedby="err-conferma_password"
                 >
                 <span class="errore-js" id="err-conferma_password"></span>
             </div>
