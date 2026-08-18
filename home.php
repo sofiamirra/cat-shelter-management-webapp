@@ -31,7 +31,12 @@ require 'includes/header.php';
 
     <!-- figure raggruppa l'immagine principale associata alla presentazione del rifugio -->
     <figure class="home-intro-image">
-        <img src="assets/img/gatto_home.png" alt="La struttura del gattile Il Parco delle Fusa con i felini ospiti">
+        <!-- Sui dispositivi più piccoli viene usata una versione più leggera della foto principale -->
+        <picture>
+            <source media="(max-width: 48rem)" srcset="assets/img/gatto_home_mobile.webp">
+            <!-- L'immagine principale è visibile subito nella Home, quindi viene caricata con priorità maggiore -->
+            <img src="assets/img/gatto_home.webp" width="1080" height="720" fetchpriority="high" alt="La struttura del gattile Il Parco delle Fusa con i felini ospiti">
+        </picture>
     </figure>
 </section>
 
@@ -44,7 +49,7 @@ require 'includes/header.php';
             <!-- Il divisore è decorativo: aria-hidden lo esclude dalle tecnologie assistive -->
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
-                <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
+                <img src="assets/img/icona_zampette_bianche.png" width="128" height="128" alt="" class="paw-divider-icon">
                 <span class="line"></span>
             </div>
 
@@ -59,7 +64,7 @@ require 'includes/header.php';
                     <div class="step-icon">
 
                         <!-- L'icona è decorativa perché il significato del passaggio è già espresso dal relativo h3 -->
-                        <img src="assets/img/icona_innamorati.png" alt="">
+                        <img src="assets/img/icona_innamorati.png" width="128" height="128" alt="">
                     </div>
 
                     <h3>1. Innamorati</h3>
@@ -68,7 +73,7 @@ require 'includes/header.php';
 
                 <article class="step">
                     <div class="step-icon">
-                        <img src="assets/img/icona_incontralo.png" alt="">
+                        <img src="assets/img/icona_incontralo.png" width="128" height="128" alt="">
                     </div>
 
                     <h3>2. Incontralo</h3>
@@ -77,7 +82,7 @@ require 'includes/header.php';
 
                 <article class="step">
                     <div class="step-icon">
-                        <img src="assets/img/icona_casa.png" alt="">
+                        <img src="assets/img/icona_casa.png" width="128" height="128" alt="">
                     </div>
 
                     <h3>3. Portalo a Casa</h3>
@@ -95,7 +100,7 @@ require 'includes/header.php';
 
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
-            <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
+            <img src="assets/img/icona_zampette.png" width="128" height="128" alt="" class="paw-divider-icon">
             <span class="line"></span>
         </div>
 
@@ -164,7 +169,7 @@ require 'includes/header.php';
                         <span class="gatto-badge">Appena Accolto</span>
 
                         <!-- Il placeholder è uguale per tutti i gatti e non aggiunge informazioni alla scheda, quindi utilizza alt vuoto -->
-                        <img src="assets/img/placeholder_gatto.png" alt="">
+                        <img src="assets/img/placeholder_gatto.png" width="600" height="600" alt="">
                     </figure>
 
                     <div class="gatto-card-body">
@@ -219,7 +224,7 @@ require 'includes/header.php';
 
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
-                <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
+                <img src="assets/img/icona_zampette_bianche.png" width="128" height="128" alt="" class="paw-divider-icon">
                 <span class="line"></span>
             </div>
 
@@ -232,7 +237,7 @@ require 'includes/header.php';
             <article class="info-card">
 
                 <!-- L'icona è decorativa perché il significato della card viene già comunicato dal relativo h3 -->
-                <img src="assets/img/icona_cuore.png" alt="">
+                <img src="assets/img/icona_cuore.png" width="160" height="160" alt="">
 
                 <h3>Adozioni del Cuore</h3>
                 <p>Sostieni cure e terapie per gatti con disabilità o patologie, aiutandoli a ricevere l'assistenza necessaria.</p>
@@ -244,7 +249,7 @@ require 'includes/header.php';
             </article>
 
             <article class="info-card">
-                <img src="assets/img/icona_distanza.png" alt="">
+                <img src="assets/img/icona_distanza.png" width="160" height="160" alt="">
 
                 <h3>Adozioni a Distanza</h3>
                 <p>Contribuisci a cibo, cure e assistenza di un gatto, seguendone la crescita attraverso aggiornamenti dedicati.</p>
@@ -255,7 +260,7 @@ require 'includes/header.php';
             </article>
 
             <article class="info-card">
-                <img src="assets/img/icona_dono.png" alt="">
+                <img src="assets/img/icona_dono.png" width="160" height="160" alt="">
 
                 <h3>Donazioni</h3>
                 <p>Aiutaci donando cibo, coperte, farmaci o un piccolo contributo. Ogni singolo gesto fa un'enorme differenza per il rifugio.</p>
@@ -279,7 +284,7 @@ require 'includes/header.php';
             <div class="emergency-item">
 
                 <!-- Le piccole icone aiutano visivamente a distinguere i casi ma non aggiungono informazioni rispetto ai titoli -->
-                <img src="assets/img/icona_ambulanza.png" alt="">
+                <img src="assets/img/icona_ambulanza.png" width="128" height="128" alt="">
 
                 <div class="emergency-item-content">
                     <h3>Soccorso Gatto Ferito o Malato</h3>
@@ -290,7 +295,7 @@ require 'includes/header.php';
             </div>
 
             <div class="emergency-item">
-                <img src="assets/img/icona_scudo.png" alt="">
+                <img src="assets/img/icona_scudo.png" width="128" height="128" alt="">
 
                 <div class="emergency-item-content">
                     <h3>Avvistamento Gatto sul Territorio</h3>
@@ -299,7 +304,7 @@ require 'includes/header.php';
             </div>
 
             <div class="emergency-item">
-                <img src="assets/img/icona_selvatici.png" alt="">
+                <img src="assets/img/icona_selvatici.png" width="128" height="128" alt="">
 
                 <div class="emergency-item-content">
                     <h3>Richiesta di Accoglienza al Rifugio</h3>
@@ -310,7 +315,8 @@ require 'includes/header.php';
 
         <!-- Immagine informativa della sezione, quindi mantiene una descrizione alternativa significativa -->
         <div class="emergency-image">
-            <img src="assets/img/gatto_strada.png" alt="Gattino in difficoltà sul ciglio di una strada">
+            <!-- L'immagine si trova più in basso nella pagina, quindi il caricamento viene rimandato per alleggerire quello iniziale -->
+            <img src="assets/img/gatto_strada.webp" width="960" height="720" loading="lazy" alt="Gattino in difficoltà sul ciglio di una strada">
         </div>
     </div>
 </section>
@@ -322,10 +328,10 @@ require 'includes/header.php';
     <div class="partners-logos">
 
         <!-- I loghi mantengono un alt descrittivo perché il nome dei partner non compare come testo adiacente -->
-        <img src="assets/img/sponsor_monge.png" alt="Monge" class="sponsor-logo">
-        <img src="assets/img/sponsor_lindocat.png" alt="Lindocat" class="sponsor-logo">
-        <img src="assets/img/sponsor_candioli.png" alt="Candioli" class="sponsor-logo">
-        <img src="assets/img/sponsor_isolatesori.png" alt="L'Isola dei Tesori" class="sponsor-logo">
+        <img src="assets/img/sponsor_monge.png" width="600" height="300" alt="Monge" class="sponsor-logo">
+        <img src="assets/img/sponsor_lindocat.png" width="600" height="300" alt="Lindocat" class="sponsor-logo">
+        <img src="assets/img/sponsor_candioli.png" width="600" height="300" alt="Candioli" class="sponsor-logo">
+        <img src="assets/img/sponsor_isolatesori.png" width="600" height="300" alt="L'Isola dei Tesori" class="sponsor-logo">
     </div>
 </aside>
 

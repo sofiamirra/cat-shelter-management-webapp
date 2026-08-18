@@ -136,7 +136,7 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
 
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
-            <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
+            <img src="assets/img/icona_zampette.png" width="128" height="128" alt="" class="paw-divider-icon">
             <span class="line"></span>
         </div>
 

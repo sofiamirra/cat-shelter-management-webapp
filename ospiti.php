@@ -18,7 +18,7 @@ require 'includes/header.php';
         <!-- Il divisore è puramente decorativo, quindi viene escluso dalle tecnologie assistive -->
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
-            <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
+            <img src="assets/img/icona_zampette.png" width="128" height="128" alt="" class="paw-divider-icon">
             <span class="line"></span>
         </div>
 
@@ -29,7 +29,7 @@ require 'includes/header.php';
     <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
         <div class="alert-wrapper" id="banner-feedback">
             <div class="alert-success alert-dismissible">
-                <strong class="messaggio-successo-titolo"><img src="assets/img/icona_spunta_successo.png" alt="" class="icona-successo"> Prenotazione confermata!</strong><br>
+                <strong class="messaggio-successo-titolo"><img src="assets/img/icona_spunta_successo.png" width="128" height="128" alt="" class="icona-successo"> Prenotazione confermata!</strong><br>
                 Ti aspettiamo in struttura. I dettagli sono stati salvati correttamente.
 
                 <!-- aria-label descrive la funzione del pulsante perché il simbolo × da solo non è sufficientemente informativo -->

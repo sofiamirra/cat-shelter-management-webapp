@@ -35,8 +35,11 @@ textarea {
     font: inherit;
 }
 
-img {
+/* Le dimensioni reali sono dichiarate nei tag img per permettere al browser
+   di riservare lo spazio prima del caricamento, mentre height auto mantiene le proporzioni nel layout responsive */
+   img {
     max-width: 100%;
+    height: auto;
 }
 
 /* Il focus resta sempre visibile durante la navigazione da tastiera */
@@ -187,7 +190,7 @@ summary:focus-visible {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: #9C8A7B;
+    color: #78685C;
     font-weight: 700;
     text-decoration: none;
     transition: color 0.3s;
@@ -2339,8 +2342,8 @@ summary:focus-visible {
     }
 
     .account-dropdown {
-        right: 0;
-        left: auto;
+        left: 0;
+        right: auto;
         transform: none;
     }
 
@@ -2679,6 +2682,42 @@ summary:focus-visible {
     .footer-contact li {
         align-items: flex-start;
     }
+
+    /* Su smartphone il menu account si apre verso destra per restare dentro il viewport */
+    .account-dropdown {
+        left: 0;
+        right: auto;
+        transform: none;
+    }
+
+    /* Il banner dei turni mantiene testo e chiusura ordinati anche quando va su più righe */
+    #messaggio-esito .alert-success,
+    #messaggio-esito .alert-danger {
+        text-align: left;
+    }
+
+    #messaggio-esito .messaggio-successo-titolo {
+        display: flex;
+        justify-content: flex-start;
+        line-height: 1.25;
+        text-align: left;
+    }
+
+    #messaggio-esito .alert-dismissible {
+        padding: 1rem 2.5rem 1rem 1rem;
+    }
+
+    #messaggio-esito .btn-close-alert {
+        top: 0.75rem;
+        right: 0.75rem;
+        transform: none;
+    }
+
+    /* Il pulsante della gestione ospiti riduce il padding sui telefoni più stretti */
+    .admin-card-action .btn-solid-dark {
+        padding: 0.85rem 1.25rem;
+        font-size: 0.95rem;
+    }
 }
 
 /* Rispetta la preferenza di sistema per la riduzione del movimento */
@@ -2699,85 +2738,458 @@ summary:focus-visible {
     }
 }
 
-/* Versione per la stampa */
+/* Versione destinata alla stampa */
+
+@page {
+    size: A4 portrait;
+    margin: 1.5cm;
+}
+
 @media print {
+
+    /*
+     * La versione cartacea privilegia la leggibilità:
+     * testo nero su fondo bianco e carattere serif da 12pt
+     */
     body {
+        display: block;
         background: #FFFFFF;
         color: #000000;
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 11pt;
-        line-height: 1.4;
+        font-family: "Times New Roman", Times, serif;
+        font-size: 12pt;
+        line-height: 1.35;
     }
 
+    /* Gli effetti grafici della versione a video non sono necessari sulla carta */
+    body *,
+    body *::before,
+    body *::after {
+        color: #000000 !important;
+        background-color: transparent !important;
+        background-image: none !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    /*
+     * Navigazione, immagini e controlli interattivi
+     * vengono esclusi dalla versione stampata
+     */
     .site-header,
-    .site-footer,
+    .footer-container,
     .paw-divider,
     .home-intro-buttons,
     .home-arrivals-action,
+    .home-partners-strip,
     .volontariato-btn-wrapper,
-    .btn-solid-dark,
-    .btn-outline,
-    .btn-outline-dark,
-    .scopri-link,
+    .volontariato-form-wrapper,
     .filtri-ricerca,
+    .form-card,
+    .auth-actions,
     .alert-wrapper,
-    .btn-close-alert,
-    .btn-copia-iban,
-    .btn-annulla-attivita,
-    .back-admin-link {
-        display: none;
+    .admin-card-action,
+    .admin-history,
+    .scopri-link,
+    .back-admin-link,
+    form,
+    button,
+    input,
+    select,
+    textarea,
+    img,
+    picture,
+    svg,
+    video,
+    canvas {
+        display: none !important;
     }
 
+    /*
+     * Non basta nascondere l'immagine:
+     * vengono rimossi anche i contenitori grafici e i badge associati
+     */
+    .home-intro-image,
+    .volontariato-intro-image,
+    .emergency-image,
+    .gatto-card-image,
+    .gatto-badge,
+    .step-icon {
+        display: none !important;
+    }
+
+    /* Il contenuto sfrutta la larghezza disponibile dell'A4 */
     main,
     .page-wrapper,
     .section-container,
     .section-padding,
     .home-intro,
+    .home-arrivals-section,
+    .info-section,
     .home-emergency-section,
-    .info-section {
+    .volontariato-intro-content {
+        width: 100%;
+        max-width: none;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    section {
+        max-width: none;
+        margin-bottom: 0.9rem;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+
+    /* Gerarchia dei titoli */
+
+    h1 {
+        margin: 0 0 0.55rem;
+        font-size: 24pt !important;
+        line-height: 1.15;
+    }
+
+    h2 {
+        margin: 0 0 0.4rem;
+        font-size: 18pt !important;
+        line-height: 1.2;
+    }
+
+    h3 {
+        margin: 0 0 0.3rem;
+        font-size: 14pt !important;
+        line-height: 1.2;
+    }
+
+    h1,
+    h2,
+    h3 {
+        break-after: avoid;
+        page-break-after: avoid;
+    }
+
+    p,
+    li {
+        orphans: 3;
+        widows: 3;
+    }
+
+    .section-header {
+        margin: 0 0 0.75rem;
+        text-align: left;
+    }
+
+    .header-subtitle {
+        max-width: none;
+        margin: 0 0 0.7rem;
+        text-align: left;
+        line-height: 1.35;
+    }
+
+
+    /* Griglie utili anche sulla carta */
+
+    .adoption-grid,
+    .info-grid,
+    .piani-grid,
+    .contact-banner {
+        width: 100%;
+        max-width: none;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.7rem;
+    }
+
+    .gatti-grid {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-items: stretch;
+        gap: 0.65rem 0.9rem;
+    }
+
+    /* Le quattro mansioni del volontario vengono disposte due per riga */
+    .volontariato-header + .info-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+
+    /* Home: percorso di adozione */
+
+    .adoption-steps-wrapper {
+        margin: 0.8rem 0;
+        padding: 0;
+    }
+
+    .adoption-steps-box {
+        margin: 0.6rem 0 0.9rem;
+        padding: 0;
+        border: 0 !important;
+        border-radius: 0;
+    }
+
+    .step {
+        min-width: 0;
+        margin: 0;
+        padding: 0.55rem 0.7rem;
+        border: 1px solid #000000 !important;
+        text-align: left;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .step p {
+        margin: 0;
+        line-height: 1.35;
+    }
+
+
+    /* Card dei gatti e card informative */
+
+    .gatto-card,
+    .info-card,
+    .piano-card,
+    .contact-banner-item {
+        min-width: 0 !important;
+        width: auto !important;
+        max-width: none;
+        margin: 0;
+        padding: 0.55rem 0.7rem;
+        display: block;
+        border: 1px solid #000000 !important;
+        border-radius: 0;
+        overflow: visible;
+        transform: none !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .gatto-card-body {
+        padding: 0;
+        display: block;
+    }
+
+    .gatto-card-body h2,
+    .gatto-card-body h3 {
+        margin-bottom: 0.35rem;
+        font-size: 14pt !important;
+    }
+
+    .gatto-card-description {
+        margin: 0;
+        line-height: 1.3;
+    }
+
+    .gatto-card.selezionata {
+        border: 1px solid #000000 !important;
+        transform: none !important;
+    }
+
+    .gatto-card.selezionata::after {
+        content: none;
+    }
+
+
+    /* Home: Un Aiuto a Distanza inizia nella seconda pagina */
+
+    .home-arrivals-section + .info-section {
+        break-before: page;
+        page-break-before: always;
+    }
+
+    .emergency-container {
+        width: 100%;
+        max-width: none;
+        min-height: 0;
+        margin: 0;
+        display: block;
+        overflow: visible;
+    }
+
+    .emergency-text {
+        padding: 0;
+    }
+
+    .emergency-item {
+        margin: 0 0 0.7rem;
+        display: block;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .emergency-item-content h3 {
+        margin-bottom: 0.15rem;
+    }
+
+    .emergency-item-content p {
+        margin: 0;
+    }
+
+
+    /* Sostienici */
+
+    .adozione-cuore-content {
+        width: 100%;
+        max-width: none;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 0.8rem;
+        align-items: start;
+    }
+
+    .adozione-cuore-text,
+    .info-bancarie-box {
+        min-width: 0 !important;
+        width: auto !important;
+        max-width: none;
+    }
+
+    .info-bancarie-box {
+        margin: 0;
+        padding: 0.65rem;
+        border: 1px solid #000000 !important;
+        border-radius: 0;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    /* L'IBAN può andare a capo senza uscire dal box */
+    .iban-copy-wrapper {
+        width: 100%;
+        max-width: 100%;
+        margin: 0.5rem 0;
+        position: static;
+    }
+
+    .iban-code {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        font-family: "Times New Roman", Times, serif;
+        font-size: 12pt;
+        letter-spacing: 0;
+        white-space: normal !important;
+        overflow-wrap: anywhere;
+        text-align: left;
+    }
+
+    .cinque-per-mille-box {
+        margin-top: 0.5rem;
+        padding: 0.4rem 0;
+        border: 0 !important;
+    }
+
+    .piano-caratteristiche {
+        margin: 0.4rem 0 0;
+        padding-left: 1.1rem;
+    }
+
+    .piani-info {
+        margin: 0.6rem 0 0;
+        padding: 0;
+        border: 0 !important;
+        text-align: left;
+    }
+
+    /*
+     * Donazioni Materiali inizia nella seconda pagina
+     * e il contenitore esterno non crea un secondo riquadro
+     */
+    #donazioni {
+        break-before: page;
+        page-break-before: always;
+    }
+
+    .contact-banner {
+        margin: 0;
+        padding: 0;
+        border: 0 !important;
+        border-radius: 0;
+    }
+
+    /* Le FAQ interattive vengono escluse dalla versione cartacea */
+    .faq-section {
+        display: none !important;
+    }
+
+
+    /* Area personale e pannello amministratore */
+
+    .area-personale-grid,
+    .admin-dashboard-grid {
+        width: 100%;
+        max-width: none;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.7rem;
+    }
+
+    .dashboard-section,
+    .admin-dashboard-card,
+    .admin-card-ospiti {
+        min-width: 0;
+        width: auto;
+        margin: 0 0 0.7rem;
+        padding: 0.6rem;
+        border: 1px solid #000000 !important;
+        border-radius: 0;
+    }
+
+    .dashboard-item,
+    .admin-list-item {
+        margin-bottom: 0.35rem;
+        padding: 0.35rem 0;
+        border: 0;
+        border-bottom: 1px solid #000000 !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+
+    /* Link stampati */
+
+    a {
+        color: #000000 !important;
+        text-decoration: underline;
+    }
+
+    a[href^="http://"]::after,
+    a[href^="https://"]::after {
+        content: " (" attr(href) ")";
+        font-size: 8pt;
+        font-weight: 400;
+        overflow-wrap: anywhere;
+    }
+
+
+    /* Copyright finale */
+
+    .site-footer {
+        display: block;
+        margin-top: 0.7rem;
+        padding: 0.35rem 0 0;
+        border-top: 1px solid #000000 !important;
+        font-size: 9pt;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .footer-bottom,
+    .footer-bottom-content {
         width: 100%;
         max-width: none;
         margin: 0;
         padding: 0;
+        display: block;
+        border: 0 !important;
+        text-align: left;
     }
 
-    .adoption-steps-wrapper,
-    .home-arrivals-section,
-    .info-section,
-    .home-emergency-section,
-    #adozioni-distanza,
-    #donazioni,
-    .faq-section {
-        background: #FFFFFF;
-    }
-
-    .adoption-steps-box,
-    .gatto-card,
-    .emergency-container,
-    .info-card,
-    .piano-card,
-    .form-card,
-    .auth-card,
-    .contact-banner,
-    .info-bancarie-box,
-    .dashboard-section,
-    .admin-dashboard-card {
-        background: #FFFFFF;
-        box-shadow: none;
-        break-inside: avoid;
-    }
-
-    .gatto-card.selezionata,
-    .piano-card.piano-evidenziato {
-        transform: none;
-    }
-
-    a {
-        color: #000000;
-        text-decoration: underline;
-    }
-
-    img {
-        max-width: 100%;
+    .footer-bottom-content p {
+        margin: 0.1rem 0;
     }
 }

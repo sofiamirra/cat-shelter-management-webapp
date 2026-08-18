@@ -206,7 +206,7 @@ function GattiApp() {
                                     </span>
 
                                     {/* Il file è un placeholder generico e non una fotografia del singolo gatto */}
-                                    <img src="assets/img/placeholder_gatto.png" alt="" />
+                                    <img src="assets/img/placeholder_gatto.png" width="600" height="600" alt="" />
                                 </div>
 
                                 <div className="gatto-card-body">

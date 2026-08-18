@@ -16,7 +16,7 @@ require 'includes/header.php';
         <!-- Il divisore ha funzione solo decorativa: aria-hidden lo esclude dalle tecnologie assistive -->
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
-            <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
+            <img src="assets/img/icona_zampette.png" width="128" height="128" alt="" class="paw-divider-icon">
             <span class="line"></span>
         </div>
 
@@ -71,7 +71,7 @@ require 'includes/header.php';
 
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
-                <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
+                <img src="assets/img/icona_zampette_bianche.png" width="128" height="128" alt="" class="paw-divider-icon">
                 <span class="line"></span>
             </div>
 
@@ -84,7 +84,7 @@ require 'includes/header.php';
             <article class="piano-card">
 
                 <!-- Le medaglie sono decorative perché il livello del piano è già indicato dal titolo della card -->
-                <img src="assets/img/icona_bronzo.png" alt="">
+                <img src="assets/img/icona_bronzo.png" width="160" height="160" alt="">
 
                 <h3>Adozione Bronzo</h3>
 
@@ -99,7 +99,7 @@ require 'includes/header.php';
             </article>
 
             <article class="piano-card piano-evidenziato">
-                <img src="assets/img/icona_argento.png" alt="">
+                <img src="assets/img/icona_argento.png" width="160" height="160" alt="">
 
                 <h3>Adozione Argento</h3>
 
@@ -113,7 +113,7 @@ require 'includes/header.php';
             </article>
 
             <article class="piano-card">
-                <img src="assets/img/icona_oro.png" alt="">
+                <img src="assets/img/icona_oro.png" width="160" height="160" alt="">
 
                 <h3>Adozione Oro</h3>
 
@@ -145,7 +145,7 @@ require 'includes/header.php';
 
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
-                <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
+                <img src="assets/img/icona_zampette.png" width="128" height="128" alt="" class="paw-divider-icon">
                 <span class="line"></span>
             </div>
 
@@ -157,21 +157,21 @@ require 'includes/header.php';
             <div class="contact-banner-item">
 
                 <!-- Le icone sono decorative perché ciascun blocco contiene già un'etichetta testuale -->
-                <img src="assets/img/icona_posizione_scura.png" alt="">
+                <img src="assets/img/icona_posizione_scura.png" width="128" height="128" alt="">
 
                 <h3>Punto di Raccolta</h3>
                 <p>I volontari ritirano i vostri aiuti in<br>Strada Val Salice 123, Torino</p>
             </div>
 
             <div class="contact-banner-item">
-                <img src="assets/img/icona_orari.png" alt="">
+                <img src="assets/img/icona_orari.png" width="128" height="128" alt="">
 
                 <h3>Orari di Ritiro</h3>
                 <p>Tutti i giorni, 16:00 - 18:00<br>(senza appuntamento)</p>
             </div>
 
             <div class="contact-banner-item">
-                <img src="assets/img/icona_telefono_scuro.png" alt="">
+                <img src="assets/img/icona_telefono_scuro.png" width="128" height="128" alt="">
 
                 <h3>Contatti</h3>
                 <p>
@@ -191,7 +191,7 @@ require 'includes/header.php';
 
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
-                <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
+                <img src="assets/img/icona_zampette_bianche.png" width="128" height="128" alt="" class="paw-divider-icon">
                 <span class="line"></span>
             </div>
         </header>

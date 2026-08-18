@@ -17,7 +17,7 @@ require 'includes/header.php';
         <!-- Il divisore è puramente decorativo, quindi viene escluso dalle tecnologie assistive -->
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
-            <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
+            <img src="assets/img/icona_zampette.png" width="128" height="128" alt="" class="paw-divider-icon">
             <span class="line"></span>
         </div>
     </header>
@@ -34,7 +34,7 @@ require 'includes/header.php';
         </div>
 
         <div class="volontariato-intro-image">
-            <img src="assets/img/gatto_volontariato.png" alt="Volontario del rifugio con un gatto">
+            <img src="assets/img/gatto_volontariato.webp" width="1080" height="720" alt="Volontario del rifugio con un gatto">
         </div>
     </div>
 </div>
@@ -47,7 +47,7 @@ require 'includes/header.php';
 
             <div class="paw-divider" aria-hidden="true">
                 <span class="line"></span>
-                <img src="assets/img/icona_zampette_bianche.png" alt="" class="paw-divider-icon">
+                <img src="assets/img/icona_zampette_bianche.png" width="128" height="128" alt="" class="paw-divider-icon">
                 <span class="line"></span>
             </div>
         </header>
@@ -58,28 +58,28 @@ require 'includes/header.php';
             <article class="info-card">
 
                 <!-- Le icone sono decorative perché ogni mansione è già identificata dal relativo h3 -->
-                <img src="assets/img/icona_mattina.png" alt="">
+                <img src="assets/img/icona_mattina.png" width="160" height="160" alt="">
 
                 <h3>Turno del Mattino</h3>
                 <p>Aiutaci a iniziare la giornata dei felini preparando il cibo e sistemando gli spazi.</p>
             </article>
 
             <article class="info-card">
-                <img src="assets/img/icona_sera.png" alt="">
+                <img src="assets/img/icona_sera.png" width="160" height="160" alt="">
 
                 <h3>Turno della Sera</h3>
                 <p>Assicura ai mici una serena buonanotte. Rifornirai il cibo secco e gli dedicherai qualche coccola serale.</p>
             </article>
 
             <article class="info-card">
-                <img src="assets/img/icona_gioco.png" alt="">
+                <img src="assets/img/icona_gioco.png" width="160" height="160" alt="">
 
                 <h3>Socializzazione</h3>
                 <p>Disponibilità nella fascia pomeridiana per favorire la socializzazione dei mici più timorosi e diffidenti.</p>
             </article>
 
             <article class="info-card">
-                <img src="assets/img/icona_eventi.png" alt="">
+                <img src="assets/img/icona_eventi.png" width="160" height="160" alt="">
 
                 <h3>Gestione Eventi</h3>
                 <p>Cerchiamo aiuto per la gestione degli eventi sul territorio, per i mercatini solidali e le raccolte fondi.</p>
@@ -95,7 +95,7 @@ require 'includes/header.php';
 
         <div class="paw-divider" aria-hidden="true">
             <span class="line"></span>
-            <img src="assets/img/icona_zampette.png" alt="" class="paw-divider-icon">
+            <img src="assets/img/icona_zampette.png" width="128" height="128" alt="" class="paw-divider-icon">
             <span class="line"></span>
         </div>
 
@@ -272,6 +272,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // L'icona di conferma è decorativa perché il messaggio testuale comunica già l'esito
             const iconaSuccesso = document.createElement('img');
             iconaSuccesso.src = 'assets/img/icona_spunta_successo.png';
+            iconaSuccesso.width = 128;
+            iconaSuccesso.height = 128;
             iconaSuccesso.alt = '';
             iconaSuccesso.className = 'icona-successo';
 

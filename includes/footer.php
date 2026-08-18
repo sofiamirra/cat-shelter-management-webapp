@@ -24,17 +24,17 @@
 
                     <!-- Le icone sono decorative perché le informazioni sono già presenti in forma testuale -->
                     <li>
-                        <img src="assets/img/icona_posizione_footer.png" alt="" class="footer-contact-icon">
-                        Strada Val Salice 123, 10131 Torino (TO)
+                        <img src="assets/img/icona_posizione_footer.png" width="128" height="128" alt="" class="footer-contact-icon">
+                        Strada Val Salice 123, 10131 Torino
                     </li>
 
                     <li>
-                        <img src="assets/img/icona_email_footer.png" alt="" class="footer-contact-icon">
+                        <img src="assets/img/icona_email_footer.png" width="128" height="128" alt="" class="footer-contact-icon">
                         <a href="mailto:info@parcodellefusa.it">info@parcodellefusa.it</a>
                     </li>
 
                     <li>
-                        <img src="assets/img/icona_telefono_footer.png" alt="" class="footer-contact-icon">
+                        <img src="assets/img/icona_telefono_footer.png" width="128" height="128" alt="" class="footer-contact-icon">
                         <a href="tel:+390111234567">+39 011 123 4567</a>
                     </li>
                 </ul>
@@ -54,8 +54,8 @@
 
             <!-- Le icone social vengono mostrate come informazioni visive perché non sono disponibili profili reali da collegare -->
             <div class="footer-social">
-                <img src="assets/img/icona_instagram.png" alt="Instagram">
-                <img src="assets/img/icona_facebook.png" alt="Facebook">
+                <img src="assets/img/icona_instagram.png" width="128" height="128" alt="Instagram">
+                <img src="assets/img/icona_facebook.png" width="128" height="128" alt="Facebook">
             </div>
         </section>
 

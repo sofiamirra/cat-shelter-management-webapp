@@ -18,6 +18,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="Il Parco delle Fusa è un rifugio per gatti in difficoltà: scopri i nostri ospiti, prenota una visita e sostieni le attività del rifugio.">
 
     <!-- La viewport permette al layout di adattarsi dinamicamente ai dispositivi -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,8 +28,12 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
     <!-- Favicon del sito -->
     <link rel="icon" type="image/png" href="assets/img/favoriteicon_parco.png">
 
+    <!-- Le connessioni ai server dei font vengono preparate in anticipo per ridurre l'attesa durante il caricamento -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <!-- Foglio di stile esterno per il font Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Foglio di stile globale condiviso da tutte le pagine -->
     <link rel="stylesheet" href="assets/css/style.css">
@@ -63,7 +68,7 @@ $is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
                 <!-- details e summary creano il menu account espandibile direttamente tramite HTML senza richiedere JavaScript -->
                 <details class="account-menu">
                     <summary class="account-summary">
-                        <img src="assets/img/icona_utente.png" alt="" class="icona-utente">
+                        <img src="assets/img/icona_utente.png" width="128" height="128" alt="" class="icona-utente">
 
                         <!-- Lo username viene codificato prima dell'output HTML per evitare l'interpretazione di eventuale markup e prevenire XSS -->
                         <span><?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?></span>
