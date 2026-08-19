@@ -1119,6 +1119,7 @@ summary::-webkit-details-marker {
 }
 
 .select-ordinamento {
+    min-width: 280px;
     background-color: #FFFFFF;
     cursor: pointer;
 }
@@ -1832,7 +1833,8 @@ summary::-webkit-details-marker {
     font-weight: 700;
     letter-spacing: 1px;
     text-align: center;
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .btn-copia-iban {
@@ -2300,6 +2302,19 @@ summary::-webkit-details-marker {
     .sponsor-logo {
         width: 155px;
         height: 75px;
+    }
+}
+
+/* Su tablet stretti le adozioni del cuore passano a una colonna */
+@media screen and (max-width: 52rem) {
+    .adozione-cuore-content {
+        flex-direction: column;
+    }
+
+    .adozione-cuore-text,
+    .info-bancarie-box {
+        min-width: 0;
+        width: 100%;
     }
 }
 
@@ -3366,6 +3381,15 @@ summary::-webkit-details-marker {
     a {
         color: #000000;
         text-decoration: underline;
+    }
+
+    a[href^="http://"]::after,
+    a[href^="https://"]::after {
+        content: " (" attr(href) ")";
+        font-size: 8pt;
+        font-weight: 400;
+        text-decoration: underline;
+        overflow-wrap: anywhere;
     }
 
 

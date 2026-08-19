@@ -34,7 +34,19 @@ require 'includes/header.php';
         </div>
 
         <div class="volontariato-intro-image">
-            <img src="assets/img/gatto_volontariato.webp" width="1080" height="720" alt="Volontario del rifugio con un gatto">
+        <picture>
+            <source
+                media="(max-width: 48rem)"
+                srcset="assets/img/gatto_volontariato_mobile.webp"
+            >
+            <img
+                src="assets/img/gatto_volontariato.webp"
+                width="1080"
+                height="720"
+                fetchpriority="high"
+                alt="Volontario del rifugio con un gatto"
+            >
+        </picture>
         </div>
     </div>
 </div>

@@ -226,6 +226,7 @@ require 'includes/header.php';
                     id="indirizzo"
                     name="indirizzo"
                     value="<?php echo htmlspecialchars($indirizzo, ENT_QUOTES, 'UTF-8'); ?>"
+                    placeholder="Es. Via Roma 10, Torino"
                     aria-describedby="err-indirizzo"
                 >
                 <span class="errore-js" id="err-indirizzo"></span>
