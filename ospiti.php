@@ -113,7 +113,9 @@ require 'includes/header.php';
 const IS_LOGGED_IN = <?php echo isset($_SESSION['username']) ? 'true' : 'false'; ?>;
 </script>
 
-<script type="text/babel" src="assets/js/GattiApp.js"></script>
+<script type="text/babel">
+<?php require 'assets/js/GattiApp.js'; ?>
+</script>
 
 <script>
 /*

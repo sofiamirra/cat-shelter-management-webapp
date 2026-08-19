@@ -2775,10 +2775,6 @@ summary::-webkit-details-marker {
         text-shadow: none !important;
     }
 
-    body .fw-bold-primary {
-        color: #000000 !important;
-    }
-
     /* Elementi non necessari nella versione stampata */
     .site-header,
     .footer-container,

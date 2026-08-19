@@ -145,6 +145,7 @@ function GattiApp() {
             {/* I controlli aggiornano gli stati utilizzati per filtrare e ordinare i dati già caricati */}
             <div className="filtri-ricerca">
                 <input
+                    id="ricerca-gatti"
                     type="text"
                     placeholder="Cerca per nome o descrizione..."
                     value={ricercaTesto}
@@ -154,6 +155,7 @@ function GattiApp() {
                 />
 
                 <select
+                    id="ordinamento-gatti"
                     value={criterioOrdinamento}
                     onChange={event => setCriterioOrdinamento(event.target.value)}
                     className="select-ordinamento"
@@ -194,25 +196,23 @@ function GattiApp() {
                                 onClick={IS_LOGGED_IN ? () => gestisciSelezione(gatto) : undefined}
                                 onKeyDown={IS_LOGGED_IN ? event => gestisciTastiera(event, gatto) : undefined}
                                 tabIndex={IS_LOGGED_IN ? 0 : undefined}
-                                role={IS_LOGGED_IN ? 'button' : undefined}
-                                aria-pressed={IS_LOGGED_IN ? isSelezionato : undefined}
                             >
                                 <div className="gatto-card-image">
-
+                        
                                     {/* Il ternario traduce il codice del sesso nel testo mostrato sul badge */}
                                     <span className="gatto-badge">
                                         {gatto.sesso === 'M' ? 'Maschio' : 'Femmina'}
                                     </span>
-
+                        
                                     {/* Il file è un placeholder generico e non una fotografia del singolo gatto */}
                                     <img src="assets/img/placeholder_gatto.png" width="600" height="600" alt="" />
                                 </div>
-
+                        
                                 <div className="gatto-card-body">
-
+                        
                                     {/* Il nome usa h2 perché la galleria dipende direttamente dal titolo principale della pagina */}
                                     <h2>{gatto.nome}</h2>
-
+                        
                                     <p className="gatto-card-description">
                                         <strong>Razza: </strong> {gatto.razza} <br />
                                         <strong>Manto: </strong> {gatto.colore_mantello} <br />

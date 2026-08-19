@@ -237,7 +237,7 @@ require 'includes/header.php';
                             </div>
                     <?php endif; ?>
 
-                        <article class="admin-list-item">
+                        <div class="admin-list-item">
                             <div class="admin-list-main">
                                 <strong><?php echo htmlspecialchars($ora, ENT_QUOTES, 'UTF-8'); ?></strong>
                                 <span><?php echo htmlspecialchars($visita['username'], ENT_QUOTES, 'UTF-8'); ?></span>
@@ -246,7 +246,7 @@ require 'includes/header.php';
                             <span class="admin-list-detail">
                                 <?php echo htmlspecialchars($nomi_gatti, ENT_QUOTES, 'UTF-8'); ?>
                             </span>
-                        </article>
+                        </div>
 
                     <?php endforeach; ?>
 
@@ -283,7 +283,7 @@ require 'includes/header.php';
                                 </div>
                         <?php endif; ?>
 
-                            <article class="admin-list-item admin-list-item-history">
+                            <div class="admin-list-item admin-list-item-history">
                                 <div class="admin-list-main">
                                     <strong><?php echo htmlspecialchars($ora, ENT_QUOTES, 'UTF-8'); ?></strong>
                                     <span><?php echo htmlspecialchars($visita['username'], ENT_QUOTES, 'UTF-8'); ?></span>
@@ -292,7 +292,7 @@ require 'includes/header.php';
                                 <span class="admin-list-detail">
                                     <?php echo htmlspecialchars($nomi_gatti, ENT_QUOTES, 'UTF-8'); ?>
                                 </span>
-                            </article>
+                            </div>
 
                         <?php endforeach; ?>
 
@@ -349,12 +349,12 @@ require 'includes/header.php';
                             </div>
                     <?php endif; ?>
 
-                        <article class="admin-list-item">
+                        <div class="admin-list-item">
                             <div class="admin-list-main">
                                 <strong><?php echo htmlspecialchars($nome_fascia, ENT_QUOTES, 'UTF-8'); ?></strong>
                                 <span><?php echo htmlspecialchars($turno['username'], ENT_QUOTES, 'UTF-8'); ?></span>
                             </div>
-                        </article>
+                        </div>
 
                     <?php endforeach; ?>
 
@@ -396,12 +396,12 @@ require 'includes/header.php';
                                 </div>
                         <?php endif; ?>
 
-                            <article class="admin-list-item admin-list-item-history">
+                            <div class="admin-list-item admin-list-item-history">
                                 <div class="admin-list-main">
                                     <strong><?php echo htmlspecialchars($nome_fascia, ENT_QUOTES, 'UTF-8'); ?></strong>
                                     <span><?php echo htmlspecialchars($turno['username'], ENT_QUOTES, 'UTF-8'); ?></span>
                                 </div>
-                            </article>
+                            </div>
 
                         <?php endforeach; ?>
 

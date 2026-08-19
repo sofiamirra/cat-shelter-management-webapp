@@ -275,7 +275,7 @@ require 'includes/header.php';
             </div>
 
             <div class="auth-actions">
-                <button type="submit" class="btn-solid-dark">Registrati</button>
+                <button type="submit" id="btn-registrazione" class="btn-solid-dark">Registrati</button>
 
                 <p class="form-switch-text">Hai già un account?</p>
 

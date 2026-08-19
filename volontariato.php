@@ -114,7 +114,7 @@ require 'includes/header.php';
         <p class="header-subtitle">Il tuo tempo è il regalo più prezioso. Seleziona una data per scoprire le fasce orarie disponibili. Accettiamo un massimo di 2 volontari per turno.</p>
     </header>
 
-    <!-- Il feedback della copia viene annunciato anche alle tecnologie assistive -->
+    <!-- Il feedback dei turni viene annunciato anche alle tecnologie assistive -->
     <div id="messaggio-esito" class="d-none alert-wrapper" aria-live="polite"></div>
 
     <!-- Il form viene mostrato soltanto se lo username è presente nella sessione dell'utente autenticato -->
@@ -140,17 +140,17 @@ require 'includes/header.php';
 
                         <!-- Ogni checkbox è contenuta nel proprio label, quindi il testo della fascia è direttamente associato al controllo -->
                         <label class="fascia-oraria-label">
-                            <input type="checkbox" name="fasce[]" value="09:00:00" class="chk-fascia" disabled>
+                            <input type="checkbox" id="fascia-mattina" name="fasce[]" value="09:00:00" class="chk-fascia" disabled>
                             <span>Mattina (09 - 13)</span>
                         </label>
 
                         <label class="fascia-oraria-label">
-                            <input type="checkbox" name="fasce[]" value="13:00:00" class="chk-fascia" disabled>
+                            <input type="checkbox" id="fascia-pomeriggio" name="fasce[]" value="13:00:00" class="chk-fascia" disabled>
                             <span>Pomeriggio (13 - 17)</span>
                         </label>
 
                         <label class="fascia-oraria-label">
-                            <input type="checkbox" name="fasce[]" value="17:00:00" class="chk-fascia" disabled>
+                            <input type="checkbox" id="fascia-sera" name="fasce[]" value="17:00:00" class="chk-fascia" disabled>
                             <span>Sera (17 - 21)</span>
                         </label>
                     </div>

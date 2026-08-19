@@ -202,7 +202,7 @@ require 'includes/header.php';
             </span>
 
             <div class="auth-actions">
-                <button type="submit" class="btn-solid-dark">Accedi</button>
+                <button type="submit" id="btn-login" class="btn-solid-dark">Accedi</button>
 
                 <p class="form-switch-text">Non hai ancora un account?</p>
 

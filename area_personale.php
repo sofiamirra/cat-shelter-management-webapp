@@ -224,6 +224,7 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
 
                             <!-- L'id identifica la prenotazione richiesta, mentre l'action ricontrollerà anche il proprietario -->
                             <form
+                                id="form-annulla-visita-<?php echo (int) $visita['id']; ?>"
                                 action="actions/elimina_prenotazione.php"
                                 method="POST"
                                 class="form-annulla-attivita"
@@ -231,11 +232,12 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
                             >
                                 <input
                                     type="hidden"
+                                    id="prenotazione-id-<?php echo (int) $visita['id']; ?>"
                                     name="prenotazione_id"
                                     value="<?php echo (int) $visita['id']; ?>"
                                 >
 
-                                <button type="submit" class="btn-annulla-attivita">
+                                <button type="submit" id="btn-annulla-visita-<?php echo (int) $visita['id']; ?>" class="btn-annulla-attivita">
                                     Annulla Visita
                                 </button>
                             </form>
@@ -291,18 +293,20 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
 
                             <!-- Anche in questo caso l'action verifica che il turno appartenga all'utente autenticato -->
                             <form
+                                id="form-annulla-turno-<?php echo (int) $turno['id']; ?>"
                                 action="actions/elimina_turno.php"
                                 method="POST"
                                 class="form-annulla-attivita"
                                 data-messaggio="Vuoi annullare questo turno di volontariato?"
                             >
                                 <input
+                                    id="turno-id-<?php echo (int) $turno['id']; ?>"
                                     type="hidden"
                                     name="turno_id"
                                     value="<?php echo (int) $turno['id']; ?>"
                                 >
 
-                                <button type="submit" class="btn-annulla-attivita">
+                                <button type="submit" id="btn-annulla-turno-<?php echo (int) $turno['id']; ?>" class="btn-annulla-attivita">
                                     Annulla Turno
                                 </button>
                             </form>

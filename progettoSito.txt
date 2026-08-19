@@ -1,0 +1,175 @@
+Descrizione del progetto e delle scelte progettuali
+
+
+1. Architettura della pagina Ospiti e comunicazione tra React, Vanilla JavaScript e PHP
+
+La pagina ospiti.php è il punto in cui si incontrano le tre tecnologie principali utilizzate nel progetto. Come richiesto dalla traccia, la visualizzazione dei gatti, la ricerca, l'ordinamento e la selezione sono gestiti da React, mentre il form di prenotazione della visita rimane esterno al componente ed è gestito in Vanilla JavaScript.
+
+Il componente React contenuto in GattiApp.js recupera i dati dei gatti in modo asincrono tramite fetch. La richiesta viene inviata a actions/get_gatti.php, che interroga il database con un profilo di sola lettura e restituisce i risultati in formato JSON. React utilizza poi questi dati per costruire le card e gestire ricerca, ordinamento e, quando l'utente è autenticato, selezione dei gatti.
+
+Dal punto di vista architetturale, il passaggio più interessante riguarda proprio il collegamento tra il componente React e il form Vanilla JavaScript. Quando cambia la selezione, React genera un CustomEvent chiamato "aggiornamentoGattiScelti" e lo invia sul document, inserendo nell'event.detail l'array dei gatti selezionati. Lo script Vanilla JavaScript presente in ospiti.php ascolta lo stesso evento e utilizza i dati ricevuti per aggiornare la lista dei gatti mostrata nel form, il campo hidden contenente gli identificativi e lo stato del pulsante di conferma.
+
+Il vantaggio di questa soluzione è che React e il form non devono conoscere direttamente la struttura interna l'uno dell'altro: React comunica il cambiamento della selezione, mentre il Vanilla JavaScript decide come utilizzare quell'informazione nel form. Il document diventa quindi il punto comune di comunicazione tra due moduli distinti.
+
+Anche la parte PHP rimane separata: get_gatti.php fornisce alla galleria i dati in JSON, mentre processa_prenotazione.php gestisce la prenotazione e i relativi controlli lato server. Il flusso della pagina può essere riassunto in questo modo:
+
+database -> PHP/JSON -> React -> CustomEvent sul document -> Vanilla JavaScript -> form -> PHP -> database.
+
+La divisione mantiene quindi chiaro il ruolo delle diverse tecnologie: PHP gestisce sessione, database e controlli definitivi, React la galleria dinamica e Vanilla JavaScript i form e le interazioni lato client.
+
+
+2. Separazione dei privilegi del database
+
+La traccia richiede di utilizzare utenti MySQL con privilegi differenti in base alle operazioni svolte dalle pagine. Nel progetto la configurazione delle connessioni è centralizzata in includes/db_config.php, mentre il profilo utilizzato cambia in base al tipo di operazione.
+
+I tre profili sono:
+
+- lecture, usato per le sole letture;
+- modifier, usato per le operazioni che richiedono lettura o modifica dei dati;
+- registrator, usato esclusivamente per l'inserimento di nuovi utenti.
+
+Nella configurazione finale lecture dispone del privilegio SELECT, mentre registrator è limitato all'INSERT sulla tabella utenti ed è utilizzato soltanto durante la registrazione. Modifier dispone invece di SELECT, INSERT, UPDATE e DELETE; quest'ultimo privilegio è necessario perché nell'area personale ho aggiunto la possibilità di annullare visite e turni già prenotati.
+
+La registrazione utilizza inoltre due connessioni separate: lecture per verificare se lo username è già presente e registrator soltanto per eseguire l'inserimento del nuovo account. In questo modo il profilo registrator non riceve un privilegio di lettura che non gli serve.
+
+Questa separazione limita anche gli effetti di eventuali errori: una pagina che deve solo consultare dati non può modificarli e il profilo dedicato alla registrazione non può essere utilizzato per operazioni diverse dall'inserimento di utenti. L'applicazione non utilizza l'utente amministratore del DBMS.
+
+Le credenziali dei tre utenti MySQL sono attualmente presenti nel file db_config.php. Nel contesto locale e didattico del progetto questa soluzione rende semplice la configurazione dell'ambiente MAMP e le credenziali appartengono comunque ad account con privilegi limitati. In un'applicazione realmente pubblicata eviterei invece di mantenere le password direttamente nel codice sorgente, utilizzando ad esempio variabili d'ambiente o un file di configurazione esterno non versionato.
+
+
+3. Struttura generale del sito
+
+Le pagine principali del sito sono contenute nella directory principale del progetto, mentre i file di supporto sono suddivisi tra actions, includes e assets.
+
+home.php presenta il rifugio, le principali attività e le possibilità offerte dal sito; la sezione "Nuovi Arrivi" viene generata interrogando il database e mostrando i due gatti con data di arrivo più recente.
+
+login.php gestisce l'autenticazione e la sessione, mentre registrazione.php permette la creazione di un nuovo account. ospiti.php contiene la galleria React e il form per la prenotazione delle visite, mentre volontariato.php presenta le attività del rifugio e il form per la scelta dei turni.
+
+sostienici.php raccoglie informazioni sulle adozioni a distanza, sulle donazioni e sui contatti e contiene anche una sezione FAQ. area_personale.php permette invece all'utente autenticato di consultare le proprie visite e i propri turni futuri e di annullarli.
+
+admin.php raccoglie le informazioni utili all'amministratore: prossime visite, storico delle visite, prossimi turni, storico dei turni e collegamento all'inserimento di un nuovo gatto. inserimento_gatto.php contiene il form riservato agli amministratori per aggiungere un nuovo ospite, mentre logout.php termina la sessione.
+
+La cartella actions contiene gli endpoint e le operazioni di backend, ad esempio il recupero JSON dei gatti, il salvataggio delle visite, la verifica e il salvataggio dei turni e le cancellazioni dall'area personale.
+
+Come richiesto dalla traccia, header e footer sono elementi comuni alle pagine e vengono gestiti tramite includes/header.php e includes/footer.php. La cartella includes contiene inoltre db_config.php, mentre assets raccoglie foglio di stile, JavaScript e risorse grafiche.
+
+
+4. Autenticazione, password e ruoli
+
+L'autenticazione utilizza sessioni PHP. Dopo un accesso corretto vengono memorizzati l'identificativo dell'utente, lo username e il valore di is_admin; prima di salvare questi dati viene rigenerato l'identificativo della sessione.
+
+La funzione "Ricordami" segue il comportamento indicato nella traccia: il cookie conserva per 72 ore soltanto lo username dell'ultimo accesso riuscito, mentre la password non viene salvata e deve essere nuovamente inserita al login.
+
+Per gli account creati tramite registrazione.php la password viene memorizzata utilizzando password_hash(), mentre login.php verifica la credenziale tramite password_verify(). La password non viene quindi memorizzata in forma direttamente leggibile nel database.
+
+Questo comporta però una conseguenza per eventuali account creati prima dell'introduzione di questo meccanismo e ancora presenti nel database con password in chiaro. password_verify() si aspetta infatti di confrontare la password inserita con un hash prodotto da password_hash(): una password memorizzata direttamente come testo non contiene la struttura dell'hash attesa dalla funzione e questi account non possono quindi essere autenticati dal flusso attuale. In un'applicazione reale già utilizzata, una situazione di questo tipo potrebbe essere gestita migrando gli account esistenti oppure richiedendo agli utenti di impostare nuovamente la password.
+
+La distinzione tra utente standard e amministratore utilizza il campo is_admin e la registrazione pubblica imposta sempre is_admin a 0. Il form non accetta quindi alcun valore che permetta all'utente di scegliere autonomamente il proprio ruolo.
+
+Questo è importante dal punto di vista della sicurezza, perché un parametro controllabile dal client non deve poter trasformare una normale registrazione in un account amministrativo. L'assegnazione dei privilegi amministrativi rimane quindi separata dal form pubblico.
+
+Anche le pagine riservate controllano is_admin lato server. Nascondere semplicemente un collegamento nell'interfaccia non sarebbe sufficiente, perché un utente potrebbe comunque provare a raggiungere direttamente l'URL.
+
+
+5. Validazione, query e gestione sicura dei dati
+
+I form del sito sono gestiti lato client in Vanilla JavaScript. La validazione JavaScript fornisce un feedback immediato e permette di evitare invii non validi, ma i controlli importanti vengono ripetuti dal PHP prima di intervenire sul database.
+
+Per le query che ricevono dati provenienti dall'utente vengono utilizzati prepared statement, in modo da mantenere separati i parametri dalla struttura SQL e proteggere dalle SQL injection.
+
+Quando dati dinamici vengono reinseriti nell'HTML utilizzo htmlspecialchars(), così eventuali caratteri speciali vengono trattati come testo e non come markup. Nel JavaScript che costruisce contenuti dinamici utilizzo principalmente createElement, textContent e createTextNode quando i valori derivano dai dati ricevuti dal backend; anche in questo caso si evita che un contenuto dinamico venga interpretato come HTML o JavaScript non previsto.
+
+La stessa attenzione è stata applicata alla gestione degli errori. I dettagli tecnici vengono inviati a error_log, mentre nell'interfaccia vengono mostrati messaggi più semplici, evitando di esporre informazioni interne come query, nomi delle tabelle o messaggi dettagliati del DBMS che potrebbero aiutare a ricostruire la struttura dell'applicazione.
+
+Dal punto di vista dell'usabilità, inoltre, un messaggio comprensibile permette all'utente di capire cosa è successo senza trovarsi davanti a informazioni tecniche inutili, in linea con l'euristica di Nielsen relativa al riconoscimento e al recupero dagli errori.
+
+
+6. Gestione delle visite
+
+Per rendere la prenotazione più vicina al funzionamento reale di un rifugio ho definito una fascia per le visite compresa tra le 10:30 e le 17:30, con una data minima selezionabile pari al giorno successivo. Questi vincoli vengono controllati sia nell'interfaccia sia lato server.
+
+La traccia prevede che una visita possa essere collegata a uno o più gatti. Per questa associazione viene utilizzata la tabella visita_gatti già presente nello schema del database.
+
+Gli identificativi selezionati nel componente React vengono trasferiti al form tramite il CustomEvent e salvati nel campo hidden sotto forma di JSON. Il PHP decodifica poi l'elenco e crea le associazioni corrispondenti.
+
+Prenotazione e associazioni vengono salvate all'interno di una transazione, perché fanno parte della stessa operazione logica: se uno dei passaggi non riesce, non deve rimanere nel database una prenotazione inserita solo parzialmente.
+
+Ho considerato la visita come una richiesta di incontro conoscitivo e non come un'agenda completa della struttura. In un'applicazione realmente utilizzata dal rifugio si potrebbero aggiungere ulteriori regole, ad esempio un numero massimo di incontri contemporanei per lo stesso gatto, il controllo di richieste duplicate dello stesso utente oppure un calendario gestito direttamente dall'amministrazione. Sono aspetti che dipenderebbero anche dall'organizzazione interna del rifugio e che non erano necessari per il flusso previsto in questa versione.
+
+
+7. Gestione del volontariato
+
+Per organizzare il volontariato ho suddiviso la giornata in tre fasce:
+
+- mattina, dalle 09:00 alle 13:00;
+- pomeriggio, dalle 13:00 alle 17:00;
+- sera, dalle 17:00 alle 21:00.
+
+Questa suddivisione rende il form semplice e permette di collegare gli orari alle diverse attività descritte nella pagina.
+
+Il limite massimo di due volontari per fascia e il controllo sia lato client sia lato server derivano direttamente dalla traccia. Quando l'utente seleziona una data, volontariato.php interroga actions/api_verifica_turni.php tramite fetch e l'API restituisce in JSON il numero di persone già registrate nelle tre fasce. Quelle che hanno raggiunto il limite restano disabilitate e vengono indicate visivamente come "AL COMPLETO".
+
+Il controllo viene ripetuto nel backend al momento del salvataggio. In processa_volontariato.php ho inoltre inserito una transazione con SELECT ... FOR UPDATE, per gestire correttamente anche il caso in cui due utenti provino a prenotare quasi nello stesso momento gli ultimi posti disponibili. Il controllo della disponibilità e l'inserimento rimangono così parte della stessa operazione sul database.
+
+Se il limite viene raggiunto prima del salvataggio, il backend restituisce una risposta JSON con il codice LIMIT_EXCEEDED; il JavaScript intercetta la risposta, mostra il messaggio e aggiorna nuovamente le disponibilità.
+
+
+8. Area personale e pannello amministratore
+
+L'area "Le Mie Attività" è una funzionalità che ho aggiunto per rendere più semplice la gestione delle prenotazioni da parte dell'utente. Da questa pagina è possibile consultare visite e turni futuri e annullarli dopo una richiesta di conferma.
+
+Le action di cancellazione non si limitano a utilizzare l'id ricevuto dal form: viene controllato anche l'identificativo dell'utente presente nella sessione e verificato che l'attività appartenga realmente a quell'account. In questo modo non è sufficiente modificare manualmente l'id inviato dal form per eliminare una prenotazione appartenente a un altro utente.
+
+Questa funzionalità ha richiesto anche il privilegio DELETE per il profilo modifier. Nel caso delle visite, le associazioni nella tabella visita_gatti vengono rimosse tramite il vincolo ON DELETE CASCADE già presente nello schema.
+
+Nel pannello amministratore vengono mostrate le prossime visite, lo storico delle visite, i prossimi turni e lo storico dei turni. È inoltre presente il collegamento alla pagina di inserimento di un nuovo gatto.
+
+La struttura potrebbe essere estesa in seguito con altre operazioni, ad esempio l'annullamento amministrativo delle visite, la modifica delle schede dei gatti, la gestione dello stato di adozione oppure il caricamento di fotografie reali. Si tratta di sviluppi compatibili con l'organizzazione attuale del progetto, ma non necessari per le funzionalità presenti in questa versione.
+
+La pagina Sostienici è un'altra aggiunta rispetto al nucleo principale del sito e contiene adozioni a distanza, informazioni per le donazioni, contatti e FAQ. Per l'IBAN è presente anche un pulsante di copia con feedback visivo dopo l'azione.
+
+
+9. Inserimento dei gatti
+
+La pagina inserimento_gatto.php è accessibile soltanto agli amministratori e il controllo del ruolo avviene lato server prima di produrre il contenuto della pagina.
+
+Il form raccoglie i dati indicati nella traccia e la validazione lato client viene ripetuta dal PHP prima dell'inserimento. La query utilizza un prepared statement e la connessione modifier.
+
+Per le schede viene utilizzato il placeholder standard previsto dal progetto, che viene mostrato anche nella galleria in assenza di fotografie individuali. Un eventuale sistema di caricamento e gestione delle fotografie potrebbe essere aggiunto successivamente senza modificare il funzionamento principale delle schede.
+
+
+10. Responsive design, accessibilità e versione di stampa
+
+Una parte importante del lavoro è stata dedicata al comportamento delle pagine su schermi differenti. Il layout utilizza CSS, Flexbox, Grid e media query, senza usare JavaScript per decidere la disposizione degli elementi.
+
+Le pagine sono state adattate a smartphone, tablet e desktop: le sezioni a più colonne passano progressivamente a una colonna quando lo spazio diminuisce e i contenuti più lunghi possono andare a capo per evitare scroll orizzontale.
+
+Per le fotografie principali utilizzo immagini WebP. Nella Home e nella pagina Volontariato sono presenti anche versioni differenti per viewport più piccoli tramite picture e source. Nelle immagini principali ho indicato width e height, così il browser può riservare lo spazio corretto prima del caricamento e ridurre i layout shift. Dove opportuno viene usato loading="lazy", mentre le immagini principali visibili subito possono utilizzare fetchpriority="high".
+
+Ho dedicato attenzione anche all'accessibilità. Il focus durante la navigazione da tastiera viene reso visibile tramite :focus-visible, i controlli dei form hanno label associate e le fasce di volontariato sono raggruppate tramite fieldset e legend. Le immagini puramente decorative hanno alt vuoto, mentre quelle informative hanno un testo alternativo.
+
+Le card selezionabili della pagina Ospiti possono essere raggiunte tramite tastiera e attivate con Enter o Spazio. I messaggi dinamici più importanti utilizzano aria-live e nel CSS è presente anche prefers-reduced-motion per rispettare la preferenza dell'utente sulla riduzione delle animazioni.
+
+È stata inoltre preparata una versione specifica per la stampa tramite @media print: gli elementi interattivi o puramente grafici vengono esclusi e le sezioni vengono riorganizzate per mantenere il contenuto leggibile anche su carta.
+
+
+11. Identità grafica, prestazioni e SEO tecnica
+
+La grafica è stata mantenuta coerente tra le varie pagine attraverso la stessa palette e gli stessi tipi di card, pulsanti, messaggi e intestazioni. Le icone utilizzate nel sito sono state realizzate personalmente con Canva.
+
+Per la SEO ho curato soprattutto gli aspetti tecnici direttamente collegati al codice della pagina, tra cui lingua del documento, meta description, gerarchia dei titoli, struttura semantica, testi alternativi e comportamento responsive.
+
+Per le prestazioni ho preferito interventi semplici e leggibili: immagini principali in WebP, risorse adattate al viewport, dimensioni dichiarate nei tag img, caricamento differito dove utile e attenzione a non introdurre risorse grafiche non necessarie.
+
+Non ho applicato minification ai file CSS e JavaScript sviluppati per il progetto, perché ho preferito mantenere il codice direttamente leggibile. In un progetto di produzione sarebbe invece normale distribuire file minificati per ridurne il peso, mantenendo separati i sorgenti originali. In questo caso i file consegnati conservano quindi nomi descrittivi e commenti utili e possono essere seguiti e discussi senza passare attraverso una versione compressa o un processo di build.
+
+
+12. Considerazioni finali
+
+Nel progetto ho cercato di mantenere una separazione chiara tra i diversi livelli dell'applicazione: PHP gestisce sessioni, accesso al database e controlli lato server, Vanilla JavaScript i form e l'interazione lato client e React la galleria dinamica degli ospiti. La stessa attenzione alla separazione è stata mantenuta nei privilegi MySQL e nelle action di backend.
+
+Oltre alle funzioni principali sono state aggiunte l'area personale, gli storici nel pannello amministratore, la pagina Sostienici, la gestione delle cancellazioni, una versione responsive curata e una versione dedicata alla stampa.
+
+Se il sito venisse utilizzato realmente da un rifugio, alcune estensioni naturali potrebbero essere una gestione più completa del calendario delle visite, notifiche agli utenti, stato di adozione dei gatti, fotografie individuali e ulteriori funzioni amministrative.
+
+Ho lasciato queste possibilità come sviluppi successivi, mantenendo questa versione concentrata sui flussi già implementati e sulle scelte progettuali direttamente verificabili nel codice.

@@ -374,7 +374,7 @@ require 'includes/header.php';
                 <span class="errore-js" id="err-descrizione"></span>
             </div>
 
-            <button type="submit" class="btn-solid-dark">Registra Felino</button>
+            <button type="submit" id="btn-registra-gatto" class="btn-solid-dark">Registra Felino</button>
         </form>
     </div>
 </div>
