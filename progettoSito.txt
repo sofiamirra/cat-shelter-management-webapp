@@ -163,6 +163,7 @@ Per le prestazioni ho preferito interventi semplici e leggibili: immagini princi
 
 Non ho applicato minification ai file CSS e JavaScript sviluppati per il progetto, perché ho preferito mantenere il codice direttamente leggibile. In un progetto di produzione sarebbe invece normale distribuire file minificati per ridurne il peso, mantenendo separati i sorgenti originali. In questo caso i file consegnati conservano quindi nomi descrittivi e commenti utili e possono essere seguiti e discussi senza passare attraverso una versione compressa o un processo di build.
 
+Per completezza ho inserito anche alcuni elementi tipici di un sito reale, come Privacy Policy, Cookie Policy, Termini e Condizioni e Statuto dell’associazione, predisposti seguendo una struttura informativa standard; ho inoltre aggiunto una favicon dedicata e le icone social nel footer, mantenute volutamente non cliccabili perché non sono associati profili reali del rifugio.
 
 12. Considerazioni finali
 
